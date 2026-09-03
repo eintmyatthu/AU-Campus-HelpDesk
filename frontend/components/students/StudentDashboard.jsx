@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./StudentDashboard.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import ticketIcon from "../../src/assets/Ticket.png"
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -36,7 +37,11 @@ export default function StudentDashboard() {
           </button>
 
           <button className="nav-item" onClick={handleMyTickets}>
-            <span>🎫</span>
+            <span>
+                <div className="ticketIcon">
+                    <img src={ticketIcon} alt="Ticket Icon"/>
+                </div>
+            </span>
             My tickets
           </button>
 
@@ -101,19 +106,6 @@ export default function StudentDashboard() {
           </div>
 
           <div className="topbar-right">
-            <button className="student-demo">
-              ♙
-              <span>Student demo</span>
-              <span>⌄</span>
-            </button>
-
-            <button className="icon-button">☾</button>
-
-            <button className="icon-button notification">
-              ♧
-              <span className="notification-dot"></span>
-            </button>
-
             <div className="top-avatar">ST</div>
           </div>
         </header>
@@ -172,7 +164,9 @@ export default function StudentDashboard() {
           <section className="stats-grid">
             <div className="stat-card">
               <div className="stat-left">
-                <div className="stat-icon blue">🎫</div>
+                <div className="stat-icon blue">
+                     <img src={ticketIcon} alt="Ticket Icon"/>
+                </div>
 
                 <div>
                   <p>Open tickets</p>
