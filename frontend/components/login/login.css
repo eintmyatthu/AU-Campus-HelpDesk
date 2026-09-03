@@ -1,4 +1,3 @@
-/* Login.css */
 
 * {
   box-sizing: border-box;
@@ -25,10 +24,6 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-
-/* =========================
-   LEFT SIDE
-========================= */
 
 .login-hero {
   position: relative;
@@ -172,9 +167,6 @@ button {
   background: rgba(255, 255, 255, 0.025);
 }
 
-/* =========================
-   RIGHT SIDE
-========================= */
 
 .login-section {
   min-height: 100vh;
@@ -377,10 +369,6 @@ button {
   grid-column: 1 / 2;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
 @media (max-width: 900px) {
   .login-page {
     grid-template-columns: 1fr;
@@ -419,6 +407,410 @@ button {
 
   .role-grid button:last-child {
     grid-column: auto;
+  }
+
+  .login-section {
+    padding: 60px 20px;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* =========================
+   LEFT SIDE
+========================= */
+
+.login-hero {
+  min-height: 100vh;
+
+  position: relative;
+  overflow: hidden;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0e3468 0%,
+      #123f7d 42%,
+      #16559f 72%,
+      #1b63bb 100%
+    );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  width: 70%;
+  max-width: 650px;
+
+  margin: 0 auto;
+
+  padding-top: 11vh;
+}
+
+.hero-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  margin-bottom: 38px;
+}
+
+.hero-icon img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.university-name {
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  color: #bed5f4;
+
+  margin-bottom: 24px;
+}
+
+.hero-content h1 {
+  margin: 0;
+
+  color: white;
+
+  font-size: clamp(42px, 4vw, 64px);
+
+  line-height: 1.13;
+
+  font-weight: 400;
+
+  letter-spacing: -2px;
+}
+
+.hero-description {
+  margin-top: 24px;
+
+  font-size: 16px;
+  line-height: 1.6;
+
+  color: #d1e2f9;
+}
+
+.hero-circle {
+  position: absolute;
+
+  border-radius: 50%;
+
+  border-style: solid;
+
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.circle-one {
+  width: 440px;
+  height: 440px;
+
+  border-width: 65px;
+
+  right: -190px;
+  bottom: -190px;
+}
+
+.circle-two {
+  width: 290px;
+  height: 290px;
+
+  border-width: 2px;
+
+  right: -65px;
+  bottom: -65px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.login-section {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+
+  padding: 40px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+}
+
+.security-icon {
+  width: 60px;
+  height: 60px;
+
+  margin: 0 auto 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+}
+
+.security-icon img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.login-card h2 {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: 27px;
+  font-weight: 500;
+
+  color: #162037;
+}
+
+.login-subtitle {
+  margin-top: 12px;
+  margin-bottom: 30px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  color: #687792;
+}
+
+/* =========================
+   MICROSOFT BUTTON
+========================= */
+
+.microsoft-btn {
+  width: 100%;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  border: 1px solid #cbd6e5;
+
+  border-radius: 8px;
+
+  background: white;
+
+  color: #28354a;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+.microsoft-btn:hover {
+  background: #f8faff;
+
+  border-color: #a9b9cf;
+}
+
+.microsoft-logo {
+  display: grid;
+
+  grid-template-columns: 7px 7px;
+  grid-template-rows: 7px 7px;
+
+  gap: 2px;
+}
+
+.microsoft-logo span {
+  width: 7px;
+  height: 7px;
+
+  display: block;
+}
+
+.ms-red {
+  background: #f25022;
+}
+
+.ms-green {
+  background: #7fba00;
+}
+
+.ms-blue {
+  background: #00a4ef;
+}
+
+.ms-yellow {
+  background: #ffb900;
+}
+
+.access-note {
+  margin: 18px auto 0;
+
+  max-width: 350px;
+
+  text-align: center;
+
+  font-size: 12px;
+  line-height: 1.6;
+
+  color: #93a0b5;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+
+  background: #dce4ee;
+
+  margin: 26px 0 22px;
+}
+
+/* =========================
+   DEVELOPMENT LOGIN
+========================= */
+
+.dev-title {
+  margin: 0;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+  color: #71809a;
+}
+
+.dev-description {
+  margin-top: 8px;
+  margin-bottom: 13px;
+
+  font-size: 12px;
+
+  color: #7b899f;
+}
+
+.student-login-btn {
+  width: 100%;
+  height: 42px;
+
+  border: 1px solid #1f4f8f;
+
+  border-radius: 7px;
+
+  background: white;
+
+  color: #173e73;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.student-login-btn:hover {
+  background: #f1f6fd;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .login-hero {
+    min-height: auto;
+
+    padding-bottom: 80px;
+  }
+
+  .hero-content {
+    width: 85%;
+
+    padding-top: 70px;
+  }
+
+  .hero-content h1 {
+    font-size: 44px;
+  }
+
+  .login-section {
+    min-height: auto;
+
+    padding: 80px 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-content h1 {
+    font-size: 36px;
   }
 
   .login-section {
