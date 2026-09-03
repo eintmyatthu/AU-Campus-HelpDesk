@@ -182,3 +182,43 @@
     border-right-color: var(--border);
   }
 }
+.hero-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+  border-radius: 12px;
+
+  overflow: hidden;
+  margin-bottom: 38px;
+}
+
+.hero-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.security-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+  border-radius: 12px;
+
+  overflow: hidden;
+  margin-bottom: 38px;
+}
+
+.security-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
