@@ -368,7 +368,7 @@ export default function KnowledgeBase() {
  
             <button
 
-              onClick={() => navigate("/student/tickets")}
+              onClick={() => navigate("/student/new-ticket")}
 >
 
               Contact IT support

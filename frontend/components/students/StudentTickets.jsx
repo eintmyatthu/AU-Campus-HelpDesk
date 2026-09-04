@@ -31,54 +31,16 @@ import {
 import "./StudentTickets.css";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useTickets } from "../../src/context/useTickets";
  
 export default function StudentTickets() {
 
   const navigate = useNavigate();
+  const { tickets } = useTickets();
  
   const [searchTerm, setSearchTerm] = useState("");
 
   const [statusFilter, setStatusFilter] = useState("All statuses");
- 
-  const tickets = [
-
-    {
-
-      id: "ICT-2481",
-
-      title: "Campus Wi-Fi disconnects in CL Building",
-
-      location: "CL Building · 403",
-
-      category: "Network",
-
-      priority: "High",
-
-      status: "In progress",
-
-      response: "Today, 15:00",
-
-    },
-
-    {
-
-      id: "ICT-2476",
-
-      title: "Unable to access Microsoft 365 account",
-
-      location: "Online service",
-
-      category: "Account access",
-
-      priority: "Medium",
-
-      status: "Waiting for user",
-
-      response: "Waiting for your reply",
-
-    },
-
-  ];
  
   const filteredTickets = tickets.filter((ticket) => {
 
@@ -257,6 +219,7 @@ export default function StudentTickets() {
                 onChange={(e) => setStatusFilter(e.target.value)}
 >
 <option>All statuses</option>
+<option>Open</option>
 <option>In progress</option>
 <option>Waiting for user</option>
 </select>
@@ -291,6 +254,8 @@ export default function StudentTickets() {
                 className="tickets-data-row"
 
                 key={ticket.id}
+
+                onClick={() => navigate(`/student/tickets/${ticket.id}`)}
 >
 <div>
 <p className="ticket-id">{ticket.id}</p>

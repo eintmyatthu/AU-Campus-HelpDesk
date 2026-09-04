@@ -12,6 +12,8 @@ import StudentTickets from "../components/students/StudentTickets";
 import KnowledgeBase from "../components/students/KnowledgeBase";
 import CampusStatus from "../components/students/CampusStatus";
 import Settings from "../components/students/Settings";
+import NewTicket from "../components/students/NewTicket";
+import TicketDetail from "../components/students/TicketDetail";
 
 function App() {
   return (
@@ -26,6 +28,14 @@ function App() {
         <Route
            path="/student/tickets"
            element={<StudentTickets />}
+        />
+        <Route
+           path="/student/tickets/:id"
+           element={<TicketDetail />}
+        />
+        <Route
+           path="/student/new-ticket"
+           element={<NewTicket />}
         />
         <Route
           path="/student/knowledge"

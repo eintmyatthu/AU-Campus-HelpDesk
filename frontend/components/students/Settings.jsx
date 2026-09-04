@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 
 import "./Settings.css";
+import { useTheme } from "../../src/context/useTheme";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
  
@@ -62,9 +63,9 @@ export default function Settings() {
 
   });
  
-  // Appearance.
+  // Appearance — backed by the app-wide ThemeContext.
 
-  const [theme, setTheme] = useState("light");
+  const { preference: theme, setTheme } = useTheme();
  
   const [saved, setSaved] = useState(false);
  
@@ -378,73 +379,58 @@ export default function Settings() {
               ))}
 </div>
 </section>
- 
+
           {/* APPEARANCE */}
-<section className="settings-card">
-<div className="settings-card-head">
-<h2>Appearance</h2>
-<p>Customize how the workspace looks</p>
-</div>
- 
+          <section className="settings-card">
+            <div className="settings-card-head">
+              <h2>Appearance</h2>
+              <p>Customize how the workspace looks</p>
+            </div>
+
             <div className="settings-card-body">
-<div className="theme-options">
-<button
-
+              <div className="theme-options">
+                <button
                   type="button"
-
                   className={`theme-option ${
-
                     theme === "light" ? "selected" : ""
-
                   }`}
-
                   onClick={() => setTheme("light")}
->
-<div className="theme-preview light">
-<Sun size={20} />
-</div>
-<strong>Light</strong>
-</button>
- 
+                >
+                  <div className="theme-preview light">
+                    <Sun size={20} />
+                  </div>
+                  <strong>Light</strong>
+                </button>
+
                 <button
-
                   type="button"
-
                   className={`theme-option ${
-
                     theme === "dark" ? "selected" : ""
-
                   }`}
-
                   onClick={() => setTheme("dark")}
->
-<div className="theme-preview dark">
-<Moon size={20} />
-</div>
-<strong>Dark</strong>
-</button>
- 
+                >
+                  <div className="theme-preview dark">
+                    <Moon size={20} />
+                  </div>
+                  <strong>Dark</strong>
+                </button>
+
                 <button
-
                   type="button"
-
                   className={`theme-option ${
-
                     theme === "system" ? "selected" : ""
-
                   }`}
-
                   onClick={() => setTheme("system")}
->
-<div className="theme-preview system">
-<MonitorSmartphone size={20} />
-</div>
-<strong>System</strong>
-</button>
-</div>
-</div>
-</section>
- 
+                >
+                  <div className="theme-preview system">
+                    <MonitorSmartphone size={20} />
+                  </div>
+                  <strong>System</strong>
+                </button>
+              </div>
+            </div>
+          </section>
+
           {/* ACTIONS */}
 <div className="settings-actions">
 

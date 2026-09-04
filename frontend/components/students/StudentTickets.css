@@ -581,6 +581,14 @@ select {
   color: #27344b;
 
   font-size: 10px;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.tickets-data-row:hover {
+  background: #f6f9fd;
 }
 
 .tickets-data-row:last-child {

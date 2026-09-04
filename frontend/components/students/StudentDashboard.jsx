@@ -153,12 +153,18 @@ export default function StudentDashboard() {
               </p>
 
               <div className="hero-buttons">
-                <button className="primary-button">
+                <button
+                  className="primary-button"
+                  onClick={() => navigate("/student/new-ticket")}
+                >
                   <Plus size={17} />
                   Submit a ticket
                 </button>
 
-                <button className="secondary-button">
+                <button
+                  className="secondary-button"
+                  onClick={() => navigate("/student/knowledge")}
+                >
                   <Search size={16} />
                   Find a quick fix
                 </button>
@@ -342,7 +348,9 @@ export default function StudentDashboard() {
                 </p>
               </div>
 
-              <button>Open guide</button>
+              <button onClick={() => navigate("/student/knowledge")}>
+                Open guide
+              </button>
             </div>
 
             <div className="info-card">
