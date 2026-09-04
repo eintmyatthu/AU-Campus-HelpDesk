@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
@@ -13,6 +12,9 @@ export default function Login() {
   const handleStudentLogin = () => {
     navigate("/student");
   };
+  const handleAdminLogin = () => {
+  navigate("/admin");
+};
 
   return (
     <div className="login-page">
@@ -97,6 +99,12 @@ export default function Login() {
             >
               Login as Student
             </button>
+            <button
+  className="student-login-btn"
+  onClick={handleAdminLogin}
+>
+  Login as Admin
+</button>
           </div>
         </div>
       </section>

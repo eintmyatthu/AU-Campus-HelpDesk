@@ -313,3 +313,172 @@ code {
 [data-theme="dark"] .tickets-data-row:hover {
   background: #1a2432;
 }
+
+/* ============================================================
+   DARK MODE — Admin area
+   The admin sidebar is already dark; these rules re-skin the
+   light admin surfaces (page bg, topbar, cards, tables, inputs).
+   ============================================================ */
+
+[data-theme="dark"] .admin-page,
+[data-theme="dark"] .admin-tickets-page,
+[data-theme="dark"] .admin-shell-page,
+[data-theme="dark"] .admin-main,
+[data-theme="dark"] .admin-tickets-main,
+[data-theme="dark"] .admin-shell-main {
+  background: #0f141c;
+  color: #dbe4f0;
+}
+
+/* Topbar */
+[data-theme="dark"] .admin-topbar {
+  background: #141b25;
+  border-bottom-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-topbar h2 {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .admin-topbar p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .admin-sidebar-toggle,
+[data-theme="dark"] .admin-icon-btn {
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .admin-icon-btn:hover {
+  background: #1b2431;
+}
+
+[data-theme="dark"] .admin-demo-btn {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #d6e2f0;
+}
+
+/* Cards / panels / tables */
+[data-theme="dark"] .admin-panel-card,
+[data-theme="dark"] .admin-panel,
+[data-theme="dark"] .admin-stat-card,
+[data-theme="dark"] .admin-ticket-table,
+[data-theme="dark"] .system-health,
+[data-theme="dark"] .users-table,
+[data-theme="dark"] .metric-card,
+[data-theme="dark"] .reports-panel,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .audit-row,
+[data-theme="dark"] .audit-empty {
+  background: #141b25;
+  border-color: #232d3b;
+  color: #dbe4f0;
+}
+
+/* Row separators */
+[data-theme="dark"] .admin-ticket-header,
+[data-theme="dark"] .admin-ticket-row,
+[data-theme="dark"] .users-header,
+[data-theme="dark"] .users-row,
+[data-theme="dark"] .service-row,
+[data-theme="dark"] .team-row,
+[data-theme="dark"] .sla-row,
+[data-theme="dark"] .rule-row,
+[data-theme="dark"] .problem-row {
+  border-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-ticket-row:hover {
+  background: #1a2432;
+}
+
+/* Headings + strong text on light surfaces */
+[data-theme="dark"] .admin-topbar h2,
+[data-theme="dark"] .admin-panel-header h3,
+[data-theme="dark"] .admin-stat-info h3,
+[data-theme="dark"] .service-card-head h2,
+[data-theme="dark"] .reports-panel-head h2,
+[data-theme="dark"] .metric-body h3,
+[data-theme="dark"] .users-identity strong,
+[data-theme="dark"] .admin-ticket-row strong,
+[data-theme="dark"] .service-row-info strong,
+[data-theme="dark"] .team-info strong,
+[data-theme="dark"] .rule-info strong,
+[data-theme="dark"] .workload-info strong,
+[data-theme="dark"] .problem-info strong,
+[data-theme="dark"] .audit-info strong,
+[data-theme="dark"] .sla-level,
+[data-theme="dark"] .health-label,
+[data-theme="dark"] .system-health h3,
+[data-theme="dark"] .admin-page-head h1 {
+  color: #eef3f9;
+}
+
+/* Muted / secondary text */
+[data-theme="dark"] .admin-stat-info p,
+[data-theme="dark"] .admin-stat-card small,
+[data-theme="dark"] .admin-panel-header p,
+[data-theme="dark"] .service-card-head p,
+[data-theme="dark"] .reports-panel-head p,
+[data-theme="dark"] .metric-body p,
+[data-theme="dark"] .metric-card small,
+[data-theme="dark"] .users-identity small,
+[data-theme="dark"] .users-dept,
+[data-theme="dark"] .admin-ticket-row small,
+[data-theme="dark"] .admin-response,
+[data-theme="dark"] .service-row-info small,
+[data-theme="dark"] .team-info small,
+[data-theme="dark"] .rule-info small,
+[data-theme="dark"] .workload-info small,
+[data-theme="dark"] .problem-info small,
+[data-theme="dark"] .audit-info small,
+[data-theme="dark"] .audit-time,
+[data-theme="dark"] .sla-metric small,
+[data-theme="dark"] .sla-metric strong,
+[data-theme="dark"] .problem-count,
+[data-theme="dark"] .admin-page-head p,
+[data-theme="dark"] .system-health span,
+[data-theme="dark"] .admin-ticket-footer p {
+  color: #8ea1ba;
+}
+
+/* Inputs / selects */
+[data-theme="dark"] .admin-ticket-search,
+[data-theme="dark"] .admin-status-filter,
+[data-theme="dark"] .users-search,
+[data-theme="dark"] .users-role-select,
+[data-theme="dark"] .audit-search,
+[data-theme="dark"] .audit-filter {
+  background: #0f141c;
+  border-color: #2c384a;
+  color: #e4ecf5;
+}
+
+[data-theme="dark"] .admin-ticket-search input::placeholder,
+[data-theme="dark"] .users-search input::placeholder,
+[data-theme="dark"] .audit-search input::placeholder {
+  color: #6c7d95;
+}
+
+/* Secondary buttons / small fills */
+[data-theme="dark"] .admin-secondary-btn,
+[data-theme="dark"] .team-config,
+[data-theme="dark"] .audit-log-btn {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #dbe4f0;
+}
+
+/* Icon tiles that used pale tints — darken slightly */
+[data-theme="dark"] .service-row-icon,
+[data-theme="dark"] .problem-rank,
+[data-theme="dark"] .audit-icon {
+  background: #1b2431;
+}
+
+/* Progress track fills */
+[data-theme="dark"] .team-load,
+[data-theme="dark"] .workload-bar {
+  background: #24303f;
+}

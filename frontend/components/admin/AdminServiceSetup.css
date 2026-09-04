@@ -1,0 +1,349 @@
+.service-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+.service-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+
+  align-items: start;
+}
+
+.service-card {
+  padding: 20px 22px;
+}
+
+.service-card-head {
+  margin-bottom: 14px;
+}
+
+.service-card-head h2 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #16243b;
+}
+
+.service-card-head p {
+  margin: 4px 0 0;
+
+  color: #75849c;
+
+  font-size: 11px;
+}
+
+.service-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* CATEGORY ROW */
+
+.service-row {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #eef2f8;
+}
+
+.service-row:last-child {
+  border-bottom: none;
+}
+
+.service-row-icon {
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #eef2f8;
+
+  color: #6a7c96;
+}
+
+.service-row-info {
+  flex: 1;
+}
+
+.service-row-info strong {
+  display: block;
+
+  font-size: 13px;
+
+  color: #17233c;
+}
+
+.service-row-info small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #7a889f;
+
+  font-size: 11px;
+}
+
+/* TOGGLE (shared category + rule) */
+
+.svc-toggle {
+  width: 42px;
+  height: 24px;
+
+  flex-shrink: 0;
+
+  position: relative;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #cdd8e6;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.svc-toggle.on {
+  background: #1871dc;
+}
+
+.svc-toggle-knob {
+  width: 18px;
+  height: 18px;
+
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  transition: transform 0.2s ease;
+}
+
+.svc-toggle.on .svc-toggle-knob {
+  transform: translateX(18px);
+}
+
+/* TEAM ROW */
+
+.team-row {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #eef2f8;
+}
+
+.team-row:last-child {
+  border-bottom: none;
+}
+
+.team-info {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.team-info strong {
+  display: block;
+
+  font-size: 13px;
+
+  color: #17233c;
+}
+
+.team-info small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #7a889f;
+
+  font-size: 11px;
+}
+
+.team-load {
+  width: 110px;
+  height: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 20px;
+
+  background: #e6ecf4;
+
+  overflow: hidden;
+}
+
+.team-load-fill {
+  height: 100%;
+
+  border-radius: 20px;
+
+  background: #1871dc;
+}
+
+.team-config {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dbe4ef;
+  border-radius: 7px;
+
+  background: white;
+
+  color: #5a6b85;
+
+  cursor: pointer;
+}
+
+.team-config:hover {
+  background: #f1f5fb;
+}
+
+/* SLA ROW */
+
+.sla-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #eef2f8;
+}
+
+.sla-row:last-child {
+  border-bottom: none;
+}
+
+.sla-level {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #17233c;
+}
+
+.sla-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+}
+
+.sla-dot.urgent {
+  background: #d8434b;
+}
+
+.sla-dot.high {
+  background: #e8743b;
+}
+
+.sla-dot.medium {
+  background: #d8930f;
+}
+
+.sla-dot.low {
+  background: #9aa8bd;
+}
+
+.sla-metric small {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #8492a6;
+
+  font-size: 10px;
+}
+
+.sla-metric strong {
+  color: #27354c;
+
+  font-size: 12px;
+}
+
+/* RULE ROW */
+
+.rule-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #eef2f8;
+}
+
+.rule-row:last-child {
+  border-bottom: none;
+}
+
+.rule-info strong {
+  display: block;
+
+  font-size: 13px;
+
+  color: #17233c;
+}
+
+.rule-info small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #7a889f;
+
+  font-size: 11px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,883 @@
+/* AdminTickets.css */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f3f6fb;
+  color: #17233c;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* PAGE */
+
+.admin-tickets-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  background: #f3f6fb;
+}
+
+/* SIDEBAR */
+
+.admin-sidebar {
+  width: 228px;
+  min-height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 20;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 18px 9px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0e3569 0%,
+      #0c2f5d 55%,
+      #08264d 100%
+    );
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 8px;
+
+  margin-bottom: 30px;
+}
+
+.admin-brand-logo {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  background: white;
+}
+
+.admin-brand-logo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.admin-brand h2 {
+  margin: 0;
+
+  font-size: 17px;
+}
+
+.admin-brand p {
+  margin: 3px 0 0;
+
+  color: #8faacb;
+
+  font-size: 11px;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.admin-nav-item {
+  width: 100%;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 13px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #c2d2e7;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+.admin-nav-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.admin-nav-item.active {
+  background: rgba(97, 151, 223, 0.2);
+
+  border-color: #84b5f3;
+
+  color: white;
+}
+
+/* SIDEBAR BOTTOM */
+
+.admin-sidebar-bottom {
+  margin-top: auto;
+}
+
+.admin-urgent-box {
+  padding: 15px;
+
+  margin: 0 5px 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.admin-urgent-icon {
+  margin-bottom: 10px;
+
+  color: #8dc6ff;
+
+  font-size: 20px;
+}
+
+.admin-urgent-box h3 {
+  margin: 0 0 5px;
+
+  font-size: 13px;
+}
+
+.admin-urgent-box p {
+  margin: 0 0 8px;
+
+  color: #aebed2;
+
+  font-size: 11px;
+}
+
+.admin-urgent-box strong {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 13px;
+}
+
+.admin-urgent-box small {
+  color: #9fb1c8;
+
+  font-size: 10px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px 8px 4px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+}
+
+.admin-avatar {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dbe9ff;
+
+  color: #28579c;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-profile-info {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-profile-info strong {
+  font-size: 12px;
+}
+
+.admin-profile-info span {
+  margin-top: 3px;
+
+  color: #8fa5c1;
+
+  font-size: 9px;
+}
+
+.admin-settings-btn {
+  border: none;
+
+  background: transparent;
+
+  color: #95aac4;
+
+  cursor: pointer;
+}
+
+/* MAIN */
+
+.admin-tickets-main {
+  width: calc(100% - 228px);
+  min-height: 100vh;
+
+  margin-left: 228px;
+}
+
+/* TOPBAR */
+
+.admin-topbar {
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 15;
+
+  background: white;
+
+  border-bottom: 1px solid #dce4ef;
+}
+
+.admin-topbar-left {
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+}
+
+.admin-sidebar-toggle {
+  border: none;
+
+  background: transparent;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.admin-topbar h2 {
+  margin: 0;
+
+  font-size: 17px;
+}
+
+.admin-topbar p {
+  margin: 5px 0 0;
+
+  color: #75849c;
+
+  font-size: 11px;
+}
+
+.admin-topbar-right {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.admin-demo-btn {
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 15px;
+
+  border: 1px solid #d0dbe9;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #26334a;
+
+  cursor: pointer;
+}
+
+.admin-icon-btn {
+  width: 34px;
+  height: 34px;
+
+  position: relative;
+
+  border: none;
+
+  background: transparent;
+
+  font-size: 19px;
+
+  cursor: pointer;
+}
+
+.admin-notification-dot {
+  width: 5px;
+  height: 5px;
+
+  position: absolute;
+
+  top: 5px;
+  right: 5px;
+
+  border-radius: 50%;
+
+  background: #e34848;
+}
+
+.admin-top-avatar {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dbe9ff;
+
+  color: #28579c;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* CONTENT */
+
+.admin-ticket-content {
+  padding: 0 28px 40px;
+}
+
+/* Screenshot has large empty space */
+
+.admin-ticket-spacer {
+  height: 143px;
+}
+
+/* TOOLBAR */
+
+.admin-ticket-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 14px;
+}
+
+.admin-ticket-search {
+  width: 385px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 11px;
+
+  border: 1px solid #d5dfeb;
+  border-radius: 8px;
+
+  background: white;
+}
+
+.admin-ticket-search span {
+  color: #67809f;
+
+  font-size: 18px;
+}
+
+.admin-ticket-search input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #2e3a50;
+
+  font-size: 12px;
+}
+
+.admin-ticket-search input::placeholder {
+  color: #778aa6;
+}
+
+.admin-status-filter {
+  height: 34px;
+
+  min-width: 108px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d4deea;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #344259;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+/* TABLE */
+
+.admin-ticket-table {
+  overflow: hidden;
+
+  border: 1px solid #dce4ee;
+  border-radius: 11px;
+
+  background: white;
+}
+
+.admin-ticket-header,
+.admin-ticket-row {
+  display: grid;
+
+  grid-template-columns:
+    3.3fr
+    1.3fr
+    1.15fr
+    1.6fr
+    1.7fr
+    35px;
+
+  align-items: center;
+}
+
+.admin-ticket-header {
+  min-height: 37px;
+
+  padding: 0 18px;
+
+  border-bottom: 1px solid #dce4ee;
+
+  background: #fafbfd;
+
+  color: #708098;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.admin-ticket-row {
+  min-height: 70px;
+
+  padding: 10px 18px;
+
+  border-bottom: 1px solid #e3e8ef;
+
+  color: #27344b;
+
+  font-size: 10px;
+}
+
+.admin-ticket-row:last-child {
+  border-bottom: none;
+}
+
+/* TICKET */
+
+.admin-ticket-id-line {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 4px;
+}
+
+.admin-ticket-id {
+  color: #3472c2;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.admin-ticket-row strong {
+  display: block;
+
+  color: #18243b;
+
+  font-size: 11px;
+}
+
+.admin-ticket-row small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8290a5;
+
+  font-size: 9px;
+}
+
+/* ESCALATED */
+
+.escalated-badge {
+  padding: 3px 8px;
+
+  border-radius: 15px;
+
+  background: #ef4438;
+
+  color: white;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+/* PRIORITY */
+
+.admin-priority {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.admin-priority-dot {
+  width: 7px;
+  height: 7px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+}
+
+.admin-priority-dot.high {
+  background: #f05d4d;
+}
+
+.admin-priority-dot.medium {
+  background: #e99c13;
+}
+
+.admin-priority-dot.urgent {
+  background: #e6453c;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(230, 69, 60, 0.12);
+}
+
+/* STATUS */
+
+.admin-status-pill {
+  display: inline-block;
+
+  padding: 4px 8px;
+
+  border-radius: 20px;
+
+  font-size: 9px;
+}
+
+.admin-status-pill.in-progress {
+  border: 1px solid #c9dffd;
+
+  background: #edf5ff;
+
+  color: #2671c6;
+}
+
+.admin-status-pill.waiting {
+  border: 1px solid #f2d991;
+
+  background: #fff8e8;
+
+  color: #a36c00;
+}
+
+.admin-status-pill.resolved {
+  border: 1px solid #bce7ce;
+
+  background: #eaf8ef;
+
+  color: #26995e;
+}
+
+.admin-status-pill.unassigned {
+  border: 1px solid #dde2e9;
+
+  background: #f2f4f7;
+
+  color: #68778b;
+}
+
+.admin-response {
+  color: #78889e;
+}
+
+.admin-row-arrow {
+  border: none;
+
+  background: transparent;
+
+  color: #17233c;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+/* FOOTER */
+
+.admin-ticket-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 14px;
+}
+
+.admin-ticket-footer p {
+  margin: 0;
+
+  color: #6f7f97;
+
+  font-size: 10px;
+}
+
+.admin-pagination {
+  display: flex;
+
+  gap: 8px;
+}
+
+.admin-pagination button {
+  height: 30px;
+
+  padding: 0 12px;
+
+  border: 1px solid #cdd8e5;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #61718a;
+}
+
+.admin-pagination button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: 190px;
+  }
+
+  .admin-tickets-main {
+    width: calc(100% - 190px);
+
+    margin-left: 190px;
+  }
+
+  .admin-ticket-spacer {
+    height: 80px;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-sidebar {
+    display: none;
+  }
+
+  .admin-tickets-main {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .admin-ticket-content {
+    padding: 0 15px 30px;
+  }
+
+  .admin-demo-btn {
+    display: none;
+  }
+
+  .admin-ticket-spacer {
+    height: 40px;
+  }
+
+  .admin-ticket-toolbar {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .admin-ticket-search {
+    width: 100%;
+  }
+
+  .admin-status-filter {
+    align-self: flex-end;
+  }
+
+  .admin-ticket-header {
+    display: none;
+  }
+
+  .admin-ticket-row {
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+
+    padding: 18px;
+  }
+
+  .admin-row-arrow {
+    display: none;
+  }
+}
+
+/* ========================
+   ICON NORMALIZATION (lucide)
+======================== */
+
+.admin-nav-item span {
+  color: #9fb6d6;
+}
+
+.admin-nav-item.active span,
+.admin-nav-item:hover span {
+  color: #ffffff;
+}
+
+.admin-urgent-icon {
+  display: flex;
+  color: #8dc6ff;
+}
+
+.admin-sidebar-toggle,
+.admin-icon-btn,
+.admin-settings-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-demo-btn {
+  gap: 8px;
+}
+
+.admin-demo-avatar {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dbe9ff;
+
+  color: #28579c;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.admin-ticket-search {
+  color: #67809f;
+}
+
+.admin-ticket-search svg {
+  flex-shrink: 0;
+}
+
+.admin-row-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #9aa8bd;
+
+  cursor: pointer;
+}
+
+.admin-ticket-row {
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.admin-ticket-row:hover {
+  background: #f6f9fd;
+}
