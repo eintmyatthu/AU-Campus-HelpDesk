@@ -11,9 +11,6 @@ import {
   Menu,
   Search,
   Plus,
-  ChevronDown,
-  Moon,
-  Bell,
   ChevronRight,
 } from "lucide-react";
 import "./StudentTickets.css";
@@ -162,21 +159,6 @@ export default function StudentTickets() {
           </div>
 
           <div className="topbar-right">
-            <button className="student-demo">
-              <span className="demo-avatar">ST</span>
-              <span>Student demo</span>
-              <ChevronDown size={15} />
-            </button>
-
-            <button className="icon-button" title="Toggle theme">
-              <Moon size={18} />
-            </button>
-
-            <button className="icon-button notification" title="Notifications">
-              <Bell size={18} />
-              <span className="notification-dot"></span>
-            </button>
-
             <div className="top-avatar">ST</div>
           </div>
         </header>
