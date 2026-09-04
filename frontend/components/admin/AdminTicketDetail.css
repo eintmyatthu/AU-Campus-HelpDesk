@@ -1,0 +1,481 @@
+/* AdminTicketDetail — content styles (chrome lives in AdminShell.css) */
+
+.admin-back-link {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 16px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #4a5c76;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.admin-back-link:hover {
+  color: #1871dc;
+}
+
+/* HEADER */
+
+.admin-detail-header {
+  padding: 20px 22px;
+
+  margin-bottom: 16px;
+}
+
+.admin-detail-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+.admin-detail-id {
+  margin: 0 0 4px;
+
+  color: #6a7b95;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-detail-title h1 {
+  margin: 0;
+
+  font-size: 19px;
+  font-weight: 600;
+
+  color: #16243b;
+}
+
+.admin-detail-meta {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 16px;
+
+  margin-top: 18px;
+
+  padding-top: 16px;
+
+  border-top: 1px solid #eef2f8;
+}
+
+.meta-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #8492a6;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+.meta-value {
+  display: block;
+
+  color: #27354c;
+
+  font-size: 13px;
+}
+
+/* STATUS PILL */
+
+.admin-status-pill {
+  flex-shrink: 0;
+
+  padding: 5px 12px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.admin-status-pill.open,
+.admin-status-pill.in-progress {
+  background: #edf5ff;
+  color: #2671c6;
+}
+
+.admin-status-pill.waiting {
+  background: #fff8e8;
+  color: #a36c00;
+}
+
+.admin-status-pill.resolved {
+  background: #eaf8ef;
+  color: #26995e;
+}
+
+.admin-status-pill.unassigned {
+  background: #f2f4f7;
+  color: #68778b;
+}
+
+/* GRID */
+
+.admin-detail-grid {
+  display: grid;
+
+  grid-template-columns: 1.6fr 1fr;
+
+  gap: 16px;
+
+  align-items: start;
+}
+
+.admin-detail-main {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.admin-detail-side {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.admin-detail-card {
+  padding: 18px 20px;
+}
+
+.admin-detail-card h2 {
+  margin: 0 0 12px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #16243b;
+}
+
+.admin-detail-desc {
+  margin: 0;
+
+  color: #4a5a72;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.admin-detail-empty {
+  margin: 0;
+
+  color: #7a889f;
+
+  font-size: 12px;
+}
+
+/* CONVERSATION */
+
+.admin-comment-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  margin-bottom: 16px;
+}
+
+.admin-comment {
+  display: flex;
+
+  gap: 10px;
+}
+
+.admin-comment.staff {
+  flex-direction: row-reverse;
+}
+
+.admin-comment-avatar {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.admin-comment.student .admin-comment-avatar {
+  background: #eaf2ff;
+  color: #1f5fa8;
+}
+
+.admin-comment.staff .admin-comment-avatar {
+  background: #e4f7ec;
+  color: #1a7d54;
+}
+
+.admin-comment-body {
+  max-width: 78%;
+
+  padding: 10px 13px;
+
+  border-radius: 12px;
+
+  background: #f3f6fb;
+}
+
+.admin-comment.staff .admin-comment-body {
+  background: #eaf7ef;
+}
+
+.admin-comment-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 4px;
+}
+
+.admin-comment-meta strong {
+  font-size: 12px;
+
+  color: #17233c;
+}
+
+.admin-comment-meta span {
+  color: #8492a6;
+
+  font-size: 10px;
+}
+
+.admin-comment-body p {
+  margin: 0;
+
+  color: #3a4a63;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.admin-comment-input {
+  display: flex;
+
+  gap: 10px;
+}
+
+.admin-comment-input input {
+  flex: 1;
+
+  height: 40px;
+
+  padding: 0 13px;
+
+  border: 1px solid #d4dfec;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #27354c;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+.admin-comment-input input:focus {
+  border-color: #84b5f3;
+}
+
+/* CONTROLS */
+
+.admin-control {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 14px;
+}
+
+.admin-control:last-child {
+  margin-bottom: 0;
+}
+
+.admin-control > span {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 6px;
+
+  color: #48576f;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.admin-control select {
+  height: 38px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d4dfec;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #27354c;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+.admin-control select:focus {
+  border-color: #84b5f3;
+}
+
+/* HISTORY TIMELINE */
+
+.admin-timeline {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.admin-timeline li {
+  position: relative;
+
+  display: flex;
+
+  gap: 12px;
+
+  padding-bottom: 16px;
+}
+
+.admin-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.admin-timeline li:not(:last-child)::before {
+  content: "";
+
+  position: absolute;
+
+  left: 13px;
+  top: 26px;
+  bottom: 0;
+
+  width: 2px;
+
+  background: #e2e8f2;
+}
+
+.admin-timeline-icon {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eef2f8;
+
+  color: #8497b0;
+}
+
+.admin-timeline li.current .admin-timeline-icon {
+  background: #e5eefb;
+  color: #1871dc;
+}
+
+.admin-timeline li strong {
+  display: block;
+
+  font-size: 12px;
+
+  color: #27354c;
+}
+
+.admin-timeline li small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #8492a6;
+
+  font-size: 11px;
+}
+
+/* NOT FOUND */
+
+.admin-detail-notfound {
+  padding: 45px 30px;
+
+  text-align: center;
+}
+
+.admin-detail-notfound h1 {
+  margin: 0 0 8px;
+
+  font-size: 20px;
+
+  color: #16243b;
+}
+
+.admin-detail-notfound p {
+  margin: 0 auto 20px;
+
+  max-width: 360px;
+
+  color: #6f809a;
+
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .admin-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-detail-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}

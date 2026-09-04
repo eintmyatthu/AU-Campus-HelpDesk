@@ -523,3 +523,64 @@ code {
 [data-theme="dark"] .activity-row span {
   color: #8ea1ba;
 }
+
+/* Admin dark — ticket detail page */
+[data-theme="dark"] .admin-detail-card,
+[data-theme="dark"] .admin-detail-header,
+[data-theme="dark"] .admin-detail-notfound {
+  background: #141b25;
+  border-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-detail-title h1,
+[data-theme="dark"] .admin-detail-card h2,
+[data-theme="dark"] .meta-value,
+[data-theme="dark"] .admin-comment-meta strong,
+[data-theme="dark"] .admin-timeline li strong,
+[data-theme="dark"] .admin-detail-notfound h1 {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .admin-detail-id,
+[data-theme="dark"] .meta-label,
+[data-theme="dark"] .admin-detail-desc,
+[data-theme="dark"] .admin-detail-empty,
+[data-theme="dark"] .admin-comment-meta span,
+[data-theme="dark"] .admin-comment-body p,
+[data-theme="dark"] .admin-timeline li small,
+[data-theme="dark"] .admin-control > span,
+[data-theme="dark"] .admin-detail-notfound p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .admin-detail-meta {
+  border-top-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-comment-body {
+  background: #1b2431;
+}
+
+[data-theme="dark"] .admin-comment.staff .admin-comment-body {
+  background: #14301f;
+}
+
+[data-theme="dark"] .admin-comment-input input,
+[data-theme="dark"] .admin-control select {
+  background: #0f141c;
+  border-color: #2c384a;
+  color: #e4ecf5;
+}
+
+[data-theme="dark"] .admin-timeline-icon {
+  background: #1b2431;
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .admin-timeline li:not(:last-child)::before {
+  background: #2c384a;
+}
+
+[data-theme="dark"] .admin-back-link {
+  color: #9fb2c9;
+}

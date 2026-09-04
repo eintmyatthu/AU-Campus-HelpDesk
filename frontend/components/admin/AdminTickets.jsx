@@ -96,7 +96,7 @@ export default function AdminTickets() {
           <div
             className="admin-ticket-row"
             key={ticket.id}
-            onClick={() => navigate(`/student/tickets/${ticket.id}`)}
+            onClick={() => navigate(`/admin/tickets/${ticket.id}`)}
           >
             <div className="admin-ticket-main">
               <div className="admin-ticket-id-line">

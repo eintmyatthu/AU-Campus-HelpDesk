@@ -20,6 +20,7 @@ import AdminUsers from "../components/admin/AdminUsers";
 import AdminServiceSetup from "../components/admin/AdminServiceSetup";
 import AdminReports from "../components/admin/AdminReports";
 import AdminAuditLogs from "../components/admin/AdminAuditLogs";
+import AdminTicketDetail from "../components/admin/AdminTicketDetail";
 function App() {
   return (
     <BrowserRouter>
@@ -61,6 +62,10 @@ function App() {
         <Route
   path="/admin/tickets"
   element={<AdminTickets />}
+/>
+        <Route
+  path="/admin/tickets/:id"
+  element={<AdminTicketDetail />}
 />
         <Route
   path="/admin/users"

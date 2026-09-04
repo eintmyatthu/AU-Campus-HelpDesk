@@ -8,9 +8,9 @@ const initialCategories = [
   { name: "Software", team: "Device Support", subs: 3, on: true },
   { name: "Network", team: "Infrastructure Team", subs: 4, on: true },
   { name: "Account access", team: "Device Support", subs: 5, on: true },
-  { name: "Classroom equipment", team: "Infrastructure Team", subs: 8, on: true },
+  { name: "Classroom equipment", team: "Infrastructure Team", subs: 6, on: true },
   { name: "Printer", team: "Device Support", subs: 7, on: true },
-  { name: "Other", team: "Infrastructure Team", subs: 6, on: true },
+  { name: "Other", team: "Infrastructure Team", subs: 8, on: true },
 ];
 
 const teams = [

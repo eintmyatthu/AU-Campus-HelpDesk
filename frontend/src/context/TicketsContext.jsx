@@ -23,6 +23,8 @@ const PRIORITY_LABELS = {
   URGENT: "Urgent",
 };
 
+
+
 // Seed data so the list is not empty on first load.
 const seedTickets = [
   {
@@ -36,6 +38,8 @@ const seedTickets = [
     status: "In progress",
     response: "Today, 15:00",
     createdAt: "Today, 09:12",
+    reporter: "Test Student",
+    assignee: "Narin Somchai",
     comments: [
       {
         id: 1,
@@ -45,6 +49,11 @@ const seedTickets = [
           "Thanks for reporting. We are seeing similar reports in CL Building and are investigating the access point.",
         at: "Today, 10:05",
       },
+    ],
+    history: [
+      { id: 1, action: "Ticket created", at: "Today, 09:12" },
+      { id: 2, action: "Assigned to Narin Somchai", at: "Today, 09:40" },
+      { id: 3, action: "Status changed to In progress", at: "Today, 10:05" },
     ],
   },
   {
@@ -58,6 +67,8 @@ const seedTickets = [
     status: "Waiting for user",
     response: "Waiting for your reply",
     createdAt: "Yesterday, 16:40",
+    reporter: "Test Student",
+    assignee: "Maya Prasert",
     comments: [
       {
         id: 1,
@@ -65,6 +76,15 @@ const seedTickets = [
         role: "staff",
         message:
           "Could you confirm whether multi-factor authentication is prompting on your device?",
+        at: "Yesterday, 17:10",
+      },
+    ],
+    history: [
+      { id: 1, action: "Ticket created", at: "Yesterday, 16:40" },
+      { id: 2, action: "Assigned to Maya Prasert", at: "Yesterday, 16:55" },
+      {
+        id: 3,
+        action: "Status changed to Waiting for user",
         at: "Yesterday, 17:10",
       },
     ],
@@ -88,7 +108,10 @@ export function TicketsProvider({ children }) {
         status: "Open",
         response: "Awaiting triage",
         createdAt: "Just now",
+        reporter: "Test Student",
+        assignee: null,
         comments: [],
+        history: [{ id: 1, action: "Ticket created", at: "Just now" }],
       };
       return [created, ...prev];
     });
@@ -100,31 +123,104 @@ export function TicketsProvider({ children }) {
     [tickets]
   );
 
-  const addComment = useCallback((id, message) => {
+  const addComment = useCallback(
+    (id, message, author = "You", role = "student") => {
+      setTickets((prev) =>
+        prev.map((t) =>
+          t.id === id
+            ? {
+                ...t,
+                comments: [
+                  ...t.comments,
+                  {
+                    id: t.comments.length + 1,
+                    author,
+                    role,
+                    message: message.trim(),
+                    at: "Just now",
+                  },
+                ],
+              }
+            : t
+        )
+      );
+    },
+    []
+  );
+
+  const appendHistory = (ticket, action) => ({
+    ...ticket,
+    history: [
+      ...(ticket.history || []),
+      { id: (ticket.history?.length || 0) + 1, action, at: "Just now" },
+    ],
+  });
+
+  const assignTicket = useCallback((id, technician) => {
     setTickets((prev) =>
       prev.map((t) =>
         t.id === id
-          ? {
-              ...t,
-              comments: [
-                ...t.comments,
-                {
-                  id: t.comments.length + 1,
-                  author: "You",
-                  role: "student",
-                  message: message.trim(),
-                  at: "Just now",
-                },
-              ],
-            }
+          ? appendHistory(
+              {
+                ...t,
+                assignee: technician || null,
+                // Auto-advance a brand-new ticket when first assigned.
+                status: t.status === "Open" ? "In progress" : t.status,
+              },
+              technician
+                ? `Assigned to ${technician}`
+                : "Unassigned"
+            )
+          : t
+      )
+    );
+  }, []);
+
+  const setTicketStatus = useCallback((id, status) => {
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? appendHistory(
+              { ...t, status },
+              `Status changed to ${status}`
+            )
+          : t
+      )
+    );
+  }, []);
+
+  const setTicketPriority = useCallback((id, priority) => {
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? appendHistory(
+              { ...t, priority },
+              `Priority changed to ${priority}`
+            )
           : t
       )
     );
   }, []);
 
   const value = useMemo(
-    () => ({ tickets, addTicket, getTicket, addComment }),
-    [tickets, addTicket, getTicket, addComment]
+    () => ({
+      tickets,
+      addTicket,
+      getTicket,
+      addComment,
+      assignTicket,
+      setTicketStatus,
+      setTicketPriority,
+    }),
+    [
+      tickets,
+      addTicket,
+      getTicket,
+      addComment,
+      assignTicket,
+      setTicketStatus,
+      setTicketPriority,
+    ]
   );
 
   return (
