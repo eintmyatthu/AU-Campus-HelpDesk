@@ -17,6 +17,10 @@
     "Segoe UI",
     sans-serif;
 
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: normal;
+
   background: #f3f6fb;
   color: #17233c;
 }
@@ -305,6 +309,7 @@
 
 .admin-shell-main {
   width: calc(100% - 228px);
+  min-width: 0;
   min-height: 100vh;
 
   margin-left: 228px;

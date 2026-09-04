@@ -482,3 +482,44 @@ code {
 [data-theme="dark"] .workload-bar {
   background: #24303f;
 }
+
+/* Admin dark — extra polish for refactored tickets/dashboard */
+[data-theme="dark"] .admin-ticket-header {
+  background: #10161f;
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .admin-pagination button {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #dbe4f0;
+}
+
+[data-theme="dark"] .admin-ticket-empty,
+[data-theme="dark"] .admin-ticket-footer p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .category-bar,
+[data-theme="dark"] .category-bar-fill {
+  background: #24303f;
+}
+
+[data-theme="dark"] .category-bar-fill {
+  background: #2f6fd0;
+}
+
+[data-theme="dark"] .activity-icon {
+  background: #1b2431;
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .category-name,
+[data-theme="dark"] .activity-row p {
+  color: #dbe4f0;
+}
+
+[data-theme="dark"] .category-row strong,
+[data-theme="dark"] .activity-row span {
+  color: #8ea1ba;
+}
