@@ -1,8 +1,24 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  LayoutGrid,
+  Ticket,
+  BookOpen,
+  Activity,
+  Settings as SettingsIcon,
+  ShieldAlert,
+  LogOut,
+  Menu,
+  Sparkles,
+  Plus,
+  Search,
+  CheckCircle2,
+  Clock,
+  Wifi,
+  CalendarClock,
+  ChevronRight,
+} from "lucide-react";
 import "./StudentDashboard.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
-import ticketIcon from "../../src/assets/Ticket.png"
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -32,38 +48,45 @@ export default function StudentDashboard() {
 
         <nav className="sidebar-nav">
           <button className="nav-item active">
-            <span>⊞</span>
+            <LayoutGrid size={18} />
             Home
           </button>
 
           <button className="nav-item" onClick={handleMyTickets}>
-            <span>
-                <div className="ticketIcon">
-                    <img src={ticketIcon} alt="Ticket Icon"/>
-                </div>
-            </span>
+            <Ticket size={18} />
             My tickets
           </button>
 
-          <button className="nav-item">
-            <span>▱</span>
+          <button
+            className="nav-item"
+            onClick={() => navigate("/student/knowledge")}
+          >
+            <BookOpen size={18} />
             Knowledge base
           </button>
 
-          <button className="nav-item">
-            <span>⌁</span>
+          <button
+            className="nav-item"
+            onClick={() => navigate("/student/status")}
+          >
+            <Activity size={18} />
             Campus status
           </button>
 
-          <button className="nav-item">
-            <span>⚙</span>
+          <button
+            className="nav-item"
+            onClick={() => navigate("/student/settings")}
+          >
+            <SettingsIcon size={18} />
             Settings
           </button>
         </nav>
 
         <div className="sidebar-bottom">
           <div className="urgent-box">
-            <div className="urgent-icon">◎</div>
+            <div className="urgent-icon">
+              <ShieldAlert size={20} />
+            </div>
 
             <h3>Urgent IT or security issue?</h3>
             <p>Call the Service Desk</p>
@@ -86,7 +109,7 @@ export default function StudentDashboard() {
               onClick={handleLogout}
               title="Logout"
             >
-              ⎋
+              <LogOut size={16} />
             </button>
           </div>
         </div>
@@ -97,7 +120,9 @@ export default function StudentDashboard() {
         {/* TOP BAR */}
         <header className="topbar">
           <div className="topbar-left">
-            <button className="sidebar-toggle">☰</button>
+            <button className="sidebar-toggle">
+              <Menu size={20} />
+            </button>
 
             <div>
               <h2>Good afternoon, Student</h2>
@@ -115,7 +140,10 @@ export default function StudentDashboard() {
           {/* HERO */}
           <section className="support-hero">
             <div className="hero-main">
-              <p className="hero-label">✣ AI-ASSISTED SUPPORT</p>
+              <p className="hero-label">
+                <Sparkles size={13} />
+                AI-ASSISTED SUPPORT
+              </p>
 
               <h1>What can Campus IT help with?</h1>
 
@@ -126,12 +154,12 @@ export default function StudentDashboard() {
 
               <div className="hero-buttons">
                 <button className="primary-button">
-                  <span>＋</span>
+                  <Plus size={17} />
                   Submit a ticket
                 </button>
 
                 <button className="secondary-button">
-                  <span>▱</span>
+                  <Search size={16} />
                   Find a quick fix
                 </button>
               </div>
@@ -165,7 +193,7 @@ export default function StudentDashboard() {
             <div className="stat-card">
               <div className="stat-left">
                 <div className="stat-icon blue">
-                     <img src={ticketIcon} alt="Ticket Icon"/>
+                  <Ticket size={20} />
                 </div>
 
                 <div>
@@ -179,7 +207,9 @@ export default function StudentDashboard() {
 
             <div className="stat-card">
               <div className="stat-left">
-                <div className="stat-icon orange">□</div>
+                <div className="stat-icon orange">
+                  <Clock size={20} />
+                </div>
 
                 <div>
                   <p>Awaiting your reply</p>
@@ -192,7 +222,9 @@ export default function StudentDashboard() {
 
             <div className="stat-card">
               <div className="stat-left">
-                <div className="stat-icon green">✓</div>
+                <div className="stat-icon green">
+                  <CheckCircle2 size={20} />
+                </div>
 
                 <div>
                   <p>Resolved this month</p>
@@ -214,7 +246,7 @@ export default function StudentDashboard() {
 
               <button className="view-all" onClick={handleMyTickets}>
                 View all
-                <span>›</span>
+                <ChevronRight size={16} />
               </button>
             </div>
 
@@ -254,7 +286,9 @@ export default function StudentDashboard() {
                   Today, 15:00
                 </span>
 
-                <span className="ticket-arrow">›</span>
+                <span className="ticket-arrow">
+                  <ChevronRight size={18} />
+                </span>
               </div>
 
               <div className="ticket-row">
@@ -283,7 +317,9 @@ export default function StudentDashboard() {
                   Waiting for your reply
                 </span>
 
-                <span className="ticket-arrow">›</span>
+                <span className="ticket-arrow">
+                  <ChevronRight size={18} />
+                </span>
               </div>
             </div>
           </section>
@@ -291,7 +327,9 @@ export default function StudentDashboard() {
           {/* BOTTOM CARDS */}
           <section className="bottom-grid">
             <div className="info-card">
-              <div className="info-icon">⌁</div>
+              <div className="info-icon">
+                <Wifi size={20} />
+              </div>
 
               <div className="info-text">
                 <strong>
@@ -308,7 +346,9 @@ export default function StudentDashboard() {
             </div>
 
             <div className="info-card">
-              <div className="info-icon">♧</div>
+              <div className="info-icon">
+                <CalendarClock size={20} />
+              </div>
 
               <div className="info-text">
                 <strong>
