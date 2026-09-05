@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import AdminShell from "./AdminShell";
 import "./AdminAuditLogs.css";
+import { downloadCsv } from "../../src/utils/exportCsv";
 
 const events = [
   {
@@ -97,6 +98,19 @@ export default function AdminAuditLogs() {
     return matchesSearch && matchesFilter;
   });
 
+  const handleExport = () => {
+    downloadCsv(
+      "audit-log.csv",
+      ["Event", "Actor", "Category", "Time"],
+      filtered.map((e) => [
+        e.title,
+        e.actor,
+        typeToFilter[e.type] || "Other",
+        e.time,
+      ])
+    );
+  };
+
   return (
     <AdminShell
       active="audit"
@@ -127,7 +141,7 @@ export default function AdminAuditLogs() {
             ))}
           </select>
 
-          <button className="admin-secondary-btn">
+          <button className="admin-secondary-btn" onClick={handleExport}>
             <Download size={15} />
             Export audit log
           </button>

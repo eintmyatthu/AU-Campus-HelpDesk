@@ -646,6 +646,14 @@ select {
   background: #e99c13;
 }
 
+.priority-dot.urgent {
+  background: #e6443a;
+}
+
+.priority-dot.low {
+  background: #4295e8;
+}
+
 .ticket-status {
   display: inline-block;
 
@@ -670,6 +678,22 @@ select {
   background: #fff8e8;
 
   color: #a36c00;
+}
+
+.ticket-status.open {
+  border: 1px solid #cdd8e6;
+
+  background: #f1f5fb;
+
+  color: #4a5b76;
+}
+
+.ticket-status.resolved {
+  border: 1px solid #bfe6cd;
+
+  background: #eafaf0;
+
+  color: #1f8a4c;
 }
 
 .expected-response {

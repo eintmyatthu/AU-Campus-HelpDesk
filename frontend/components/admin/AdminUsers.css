@@ -246,3 +246,102 @@
     gap: 10px;
   }
 }
+
+/* CREATE USER FORM */
+
+.user-create-card {
+  margin-bottom: 16px;
+  padding: 18px 20px;
+}
+
+.user-create-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.user-create-head h3 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #17233c;
+}
+
+.user-create-close {
+  display: flex;
+
+  border: none;
+
+  background: transparent;
+
+  color: #67809f;
+
+  cursor: pointer;
+}
+
+.user-create-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.user-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.user-field span {
+  font-size: 12px;
+
+  color: #4a5a72;
+}
+
+.user-field input,
+.user-field select {
+  height: 38px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d4dfec;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #27354c;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+.user-field input:focus,
+.user-field select:focus {
+  border-color: #84b5f3;
+}
+
+.user-create-error {
+  margin: 12px 0 0;
+
+  color: #c0392b;
+
+  font-size: 12px;
+}
+
+.user-create-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  margin-top: 16px;
+}
+
+@media (max-width: 620px) {
+  .user-create-grid {
+    grid-template-columns: 1fr;
+  }
+}

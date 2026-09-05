@@ -19,9 +19,45 @@ import {
 } from "lucide-react";
 import "./StudentDashboard.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useTickets } from "../../src/context/useTickets";
+
+function statusClass(status) {
+  switch (status) {
+    case "In progress":
+      return "progress";
+    case "Waiting for user":
+      return "waiting";
+    case "Resolved":
+    case "Closed":
+      return "resolved";
+    case "Open":
+      return "open";
+    default:
+      return "waiting";
+  }
+}
+
+function priorityClass(priority) {
+  if (priority === "Urgent") return "urgent";
+  if (priority === "High") return "high";
+  if (priority === "Low") return "low";
+  return "medium";
+}
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
+  const { tickets } = useTickets();
+
+  const openCount = tickets.filter(
+    (t) => t.status === "Open" || t.status === "In progress"
+  ).length;
+  const awaitingCount = tickets.filter(
+    (t) => t.status === "Waiting for user"
+  ).length;
+  const resolvedCount = tickets.filter(
+    (t) => t.status === "Resolved" || t.status === "Closed"
+  ).length;
+  const recentTickets = tickets.slice(0, 4);
 
   const handleLogout = () => {
     navigate("/");
@@ -204,7 +240,7 @@ export default function StudentDashboard() {
 
                 <div>
                   <p>Open tickets</p>
-                  <h3>2</h3>
+                  <h3>{openCount}</h3>
                 </div>
               </div>
 
@@ -219,7 +255,7 @@ export default function StudentDashboard() {
 
                 <div>
                   <p>Awaiting your reply</p>
-                  <h3>1</h3>
+                  <h3>{awaitingCount}</h3>
                 </div>
               </div>
 
@@ -234,7 +270,7 @@ export default function StudentDashboard() {
 
                 <div>
                   <p>Resolved this month</p>
-                  <h3>7</h3>
+                  <h3>{resolvedCount}</h3>
                 </div>
               </div>
 
@@ -266,67 +302,54 @@ export default function StudentDashboard() {
                 <span></span>
               </div>
 
-              <div className="ticket-row">
-                <div>
-                  <p className="ticket-number">ICT-2481</p>
-                  <strong>
-                    Campus Wi-Fi disconnects in CL Building
-                  </strong>
-                  <small>CL Building · 403</small>
+              {recentTickets.length === 0 ? (
+                <div className="ticket-empty">
+                  You have no tickets yet. Submit a request to get started.
                 </div>
+              ) : (
+                recentTickets.map((ticket) => (
+                  <div
+                    className="ticket-row"
+                    key={ticket.id}
+                    onClick={() =>
+                      navigate(`/student/tickets/${ticket.id}`)
+                    }
+                  >
+                    <div>
+                      <p className="ticket-number">{ticket.id}</p>
+                      <strong>{ticket.title}</strong>
+                      <small>{ticket.location}</small>
+                    </div>
 
-                <span>Network</span>
+                    <span>{ticket.category}</span>
 
-                <span className="priority">
-                  <i className="priority-dot high"></i>
-                  High
-                </span>
+                    <span className="priority">
+                      <i
+                        className={`priority-dot ${priorityClass(
+                          ticket.priority
+                        )}`}
+                      ></i>
+                      {ticket.priority}
+                    </span>
 
-                <span>
-                  <span className="status-pill progress">
-                    In progress
-                  </span>
-                </span>
+                    <span>
+                      <span
+                        className={`status-pill ${statusClass(
+                          ticket.status
+                        )}`}
+                      >
+                        {ticket.status}
+                      </span>
+                    </span>
 
-                <span className="response-text">
-                  Today, 15:00
-                </span>
+                    <span className="response-text">{ticket.response}</span>
 
-                <span className="ticket-arrow">
-                  <ChevronRight size={18} />
-                </span>
-              </div>
-
-              <div className="ticket-row">
-                <div>
-                  <p className="ticket-number">ICT-2476</p>
-                  <strong>
-                    Unable to access Microsoft 365 account
-                  </strong>
-                  <small>Online service</small>
-                </div>
-
-                <span>Account access</span>
-
-                <span className="priority">
-                  <i className="priority-dot medium"></i>
-                  Medium
-                </span>
-
-                <span>
-                  <span className="status-pill waiting">
-                    Waiting for user
-                  </span>
-                </span>
-
-                <span className="response-text">
-                  Waiting for your reply
-                </span>
-
-                <span className="ticket-arrow">
-                  <ChevronRight size={18} />
-                </span>
-              </div>
+                    <span className="ticket-arrow">
+                      <ChevronRight size={18} />
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
           </section>
 

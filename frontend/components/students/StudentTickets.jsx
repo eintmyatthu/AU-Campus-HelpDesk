@@ -32,7 +32,30 @@ import "./StudentTickets.css";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
- 
+
+function statusClass(status) {
+  switch (status) {
+    case "In progress":
+      return "in-progress";
+    case "Waiting for user":
+      return "waiting";
+    case "Resolved":
+    case "Closed":
+      return "resolved";
+    case "Open":
+      return "open";
+    default:
+      return "waiting";
+  }
+}
+
+function priorityClass(priority) {
+  if (priority === "Urgent") return "urgent";
+  if (priority === "High") return "high";
+  if (priority === "Low") return "low";
+  return "medium";
+}
+
 export default function StudentTickets() {
 
   const navigate = useNavigate();
@@ -268,39 +291,15 @@ export default function StudentTickets() {
                 <span>{ticket.category}</span>
  
                 <span className="priority-cell">
-<i
-
-                    className={`priority-dot ${
-
-                      ticket.priority === "High"
-
-                        ? "high"
-
-                        : "medium"
-
-                    }`}
-></i>
- 
+                  <i className={`priority-dot ${priorityClass(ticket.priority)}`}></i>
                   {ticket.priority}
-</span>
- 
+                </span>
+
                 <span>
-<span
-
-                    className={`ticket-status ${
-
-                      ticket.status === "In progress"
-
-                        ? "in-progress"
-
-                        : "waiting"
-
-                    }`}
->
-
+                  <span className={`ticket-status ${statusClass(ticket.status)}`}>
                     {ticket.status}
-</span>
-</span>
+                  </span>
+                </span>
  
                 <span className="expected-response">
 

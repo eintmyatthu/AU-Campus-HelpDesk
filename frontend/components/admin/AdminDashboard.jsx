@@ -10,9 +10,16 @@ import {
 } from "lucide-react";
 import AdminShell from "./AdminShell";
 import "./AdminDashboard.css";
+import { useTickets } from "../../src/context/useTickets";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const { tickets } = useTickets();
+
+  const openCount = tickets.filter(
+    (t) => t.status === "Open" || t.status === "In progress"
+  ).length;
+  const recentTickets = tickets.slice(0, 5);
 
   const categoryData = [
     { name: "Network", value: 326, width: "82%" },
@@ -22,18 +29,12 @@ export default function AdminDashboard() {
     { name: "Printer", value: 96, width: "24%" },
   ];
 
-  const activities = [
-    { text: "Admin assigned ICT-2481 to Narin Somchai", time: "Just now" },
-    { text: "AI escalated ICT-2488 as urgent", time: "Today" },
-    { text: "Test Student signed in with Microsoft", time: "Today" },
-  ];
-
   const stats = [
     {
       key: "open",
       label: "Open tickets",
-      value: "4",
-      note: "↓ 8% this week",
+      value: String(openCount),
+      note: "Open and in progress",
       Icon: Ticket,
       tone: "blue",
     },
@@ -139,17 +140,17 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* RECENT ACTIVITY */}
+        {/* RECENT TICKETS */}
         <div className="admin-panel">
           <div className="admin-panel-header">
             <div>
-              <h3>Recent administration activity</h3>
-              <p>Role, routing, and ticket events</p>
+              <h3>Recent tickets</h3>
+              <p>Latest reports across campus</p>
             </div>
 
             <button
               className="view-all-admin"
-              onClick={() => navigate("/admin/audit")}
+              onClick={() => navigate("/admin/tickets")}
             >
               View all
               <ChevronRight size={15} />
@@ -157,18 +158,37 @@ export default function AdminDashboard() {
           </div>
 
           <div className="activity-list">
-            {activities.map((activity, index) => (
-              <div className="activity-row" key={index}>
-                <div className="activity-icon">
-                  <Clock size={15} />
-                </div>
-
+            {recentTickets.length === 0 ? (
+              <div className="activity-row">
                 <div>
-                  <p>{activity.text}</p>
-                  <span>{activity.time}</span>
+                  <p>No tickets have been reported yet.</p>
+                  <span>Reports will appear here</span>
                 </div>
               </div>
-            ))}
+            ) : (
+              recentTickets.map((ticket) => (
+                <div
+                  className="activity-row activity-clickable"
+                  key={ticket.id}
+                  onClick={() => navigate(`/admin/tickets/${ticket.id}`)}
+                >
+                  <div className="activity-icon">
+                    <Clock size={15} />
+                  </div>
+
+                  <div>
+                    <p>
+                      {ticket.id} · {ticket.title}
+                    </p>
+                    <span>
+                      {ticket.status} · {ticket.assignee || "Unassigned"}
+                    </span>
+                  </div>
+
+                  <ChevronRight size={15} className="activity-arrow" />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

@@ -78,6 +78,7 @@ export default function AdminTickets() {
           <option>In progress</option>
           <option>Waiting for user</option>
           <option>Resolved</option>
+          <option>Closed</option>
         </select>
       </div>
 
@@ -101,10 +102,6 @@ export default function AdminTickets() {
             <div className="admin-ticket-main">
               <div className="admin-ticket-id-line">
                 <span className="admin-ticket-id">{ticket.id}</span>
-
-                {ticket.escalated && (
-                  <span className="escalated-badge">Escalated</span>
-                )}
               </div>
 
               <strong>{ticket.title}</strong>

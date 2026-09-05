@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import AdminShell from "./AdminShell";
 import "./AdminReports.css";
+import { downloadCsv } from "../../src/utils/exportCsv";
 
 const metrics = [
   {
@@ -69,6 +70,37 @@ const problems = [
 const maxBar = Math.max(...volume.flatMap((v) => [v.open, v.resolved]));
 
 export default function AdminReports() {
+  const handleExportCsv = () => {
+    const rows = [
+      ["Section", "Label", "Value", "Detail"],
+      ...metrics.map((m) => ["Metric", m.label, m.value, m.note]),
+      ...volume.map((v) => [
+        "Volume",
+        v.week,
+        `Open ${v.open}`,
+        `Resolved ${v.resolved}`,
+      ]),
+      ...workload.map((w) => [
+        "Workload",
+        w.name,
+        `${w.active} active`,
+        `${w.load}% load`,
+      ]),
+      ...problems.map((p) => [
+        "Problem",
+        p.title,
+        `${p.count} tickets`,
+        p.category,
+      ]),
+    ];
+    downloadCsv("service-report.csv", rows[0], rows.slice(1));
+  };
+
+  const handleExportPdf = () => {
+    // Browser print dialog lets the user "Save as PDF" without a library.
+    window.print();
+  };
+
   return (
     <AdminShell
       active="reports"
@@ -82,11 +114,11 @@ export default function AdminReports() {
         </div>
 
         <div className="reports-actions">
-          <button className="admin-secondary-btn">
+          <button className="admin-secondary-btn" onClick={handleExportPdf}>
             <FileText size={15} />
             Export PDF
           </button>
-          <button className="admin-primary-btn">
+          <button className="admin-primary-btn" onClick={handleExportCsv}>
             <Download size={15} />
             Export CSV
           </button>

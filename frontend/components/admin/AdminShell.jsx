@@ -9,7 +9,6 @@ import {
   ShieldAlert,
   LogOut,
   PanelLeft,
-  ChevronDown,
   Moon,
   Bell,
 } from "lucide-react";
@@ -115,12 +114,6 @@ export default function AdminShell({ active, title, subtitle, children }) {
           </div>
 
           <div className="admin-topbar-right">
-            <button className="admin-demo-btn">
-              <span className="admin-demo-avatar">AD</span>
-              <span>Administrator demo</span>
-              <ChevronDown size={15} />
-            </button>
-
             <button
               className="admin-icon-btn"
               onClick={toggleTheme}
@@ -134,7 +127,6 @@ export default function AdminShell({ active, title, subtitle, children }) {
               title="Notifications"
             >
               <Bell size={18} />
-              <span className="admin-notification-dot"></span>
             </button>
 
             <div className="admin-top-avatar">AD</div>
