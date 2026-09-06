@@ -1,34 +1,30 @@
-const prisma = require("../config/prisma");
+// User controller — DEVELOPMENT MODE (no database).
+// Uses an in-memory user list so sign-in works without a DATABASE_URL.
+// When you connect PostgreSQL, swap `devUsers` lookups back to Prisma.
+
+const { devUsers } = require("../data/devUsers");
 
 const ROLES = ["STUDENT", "FACULTY", "TECHNICIAN", "ADMIN"];
-
-const publicUser = {
-  id: true,
-  name: true,
-  email: true,
-  role: true,
-  department: true,
-  isActive: true,
-};
 
 function parseId(value) {
   const id = Number(value);
   return Number.isInteger(id) && id > 0 ? id : null;
 }
 
-function sendServerError(res, error, message) {
-  console.error(error);
-  return res.status(500).json({ error: message });
+// Strip nothing sensitive here since these are just demo records, but keep the
+// same public shape the frontend expects.
+function toPublic(user) {
+  if (!user) return null;
+  const { id, name, email, role, department, isActive } = user;
+  return { id, name, email, role, department, isActive };
 }
 
 /**
  * Development login.
- * Resolves an active seed user either by explicit email or by role
+ * Resolves an active in-memory user either by explicit email or by role
  * (matching the "Login as Student / Admin / Technician" buttons).
- * This is a stand-in until Microsoft Entra ID is connected; it does
- * not issue a signed token, it simply returns the user record.
  */
-async function devLogin(req, res) {
+function devLogin(req, res) {
   const { email, role } = req.body || {};
 
   if (!email && !role) {
@@ -38,53 +34,41 @@ async function devLogin(req, res) {
     return res.status(400).json({ error: "Invalid role." });
   }
 
-  try {
-    let user = null;
-    if (email) {
-      user = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() }, select: publicUser });
-    } else {
-      // First active user with the requested role.
-      user = await prisma.user.findFirst({ where: { role, isActive: true }, select: publicUser });
-    }
-
-    if (!user) return res.status(404).json({ error: "No matching active account was found." });
-    if (!user.isActive) return res.status(403).json({ error: "This account is inactive." });
-
-    return res.json({ user });
-  } catch (error) {
-    return sendServerError(res, error, "Unable to sign in.");
+  let user = null;
+  if (email) {
+    const target = String(email).trim().toLowerCase();
+    user = devUsers.find((u) => u.email.toLowerCase() === target);
+  } else {
+    user = devUsers.find((u) => u.role === role && u.isActive);
   }
+
+  if (!user) return res.status(404).json({ error: "No matching active account was found." });
+  if (!user.isActive) return res.status(403).json({ error: "This account is inactive." });
+
+  return res.json({ user: toPublic(user) });
 }
 
-async function getUserById(req, res) {
+function getUserById(req, res) {
   const id = parseId(req.params.id);
   if (!id) return res.status(400).json({ error: "Invalid user id." });
 
-  try {
-    const user = await prisma.user.findUnique({ where: { id }, select: publicUser });
-    if (!user) return res.status(404).json({ error: "User not found." });
-    return res.json(user);
-  } catch (error) {
-    return sendServerError(res, error, "Unable to retrieve user.");
-  }
+  const user = devUsers.find((u) => u.id === id);
+  if (!user) return res.status(404).json({ error: "User not found." });
+  return res.json(toPublic(user));
 }
 
-async function getUsers(req, res) {
+function getUsers(req, res) {
   const { role } = req.query;
   if (role && !ROLES.includes(role)) {
     return res.status(400).json({ error: "Invalid role filter." });
   }
 
-  try {
-    const users = await prisma.user.findMany({
-      where: role ? { role } : undefined,
-      select: publicUser,
-      orderBy: { name: "asc" },
-    });
-    return res.json(users);
-  } catch (error) {
-    return sendServerError(res, error, "Unable to retrieve users.");
-  }
+  const users = devUsers
+    .filter((u) => (role ? u.role === role : true))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(toPublic);
+
+  return res.json(users);
 }
 
 module.exports = { devLogin, getUserById, getUsers };

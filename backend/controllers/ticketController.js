@@ -83,6 +83,12 @@ async function getAllTickets(req, res) {
     });
     return res.json(tickets);
   } catch (error) {
+    // In development without a database, return an empty list instead of a
+    // 500 so the UI can load. Remove once a DATABASE_URL is configured.
+    if (error.name === "PrismaClientInitializationError") {
+      console.warn("Tickets unavailable: no database connection. Returning empty list.");
+      return res.json([]);
+    }
     return sendServerError(res, error, "Unable to retrieve tickets.");
   }
 }
