@@ -52,9 +52,16 @@ export default function AdminTickets() {
   return (
     <AdminShell
       active="tickets"
-      title="Tickets"
+      title="All tickets"
       subtitle="Campus IT service workspace"
     >
+      <div className="admin-page-head">
+        <div>
+          <h1>All tickets</h1>
+          <p>Search, filter, and open tickets across campus.</p>
+        </div>
+      </div>
+
       {/* TOOLBAR */}
       <div className="admin-ticket-toolbar">
         <div className="admin-ticket-search">

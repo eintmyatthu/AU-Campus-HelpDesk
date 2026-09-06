@@ -135,9 +135,23 @@ export default function AdminUsers() {
   return (
     <AdminShell
       active="users"
-      title="Users"
+      title="Users & roles"
       subtitle="Campus IT service workspace"
     >
+      <div className="admin-page-head">
+        <div>
+          <h1>Users &amp; roles</h1>
+          <p>Manage accounts, roles, and access across campus.</p>
+        </div>
+
+        <div className="admin-page-head-actions">
+          <button className="admin-primary-btn" onClick={openCreate}>
+            <Plus size={16} />
+            Create user
+          </button>
+        </div>
+      </div>
+
       <div className="users-toolbar">
         <div className="users-search">
           <Search size={16} />
@@ -148,11 +162,6 @@ export default function AdminUsers() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-
-        <button className="admin-primary-btn" onClick={openCreate}>
-          <Plus size={16} />
-          Create user
-        </button>
       </div>
 
       {showCreate && (

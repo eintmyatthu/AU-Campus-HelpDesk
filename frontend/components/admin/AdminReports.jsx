@@ -107,13 +107,13 @@ export default function AdminReports() {
       title="Reports"
       subtitle="Campus IT service workspace"
     >
-      <div className="admin-page-head reports-head">
+      <div className="admin-page-head">
         <div>
           <h1>Service reports</h1>
           <p>Operational performance for 1–30 September 2026.</p>
         </div>
 
-        <div className="reports-actions">
+        <div className="admin-page-head-actions">
           <button className="admin-secondary-btn" onClick={handleExportPdf}>
             <FileText size={15} />
             Export PDF

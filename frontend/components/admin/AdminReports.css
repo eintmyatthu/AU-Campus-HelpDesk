@@ -1,17 +1,3 @@
-.reports-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  gap: 16px;
-}
-
-.reports-actions {
-  display: flex;
-
-  gap: 10px;
-}
-
 /* METRICS */
 
 .reports-metrics {

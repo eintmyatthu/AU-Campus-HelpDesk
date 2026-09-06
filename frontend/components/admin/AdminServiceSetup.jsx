@@ -195,10 +195,10 @@ export default function AdminServiceSetup() {
 
   return (
     <AdminShell
-      title="Service"
+      title="Service setup"
       active="service"
     >
-      <div className="service-head">
+      <div className="admin-page-head">
         <div>
           <h1>Service configuration</h1>
 
@@ -207,10 +207,12 @@ export default function AdminServiceSetup() {
           </p>
         </div>
 
-        <button className="admin-primary-btn" onClick={openAdd}>
-          <Plus size={16} />
-          Add category
-        </button>
+        <div className="admin-page-head-actions">
+          <button className="admin-primary-btn" onClick={openAdd}>
+            <Plus size={16} />
+            Add category
+          </button>
+        </div>
       </div>
 
       {showAdd && (

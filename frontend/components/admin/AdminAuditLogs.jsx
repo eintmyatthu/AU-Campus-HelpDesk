@@ -114,9 +114,23 @@ export default function AdminAuditLogs() {
   return (
     <AdminShell
       active="audit"
-      title="Audit"
+      title="Audit logs"
       subtitle="Campus IT service workspace"
     >
+      <div className="admin-page-head">
+        <div>
+          <h1>Audit logs</h1>
+          <p>Security and activity events across the HelpDesk.</p>
+        </div>
+
+        <div className="admin-page-head-actions">
+          <button className="admin-secondary-btn" onClick={handleExport}>
+            <Download size={15} />
+            Export audit log
+          </button>
+        </div>
+      </div>
+
       <div className="audit-toolbar">
         <div className="audit-search">
           <Search size={16} />
@@ -140,11 +154,6 @@ export default function AdminAuditLogs() {
               </option>
             ))}
           </select>
-
-          <button className="admin-secondary-btn" onClick={handleExport}>
-            <Download size={15} />
-            Export audit log
-          </button>
         </div>
       </div>
 
