@@ -2,11 +2,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminShell.css";
-import auLogo from "../../assets/AU_logo.jpeg";
+import auLogo from "../../src/assets/AU_logo.jpeg";
 
 export default function AdminShell({
   title,
-  activePage,
+  subtitle = "Campus IT service workspace",
+  active,
   children,
 }) {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function AdminShell({
         <nav className="admin-shell-nav">
           <button
             className={`admin-shell-nav-item ${
-              activePage === "overview" ? "active" : ""
+              active === "overview" ? "active" : ""
             }`}
             onClick={() => navigate("/admin")}
           >
@@ -39,7 +40,7 @@ export default function AdminShell({
 
           <button
             className={`admin-shell-nav-item ${
-              activePage === "tickets" ? "active" : ""
+              active === "tickets" ? "active" : ""
             }`}
             onClick={() => navigate("/admin/tickets")}
           >
@@ -49,8 +50,9 @@ export default function AdminShell({
 
           <button
             className={`admin-shell-nav-item ${
-              activePage === "users" ? "active" : ""
+              active === "users" ? "active" : ""
             }`}
+            onClick={() => navigate("/admin/users")}
           >
             <span>♙</span>
             Users & roles
@@ -58,7 +60,7 @@ export default function AdminShell({
 
           <button
             className={`admin-shell-nav-item ${
-              activePage === "service" ? "active" : ""
+              active === "service" ? "active" : ""
             }`}
             onClick={() => navigate("/admin/service")}
           >
@@ -68,8 +70,9 @@ export default function AdminShell({
 
           <button
             className={`admin-shell-nav-item ${
-              activePage === "reports" ? "active" : ""
+              active === "reports" ? "active" : ""
             }`}
+            onClick={() => navigate("/admin/reports")}
           >
             <span>▥</span>
             Reports
@@ -77,8 +80,9 @@ export default function AdminShell({
 
           <button
             className={`admin-shell-nav-item ${
-              activePage === "audit" ? "active" : ""
+              active === "audit" ? "active" : ""
             }`}
+            onClick={() => navigate("/admin/audit")}
           >
             <span>◷</span>
             Audit logs
@@ -126,16 +130,11 @@ export default function AdminShell({
 
             <div>
               <h2>{title}</h2>
-              <p>Campus IT service workspace</p>
+              <p>{subtitle}</p>
             </div>
           </div>
 
           <div className="admin-shell-topbar-right">
-            <button className="admin-shell-demo">
-              <span>♙</span>
-              <span>Administrator demo</span>
-              <span>⌄</span>
-            </button>
 
             <button className="admin-shell-icon">
               ☾
