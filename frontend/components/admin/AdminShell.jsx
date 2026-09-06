@@ -1,6 +1,19 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  LayoutGrid,
+  Ticket,
+  User,
+  Settings,
+  Monitor,
+  Clock,
+  ShieldAlert,
+  LogOut,
+  Menu,
+  Moon,
+  Bell,
+} from "lucide-react";
 import "./AdminShell.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 
@@ -34,7 +47,7 @@ export default function AdminShell({
             }`}
             onClick={() => navigate("/admin")}
           >
-            <span>⊞</span>
+            <span><LayoutGrid size={18} /></span>
             Overview
           </button>
 
@@ -44,7 +57,7 @@ export default function AdminShell({
             }`}
             onClick={() => navigate("/admin/tickets")}
           >
-            <span>🎫</span>
+            <span><Ticket size={18} /></span>
             All tickets
           </button>
 
@@ -54,7 +67,7 @@ export default function AdminShell({
             }`}
             onClick={() => navigate("/admin/users")}
           >
-            <span>♙</span>
+            <span><User size={18} /></span>
             Users & roles
           </button>
 
@@ -64,7 +77,7 @@ export default function AdminShell({
             }`}
             onClick={() => navigate("/admin/service")}
           >
-            <span>⚙</span>
+            <span><Settings size={18} /></span>
             Service setup
           </button>
 
@@ -74,7 +87,7 @@ export default function AdminShell({
             }`}
             onClick={() => navigate("/admin/reports")}
           >
-            <span>▥</span>
+            <span><Monitor size={18} /></span>
             Reports
           </button>
 
@@ -84,14 +97,14 @@ export default function AdminShell({
             }`}
             onClick={() => navigate("/admin/audit")}
           >
-            <span>◷</span>
+            <span><Clock size={18} /></span>
             Audit logs
           </button>
         </nav>
 
         <div className="admin-shell-bottom">
           <div className="admin-shell-urgent">
-            <div className="admin-shell-urgent-icon">◎</div>
+            <div className="admin-shell-urgent-icon"><ShieldAlert size={20} /></div>
 
             <h3>Urgent IT or security issue?</h3>
             <p>Call the Service Desk</p>
@@ -114,7 +127,7 @@ export default function AdminShell({
               onClick={() => navigate("/")}
               title="Logout"
             >
-              ↪
+              <LogOut size={18} />
             </button>
           </div>
         </div>
@@ -125,7 +138,7 @@ export default function AdminShell({
         <header className="admin-shell-topbar">
           <div className="admin-shell-topbar-left">
             <button className="admin-shell-menu">
-              ◫
+              <Menu size={18} />
             </button>
 
             <div>
@@ -137,11 +150,11 @@ export default function AdminShell({
           <div className="admin-shell-topbar-right">
 
             <button className="admin-shell-icon">
-              ☾
+              <Moon size={18} />
             </button>
 
             <button className="admin-shell-icon notification">
-              ♧
+              <Bell size={18} />
               <span className="admin-shell-dot"></span>
             </button>
 

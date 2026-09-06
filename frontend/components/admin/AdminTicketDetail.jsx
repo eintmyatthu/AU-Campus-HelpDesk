@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -10,8 +10,8 @@ import {
 import AdminShell from "./AdminShell";
 import "./AdminTicketDetail.css";
 import { useTickets } from "../../src/context/useTickets";
+import { listUsers } from "../../src/api/client";
 import {
-  TECHNICIANS,
   TICKET_STATUSES,
   TICKET_PRIORITIES,
 } from "../../src/context/ticketsMeta";
@@ -45,6 +45,23 @@ export default function AdminTicketDetail() {
 
   const ticket = getTicket(id);
   const [draft, setDraft] = useState("");
+  const [technicians, setTechnicians] = useState([]);
+  const [actionError, setActionError] = useState("");
+
+  useEffect(() => {
+    listUsers("TECHNICIAN")
+      .then(setTechnicians)
+      .catch(() => setTechnicians([]));
+  }, []);
+
+  const runAction = async (fn) => {
+    setActionError("");
+    try {
+      await fn();
+    } catch (err) {
+      setActionError(err.message || "Action failed.");
+    }
+  };
 
   if (!ticket) {
     return (
@@ -78,8 +95,10 @@ export default function AdminTicketDetail() {
   const handleReply = (e) => {
     e.preventDefault();
     if (!draft.trim()) return;
-    addComment(id, draft, "IT Support", "staff");
-    setDraft("");
+    runAction(async () => {
+      await addComment(id, draft);
+      setDraft("");
+    });
   };
 
   return (
@@ -197,13 +216,17 @@ export default function AdminTicketDetail() {
                 Assignee
               </span>
               <select
-                value={ticket.assignee || ""}
-                onChange={(e) => assignTicket(id, e.target.value || null)}
+                value={ticket.technicianId || ""}
+                onChange={(e) =>
+                  runAction(() =>
+                    assignTicket(id, e.target.value ? Number(e.target.value) : null)
+                  )
+                }
               >
                 <option value="">Unassigned</option>
-                {TECHNICIANS.map((tech) => (
-                  <option key={tech} value={tech}>
-                    {tech}
+                {technicians.map((tech) => (
+                  <option key={tech.id} value={tech.id}>
+                    {tech.name}
                   </option>
                 ))}
               </select>
@@ -213,7 +236,9 @@ export default function AdminTicketDetail() {
               <span>Status</span>
               <select
                 value={ticket.status}
-                onChange={(e) => setTicketStatus(id, e.target.value)}
+                onChange={(e) =>
+                  runAction(() => setTicketStatus(id, e.target.value))
+                }
               >
                 {TICKET_STATUSES.map((s) => (
                   <option key={s} value={s}>
@@ -227,7 +252,9 @@ export default function AdminTicketDetail() {
               <span>Priority</span>
               <select
                 value={ticket.priority}
-                onChange={(e) => setTicketPriority(id, e.target.value)}
+                onChange={(e) =>
+                  runAction(() => setTicketPriority(id, e.target.value))
+                }
               >
                 {TICKET_PRIORITIES.map((p) => (
                   <option key={p} value={p}>
@@ -236,6 +263,10 @@ export default function AdminTicketDetail() {
                 ))}
               </select>
             </label>
+
+            {actionError && (
+              <p className="admin-detail-action-error">{actionError}</p>
+            )}
           </div>
 
           <div className="admin-panel-card admin-detail-card">

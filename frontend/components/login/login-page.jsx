@@ -1,20 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useAuth } from "../../src/context/useAuth";
+
+const HOME_BY_ROLE = {
+  STUDENT: "/student",
+  FACULTY: "/student",
+  TECHNICIAN: "/technician",
+  ADMIN: "/admin",
+};
 
 export default function Login() {
   const navigate = useNavigate();
+  const { loginAs, loading, error } = useAuth();
 
   const handleMicrosoftLogin = () => {
+    // Placeholder until Microsoft Entra ID is connected.
     console.log("Microsoft login");
   };
 
-  const handleStudentLogin = () => {
-    navigate("/student");
+  const signIn = async (role) => {
+    try {
+      const user = await loginAs({ role });
+      navigate(HOME_BY_ROLE[user.role] || "/student");
+    } catch {
+      // Error is surfaced via the auth context `error` state below.
+    }
   };
-  const handleAdminLogin = () => {
-  navigate("/admin");
-};
+
+  const handleStudentLogin = () => signIn("STUDENT");
+  const handleAdminLogin = () => signIn("ADMIN");
+  const handleTechnicianLogin = () => signIn("TECHNICIAN");
 
   return (
     <div className="login-page">
@@ -96,15 +112,26 @@ export default function Login() {
             <button
               className="student-login-btn"
               onClick={handleStudentLogin}
+              disabled={loading}
             >
               Login as Student
             </button>
             <button
-  className="student-login-btn"
-  onClick={handleAdminLogin}
->
-  Login as Admin
-</button>
+              className="student-login-btn"
+              onClick={handleAdminLogin}
+              disabled={loading}
+            >
+              Login as Admin
+            </button>
+            <button
+              className="student-login-btn"
+              onClick={handleTechnicianLogin}
+              disabled={loading}
+            >
+              Login as Technician
+            </button>
+
+            {error && <p className="login-error">{error}</p>}
           </div>
         </div>
       </section>

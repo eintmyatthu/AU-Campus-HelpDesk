@@ -479,3 +479,11 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.admin-detail-action-error {
+  margin: 12px 0 0;
+
+  color: #c0392b;
+
+  font-size: 12px;
+}

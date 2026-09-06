@@ -817,3 +817,18 @@ button {
     padding: 60px 20px;
   }
 }
+
+.login-error {
+  margin: 12px 0 0;
+
+  color: #c0392b;
+
+  font-size: 12px;
+
+  text-align: center;
+}
+
+.student-login-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

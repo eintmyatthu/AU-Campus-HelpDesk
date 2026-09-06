@@ -70,7 +70,7 @@ export default function NewTicket() {
     return next;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
     if (Object.keys(validation).length) {
@@ -80,13 +80,15 @@ export default function NewTicket() {
 
     setSubmitting(true);
 
-    // Adds to the shared ticket store so it appears in My Tickets.
-    // In production this would be POST /api/tickets.
-    setTimeout(() => {
-      addTicket(form);
-      setSubmitting(false);
+    // Persists the ticket via POST /helpdesk/api/tickets through the context.
+    try {
+      await addTicket(form);
       setSubmitted(true);
-    }, 700);
+    } catch (err) {
+      setErrors({ submit: err.message || "Unable to submit ticket." });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -450,6 +452,10 @@ export default function NewTicket() {
                 {submitting ? "Submitting..." : "Submit ticket"}
               </button>
             </div>
+
+            {errors.submit && (
+              <p className="newticket-submit-error">{errors.submit}</p>
+            )}
           </form>
         </section>
       </main>
