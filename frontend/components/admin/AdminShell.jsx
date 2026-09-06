@@ -1,45 +1,22 @@
+/* eslint-disable no-unused-vars */
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  LayoutGrid,
-  Ticket,
-  Users,
-  SlidersHorizontal,
-  BarChart3,
-  ScrollText,
-  ShieldAlert,
-  LogOut,
-  PanelLeft,
-  Moon,
-  Bell,
-} from "lucide-react";
 import "./AdminShell.css";
-import auLogo from "../../src/assets/AU_logo.jpeg";
-import { useTheme } from "../../src/context/useTheme";
+import auLogo from "../../assets/AU_logo.jpeg";
 
-const NAV = [
-  { key: "overview", label: "Overview", Icon: LayoutGrid, to: "/admin" },
-  { key: "tickets", label: "All tickets", Icon: Ticket, to: "/admin/tickets" },
-  { key: "users", label: "Users & roles", Icon: Users, to: "/admin/users" },
-  {
-    key: "service",
-    label: "Service setup",
-    Icon: SlidersHorizontal,
-    to: "/admin/service",
-  },
-  { key: "reports", label: "Reports", Icon: BarChart3, to: "/admin/reports" },
-  { key: "audit", label: "Audit logs", Icon: ScrollText, to: "/admin/audit" },
-];
-
-export default function AdminShell({ active, title, subtitle, children }) {
+export default function AdminShell({
+  title,
+  activePage,
+  children,
+}) {
   const navigate = useNavigate();
-  const { toggleTheme } = useTheme();
 
   return (
-    <div className="admin-shell-page">
+    <div className="admin-shell">
       {/* SIDEBAR */}
-      <aside className="admin-sidebar">
-        <div className="admin-brand">
-          <div className="admin-brand-logo">
+      <aside className="admin-shell-sidebar">
+        <div className="admin-shell-brand">
+          <div className="admin-shell-logo">
             <img src={auLogo} alt="AU Logo" />
           </div>
 
@@ -49,28 +26,68 @@ export default function AdminShell({ active, title, subtitle, children }) {
           </div>
         </div>
 
-        <nav className="admin-nav">
-          {NAV.map((item) => (
-            <button
-              key={item.key}
-              className={`admin-nav-item ${
-                active === item.key ? "active" : ""
-              }`}
-              onClick={() => navigate(item.to)}
-            >
-              <span>
-                <item.Icon size={18} />
-              </span>
-              {item.label}
-            </button>
-          ))}
+        <nav className="admin-shell-nav">
+          <button
+            className={`admin-shell-nav-item ${
+              activePage === "overview" ? "active" : ""
+            }`}
+            onClick={() => navigate("/admin")}
+          >
+            <span>⊞</span>
+            Overview
+          </button>
+
+          <button
+            className={`admin-shell-nav-item ${
+              activePage === "tickets" ? "active" : ""
+            }`}
+            onClick={() => navigate("/admin/tickets")}
+          >
+            <span>🎫</span>
+            All tickets
+          </button>
+
+          <button
+            className={`admin-shell-nav-item ${
+              activePage === "users" ? "active" : ""
+            }`}
+          >
+            <span>♙</span>
+            Users & roles
+          </button>
+
+          <button
+            className={`admin-shell-nav-item ${
+              activePage === "service" ? "active" : ""
+            }`}
+            onClick={() => navigate("/admin/service")}
+          >
+            <span>⚙</span>
+            Service setup
+          </button>
+
+          <button
+            className={`admin-shell-nav-item ${
+              activePage === "reports" ? "active" : ""
+            }`}
+          >
+            <span>▥</span>
+            Reports
+          </button>
+
+          <button
+            className={`admin-shell-nav-item ${
+              activePage === "audit" ? "active" : ""
+            }`}
+          >
+            <span>◷</span>
+            Audit logs
+          </button>
         </nav>
 
-        <div className="admin-sidebar-bottom">
-          <div className="admin-urgent-box">
-            <div className="admin-urgent-icon">
-              <ShieldAlert size={20} />
-            </div>
+        <div className="admin-shell-bottom">
+          <div className="admin-shell-urgent">
+            <div className="admin-shell-urgent-icon">◎</div>
 
             <h3>Urgent IT or security issue?</h3>
             <p>Call the Service Desk</p>
@@ -80,20 +97,20 @@ export default function AdminShell({ active, title, subtitle, children }) {
             <small>Mon–Fri · 08:00–18:00</small>
           </div>
 
-          <div className="admin-profile">
-            <div className="admin-avatar">AD</div>
+          <div className="admin-shell-profile">
+            <div className="admin-shell-avatar">AD</div>
 
-            <div className="admin-profile-info">
+            <div className="admin-shell-profile-info">
               <strong>Admin</strong>
               <span>admin@test.local</span>
             </div>
 
             <button
-              className="admin-settings-btn"
+              className="admin-shell-logout"
               onClick={() => navigate("/")}
               title="Logout"
             >
-              <LogOut size={16} />
+              ↪
             </button>
           </div>
         </div>
@@ -101,39 +118,43 @@ export default function AdminShell({ active, title, subtitle, children }) {
 
       {/* MAIN */}
       <main className="admin-shell-main">
-        <header className="admin-topbar">
-          <div className="admin-topbar-left">
-            <button className="admin-sidebar-toggle">
-              <PanelLeft size={18} />
+        <header className="admin-shell-topbar">
+          <div className="admin-shell-topbar-left">
+            <button className="admin-shell-menu">
+              ◫
             </button>
 
             <div>
               <h2>{title}</h2>
-              <p>{subtitle}</p>
+              <p>Campus IT service workspace</p>
             </div>
           </div>
 
-          <div className="admin-topbar-right">
-            <button
-              className="admin-icon-btn"
-              onClick={toggleTheme}
-              title="Toggle theme"
-            >
-              <Moon size={18} />
+          <div className="admin-shell-topbar-right">
+            <button className="admin-shell-demo">
+              <span>♙</span>
+              <span>Administrator demo</span>
+              <span>⌄</span>
             </button>
 
-            <button
-              className="admin-icon-btn admin-notification"
-              title="Notifications"
-            >
-              <Bell size={18} />
+            <button className="admin-shell-icon">
+              ☾
             </button>
 
-            <div className="admin-top-avatar">AD</div>
+            <button className="admin-shell-icon notification">
+              ♧
+              <span className="admin-shell-dot"></span>
+            </button>
+
+            <div className="admin-shell-top-avatar">
+              AD
+            </div>
           </div>
         </header>
 
-        <section className="admin-shell-content">{children}</section>
+        <div className="admin-shell-content">
+          {children}
+        </div>
       </main>
     </div>
   );
