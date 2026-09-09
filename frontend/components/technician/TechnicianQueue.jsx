@@ -16,35 +16,20 @@ import {
 } from "lucide-react";
 import "./TechnicianQueue.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useTickets } from "../../src/context/useTickets";
 
 export default function TechnicianQueue() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [claimingId, setClaimingId] = useState(null);
+  const [claimError, setClaimError] = useState("");
+  const { tickets, loading, error, assignTicket } = useTickets();
 
-  const [tickets, setTickets] = useState([
-    {
-      id: "ICT-2489",
-      title: "Printer is producing blank pages",
-      location: "Central Library · Floor 3",
-      category: "Printer",
-      priority: "Medium",
-      status: "Unassigned",
-      response: "Within 2 hours",
-      escalated: false,
-    },
-    {
-      id: "ICT-2488",
-      title: "Cannot connect to AU-Secure network",
-      location: "SG Building · 106",
-      category: "Network",
-      priority: "Urgent",
-      status: "Unassigned",
-      response: "Within 30 minutes",
-      escalated: true,
-    },
-  ]);
+  const availableTickets = tickets.filter(
+    (ticket) => ticket.status === "Open" && !ticket.technicianId
+  );
 
-  const filteredTickets = tickets.filter((ticket) => {
+  const filteredTickets = availableTickets.filter((ticket) => {
     const query = searchTerm.toLowerCase();
 
     return (
@@ -54,12 +39,16 @@ export default function TechnicianQueue() {
     );
   });
 
-  const handleClaim = (ticketId) => {
-    setTickets((current) =>
-      current.filter((ticket) => ticket.id !== ticketId)
-    );
-
-    console.log(`Claimed ${ticketId}`);
+  const handleClaim = async (ticketId) => {
+    setClaimingId(ticketId);
+    setClaimError("");
+    try {
+      await assignTicket(ticketId);
+    } catch (claimRequestError) {
+      setClaimError(claimRequestError.message || "Unable to claim ticket.");
+    } finally {
+      setClaimingId(null);
+    }
   };
 
   return (
@@ -91,7 +80,7 @@ export default function TechnicianQueue() {
             Open queue
 
             <span className="queue-count">
-              {tickets.length}
+              {availableTickets.length}
             </span>
           </button>
 
@@ -215,7 +204,17 @@ export default function TechnicianQueue() {
               <span></span>
             </div>
 
-            {filteredTickets.map((ticket) => (
+            {loading && (
+              <div className="queue-empty">Loading tickets…</div>
+            )}
+
+            {!loading && (error || claimError) && (
+              <div className="queue-empty" role="alert">
+                {claimError || error}
+              </div>
+            )}
+
+            {!loading && !error && filteredTickets.map((ticket) => (
               <div
                 className="queue-table-row"
                 key={ticket.id}
@@ -226,7 +225,7 @@ export default function TechnicianQueue() {
                       {ticket.id}
                     </span>
 
-                    {ticket.escalated && (
+                    {ticket.priority === "Urgent" && (
                       <span className="queue-escalated">
                         Escalated
                       </span>
@@ -253,7 +252,7 @@ export default function TechnicianQueue() {
 
                 <span>
                   <span className="queue-status">
-                    {ticket.status}
+                    Unassigned
                   </span>
                 </span>
 
@@ -264,13 +263,14 @@ export default function TechnicianQueue() {
                 <button
                   className="claim-button"
                   onClick={() => handleClaim(ticket.id)}
+                  disabled={claimingId === ticket.id}
                 >
-                  Claim
+                  {claimingId === ticket.id ? "Claiming…" : "Claim"}
                 </button>
               </div>
             ))}
 
-            {filteredTickets.length === 0 && (
+            {!loading && !error && filteredTickets.length === 0 && (
               <div className="queue-empty">
                 No tickets found.
               </div>

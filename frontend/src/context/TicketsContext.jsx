@@ -38,18 +38,32 @@ export function TicketsProvider({ children }) {
   // inside the effect body.
   useEffect(() => {
     let cancelled = false;
+
     (async () => {
       if (!user) {
-        if (!cancelled) setTickets([]);
+        if (!cancelled) {
+          setTickets([]);
+          setError("");
+          setLoading(false);
+        }
         return;
       }
+
+      if (!cancelled) {
+        setLoading(true);
+        setError("");
+      }
+
       try {
         const data = await api.listTickets();
         if (!cancelled) setTickets((data || []).map(toUiTicket));
       } catch (err) {
         if (!cancelled) setError(err.message || "Unable to load tickets.");
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
+
     return () => {
       cancelled = true;
     };

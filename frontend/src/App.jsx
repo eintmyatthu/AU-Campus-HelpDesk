@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import RequireRole from "./components/RequireRole";
+import ApiHealthCheck from "./components/ApiHealthCheck";
 import Login from "../components/login/login-page";
 import StudentDashboard from "../components/students/StudentDashboard";
 import StudentTickets from "../components/students/StudentTickets";
@@ -35,6 +36,7 @@ const TECH_ROLES = ["TECHNICIAN"];
 function App() {
   return (
     <BrowserRouter>
+      <ApiHealthCheck />
       <Routes>
         <Route path="/" element={<Login />} />
 

@@ -1,3 +1,29 @@
+.api-health-status {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  z-index: 9999;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.api-health-status--loading,
+.api-health-status--healthy {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.api-health-status--error {
+  color: #7f1d1d;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;

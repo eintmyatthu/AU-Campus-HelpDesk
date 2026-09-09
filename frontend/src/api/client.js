@@ -1,10 +1,8 @@
 // Central API client for the AU HelpDesk backend.
-// All calls go through the Vite dev proxy (see vite.config.js), so we use
-// same-origin relative URLs. In production, set VITE_API_BASE_URL to point
-// at the deployed API origin.
+// VITE_API_URL may point directly at the backend API. The relative fallback
+// continues to work through the Vite development proxy.
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
-const API = `${BASE_URL}/helpdesk/api`;
+const API = (import.meta.env.VITE_API_URL || "/helpdesk/api").replace(/\/+$/, "");
 
 /**
  * Thin fetch wrapper that returns parsed JSON and throws an Error with the
@@ -37,6 +35,12 @@ async function request(path, { method = "GET", body, signal } = {}) {
   }
 
   return data;
+}
+
+/* ---------------- Service health ---------------- */
+
+export function getHealth(signal) {
+  return request("/health", { signal });
 }
 
 /* ---------------- Auth / users ---------------- */

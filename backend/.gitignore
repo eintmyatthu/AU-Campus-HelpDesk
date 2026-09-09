@@ -1,0 +1,4 @@
+# Local environment files may contain database credentials.
+.env
+.env.*
+!.env.example
