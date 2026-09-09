@@ -46,7 +46,7 @@ model User {
   name            String
   email           String          @unique
   department      String?
-  role            Role
+  role            Role            @default(STUDENT)
   isActive        Boolean         @default(true)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt

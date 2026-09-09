@@ -1,122 +1,207 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import "./App.css";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
+
+import RequireRole from "./components/RequireRole";
+import ApiHealthCheck from "./components/ApiHealthCheck";
+import Login from "../components/login/login-page";
+import StudentDashboard from "../components/students/StudentDashboard";
+import StudentTickets from "../components/students/StudentTickets";
+import KnowledgeBase from "../components/students/KnowledgeBase";
+import CampusStatus from "../components/students/CampusStatus";
+import Settings from "../components/students/Settings";
+import NewTicket from "../components/students/NewTicket";
+import TicketDetail from "../components/students/TicketDetail";
+import AdminDashboard from "../components/admin/AdminDashboard";
+import AdminTickets from "../components/admin/AdminTickets";
+import AdminUsers from "../components/admin/AdminUsers";
+import AdminServiceSetup from "../components/admin/AdminServiceSetup";
+import AdminReports from "../components/admin/AdminReports";
+import AdminAuditLogs from "../components/admin/AdminAuditLogs";
+import AdminTicketDetail from "../components/admin/AdminTicketDetail";
+import TechnicianDashboard from "../components/technician/TechnicianDashboard";
+import TechnicianQueue from "../components/technician/TechnicianQueue";
+import TechnicianAssignments from "../components/technician/TechnicianAssignments";
+import TechnicianKnowledgeBase from "../components/technician/TechnicianKnowledgeBase";
+import TechnicianCampusStatus from "../components/technician/TechnicianCampusStatus";
+
+const STUDENT_ROLES = ["STUDENT", "FACULTY"];
+const ADMIN_ROLES = ["ADMIN"];
+const TECH_ROLES = ["TECHNICIAN"];
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <ApiHealthCheck />
+      <Routes>
+        <Route path="/" element={<Login />} />
 
-      <div className="ticks"></div>
+        {/* STUDENT */}
+        <Route
+          path="/student"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <StudentDashboard />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/student/tickets"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <StudentTickets />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/student/tickets/:id"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <TicketDetail />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/student/new-ticket"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <NewTicket />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/student/knowledge"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <KnowledgeBase />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/student/status"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <CampusStatus />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/student/settings"
+          element={
+            <RequireRole roles={STUDENT_ROLES}>
+              <Settings />
+            </RequireRole>
+          }
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {/* ADMIN */}
+        <Route
+          path="/admin"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminDashboard />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/tickets"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminTickets />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/tickets/:id"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminTicketDetail />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminUsers />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/service"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminServiceSetup />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/reports"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminReports />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/audit"
+          element={
+            <RequireRole roles={ADMIN_ROLES}>
+              <AdminAuditLogs />
+            </RequireRole>
+          }
+        />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {/* TECHNICIAN */}
+        <Route
+          path="/technician"
+          element={
+            <RequireRole roles={TECH_ROLES}>
+              <TechnicianDashboard />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/technician/queue"
+          element={
+            <RequireRole roles={TECH_ROLES}>
+              <TechnicianQueue />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/technician/assignments"
+          element={
+            <RequireRole roles={TECH_ROLES}>
+              <TechnicianAssignments />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/technician/knowledge"
+          element={
+            <RequireRole roles={TECH_ROLES}>
+              <TechnicianKnowledgeBase />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/technician/status"
+          element={
+            <RequireRole roles={TECH_ROLES}>
+              <TechnicianCampusStatus />
+            </RequireRole>
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

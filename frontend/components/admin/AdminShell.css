@@ -1,0 +1,696 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f3f6fb;
+  color: #17233c;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+.admin-shell {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  background: #f3f6fb;
+}
+
+/* SIDEBAR */
+
+.admin-shell-sidebar {
+  width: 228px;
+  height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 40;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 18px 9px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0d376f 0%,
+      #0c3264 50%,
+      #082752 100%
+    );
+}
+
+.admin-shell-brand {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 8px;
+
+  margin-bottom: 30px;
+}
+
+.admin-shell-logo {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  background: white;
+}
+
+.admin-shell-logo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.admin-shell-brand h2 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.admin-shell-brand p {
+  margin: 3px 0 0;
+
+  color: #8faacb;
+
+  font-size: 11px;
+}
+
+.admin-shell-nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.admin-shell-nav-item {
+  width: 100%;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 13px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #c4d3e6;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+.admin-shell-nav-item span {
+  width: 20px;
+
+  display: inline-flex;
+  justify-content: center;
+}
+
+.admin-shell-nav-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+
+  color: white;
+}
+
+.admin-shell-nav-item.active {
+  background: rgba(98, 151, 222, 0.23);
+
+  border-color: #85b6f5;
+
+  color: white;
+}
+
+/* SIDEBAR BOTTOM */
+
+.admin-shell-bottom {
+  margin-top: auto;
+}
+
+.admin-shell-urgent {
+  padding: 15px;
+
+  margin: 0 5px 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-shell-urgent-icon {
+  margin-bottom: 10px;
+
+  color: #8dc6ff;
+
+  font-size: 20px;
+}
+
+.admin-shell-urgent h3 {
+  margin: 0 0 5px;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-shell-urgent p {
+  margin: 0 0 8px;
+
+  color: #aebed2;
+
+  font-size: 11px;
+}
+
+.admin-shell-urgent strong {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: white;
+
+  font-size: 13px;
+}
+
+.admin-shell-urgent small {
+  color: #9fb1c8;
+
+  font-size: 10px;
+}
+
+.admin-shell-profile {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px 8px 4px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+}
+
+.admin-shell-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e2edff;
+
+  color: #28579c;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-shell-profile-info {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-shell-profile-info strong {
+  color: white;
+
+  font-size: 12px;
+}
+
+.admin-shell-profile-info span {
+  margin-top: 3px;
+
+  color: #8fa5c1;
+
+  font-size: 9px;
+}
+
+.admin-shell-logout {
+  width: 30px;
+  height: 30px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #95aac4;
+
+  cursor: pointer;
+}
+
+.admin-shell-logout:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+/* MAIN */
+
+.admin-shell-main {
+  width: calc(100% - 228px);
+  min-width: 0;
+  min-height: 100vh;
+
+  margin-left: 228px;
+
+  background: #f3f6fb;
+}
+
+/* TOPBAR */
+
+.admin-shell-topbar {
+  width: calc(100% - 228px);
+  height: 72px;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  z-index: 30;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background: white;
+
+  border-bottom: 1px solid #dce4ef;
+}
+
+.admin-shell-topbar-left {
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+}
+
+.admin-shell-menu {
+  width: 30px;
+  height: 30px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #263750;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.admin-shell-topbar h2 {
+  margin: 0;
+
+  color: #17233c;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.admin-shell-topbar p {
+  margin: 5px 0 0;
+
+  color: #75849c;
+
+  font-size: 11px;
+}
+
+.admin-shell-topbar-right {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.admin-shell-demo {
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d0dbe9;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #26334a;
+
+  cursor: pointer;
+}
+
+.admin-shell-icon {
+  width: 34px;
+  height: 34px;
+
+  position: relative;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #21324a;
+
+  font-size: 18px;
+
+  cursor: pointer;
+}
+
+.admin-shell-icon:hover {
+  background: #f1f5fa;
+}
+
+.admin-shell-dot {
+  width: 5px;
+  height: 5px;
+
+  position: absolute;
+
+  top: 5px;
+  right: 5px;
+
+  border-radius: 50%;
+
+  background: #e34848;
+}
+
+.admin-shell-top-avatar {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dbe9ff;
+
+  color: #28579c;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* THIS IS THE IMPORTANT FIX */
+
+.admin-shell-content {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+
+  padding: 102px 54px 40px;
+
+  margin: 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .admin-shell-sidebar {
+    width: 190px;
+  }
+
+  .admin-shell-main {
+    width: calc(100% - 190px);
+
+    margin-left: 190px;
+  }
+
+  .admin-shell-topbar {
+    width: calc(100% - 190px);
+  }
+
+  .admin-shell-content {
+    padding:
+      95px
+      30px
+      35px;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-shell-sidebar {
+    display: none;
+  }
+
+  .admin-shell-main {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .admin-shell-topbar {
+    width: 100%;
+
+    padding: 0 15px;
+  }
+
+  .admin-shell-content {
+    padding:
+      95px
+      15px
+      30px;
+  }
+
+  .admin-shell-demo {
+    display: none;
+  }
+}
+
+/* ============================================================
+   SHARED ADMIN PRIMITIVES
+   Base (light) styles for the utility classes every admin page
+   relies on. Dark-theme overrides live in src/index.css.
+   ============================================================ */
+
+/* PAGE HEAD — consistent title block across all admin pages */
+
+.admin-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.admin-page-head h1 {
+  margin: 0;
+
+  color: #17233c;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.admin-page-head p {
+  margin: 5px 0 0;
+
+  color: #75849c;
+
+  font-size: 13px;
+}
+
+.admin-page-head-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+/* CARDS / PANELS */
+
+.admin-panel-card {
+  border: 1px solid #e4ebf4;
+  border-radius: 12px;
+
+  background: white;
+
+  box-shadow: 0 1px 2px rgba(16, 40, 78, 0.04);
+}
+
+/* BUTTONS */
+
+.admin-primary-btn {
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 16px;
+
+  border: 1px solid #1871dc;
+  border-radius: 8px;
+
+  background: #1871dc;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-primary-btn:hover {
+  background: #155fbb;
+  border-color: #155fbb;
+}
+
+.admin-primary-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.admin-secondary-btn {
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 16px;
+
+  border: 1px solid #d0dbe9;
+  border-radius: 8px;
+
+  background: white;
+
+  color: #33445e;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-secondary-btn:hover {
+  background: #f4f8fd;
+  border-color: #b9c8dd;
+}
+
+.admin-secondary-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* BACK LINK — used by detail pages */
+
+.admin-back-link {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 16px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #3472c2;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.admin-back-link:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 620px) {
+  .admin-page-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-page-head-actions {
+    justify-content: flex-start;
+  }
+}

@@ -1,0 +1,207 @@
+/* ============================================================
+   SHARED THEME OVERRIDES
+   Aligns the admin and technician areas to the student design
+   system. Student tokens are the single source of truth:
+     - Sidebar gradient : 180deg #0e3569 -> #0c2f5d -> #08264d
+     - Active nav       : rgba(97,151,223,0.2) + border #84b5f3
+     - Page background  : #f3f6fb   Text: #17233c
+     - Cards            : white / 1px #dce4ee / radius 11px
+     - Hero gradient    : 120deg #174c94 -> #1753a5 -> #1163c8
+     - Status pills / priority dots match student palette
+   This file is imported after index.css so it wins on cascade.
+   ============================================================ */
+
+/* ---- Shared page + typography tokens ---- */
+.admin-shell,
+.tech-page,
+.queue-page,
+.assignments-page,
+.tech-kb-page,
+.status-page {
+  background: #f3f6fb;
+  color: #17233c;
+}
+
+/* ============================================================
+   SIDEBAR — unify gradient with the student sidebar
+   ============================================================ */
+.admin-shell-sidebar,
+.tech-sidebar,
+.queue-sidebar,
+.assignments-sidebar,
+.tech-kb-sidebar,
+.status-sidebar {
+  background: linear-gradient(
+    180deg,
+    #0e3569 0%,
+    #0c2f5d 55%,
+    #08264d 100%
+  ) !important;
+}
+
+/* Active nav item — student blue with visible border */
+.admin-shell-nav-item.active,
+.tech-nav-item.active,
+.queue-nav-item.active,
+.assignments-nav-item.active,
+.tech-kb-nav-item.active,
+.status-nav-item.active {
+  background: rgba(97, 151, 223, 0.2) !important;
+  border-color: #84b5f3 !important;
+  color: #ffffff !important;
+}
+
+/* Nav hover — consistent subtle wash */
+.admin-shell-nav-item:hover,
+.tech-nav-item:hover,
+.queue-nav-item:hover,
+.assignments-nav-item:hover,
+.tech-kb-nav-item:hover,
+.status-nav-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Sidebar brand + profile avatars — match student palette */
+.admin-shell-avatar,
+.tech-avatar,
+.queue-avatar,
+.assignments-avatar,
+.tech-kb-avatar,
+.status-avatar {
+  background: #e3efff !important;
+  color: #1a4e91 !important;
+}
+
+/* ============================================================
+   TOPBAR — white bar, student border color
+   ============================================================ */
+.admin-shell-topbar,
+.tech-topbar,
+.queue-topbar,
+.assignments-topbar,
+.tech-kb-topbar,
+.status-topbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #dce4ef !important;
+}
+
+.admin-shell-top-avatar,
+.tech-top-avatar,
+.queue-top-avatar,
+.assignments-top-avatar,
+.tech-kb-top-avatar,
+.status-top-avatar {
+  background: #dbe9ff !important;
+  color: #28579c !important;
+}
+
+/* ============================================================
+   HERO — unify the technician hero gradient with student
+   ============================================================ */
+.tech-hero,
+.support-hero {
+  background: linear-gradient(
+    120deg,
+    #174c94 0%,
+    #1753a5 40%,
+    #1163c8 100%
+  ) !important;
+}
+
+/* ============================================================
+   CARDS / PANELS — white, 1px #dce4ee, radius 11px
+   ============================================================ */
+.admin-panel-card,
+.admin-panel,
+.admin-stat-card,
+.admin-ticket-table,
+.system-health,
+.users-table,
+.metric-card,
+.reports-panel,
+.service-card,
+.tech-stat-card,
+.tech-ticket-table,
+.workload-card,
+.queue-table,
+.assignments-table {
+  border: 1px solid #dce4ee !important;
+  border-radius: 11px !important;
+  background: #ffffff !important;
+}
+
+/* ============================================================
+   STATUS PILLS — student palette (progress / waiting / resolved / open)
+   ============================================================ */
+.admin-status-pill.in-progress,
+.admin-status-pill.open,
+.tech-status-pill.progress,
+.assignments-status.progress,
+.queue-status {
+  color: #2671c6 !important;
+  background: #edf5ff !important;
+  border: 1px solid #c9dffd !important;
+}
+
+.admin-status-pill.waiting,
+.assignments-status.waiting {
+  color: #a36c00 !important;
+  background: #fff8e8 !important;
+  border: 1px solid #f2d991 !important;
+}
+
+.admin-status-pill.resolved,
+.tech-status-pill.resolved,
+.assignments-status.resolved {
+  color: #1f8a4c !important;
+  background: #eafaf0 !important;
+  border: 1px solid #bfe6cd !important;
+}
+
+.admin-status-pill.unassigned,
+.assignments-status.unassigned {
+  color: #4a5b76 !important;
+  background: #f1f5fb !important;
+  border: 1px solid #cdd8e6 !important;
+}
+
+/* ============================================================
+   PRIORITY DOTS — student palette
+   ============================================================ */
+.admin-priority-dot.high,
+.tech-priority-dot.high,
+.assignments-priority-dot.high,
+.queue-priority-dot.high {
+  background: #f05d4d !important;
+}
+
+.admin-priority-dot.medium,
+.tech-priority-dot.medium,
+.assignments-priority-dot.medium,
+.queue-priority-dot.medium {
+  background: #e99c13 !important;
+}
+
+.admin-priority-dot.urgent,
+.assignments-priority-dot.urgent,
+.queue-priority-dot.urgent {
+  background: #e6443a !important;
+}
+
+.admin-priority-dot.low,
+.assignments-priority-dot.low {
+  background: #4295e8 !important;
+}
+
+/* ============================================================
+   PRIMARY / SECONDARY BUTTONS — align accent to student blue
+   ============================================================ */
+.admin-primary-btn {
+  background: #1163c8 !important;
+  border-color: #1163c8 !important;
+}
+
+.admin-primary-btn:hover {
+  background: #0f57af !important;
+  border-color: #0f57af !important;
+}

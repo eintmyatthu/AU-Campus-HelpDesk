@@ -55,14 +55,14 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
   display: flex;
   flex-direction: column;
+
   box-sizing: border-box;
 }
 
@@ -108,4 +108,479 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+#root {
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   DARK MODE — AU HelpDesk app surfaces
+   Applied when <html data-theme="dark"> (set by ThemeContext).
+   The sidebar is already dark in the base styles, so it is
+   left untouched. These rules re-skin the light surfaces:
+   page backgrounds, topbar, cards, tables, inputs, and text.
+   ============================================================ */
+
+[data-theme="dark"] .dashboard,
+[data-theme="dark"] .tickets-page,
+[data-theme="dark"] .knowledge-page,
+[data-theme="dark"] .status-page,
+[data-theme="dark"] .settings-page,
+[data-theme="dark"] .newticket-page,
+[data-theme="dark"] .ticketdetail-page {
+  background: #0f141c;
+  color: #dbe4f0;
+}
+
+/* Topbar */
+[data-theme="dark"] .topbar {
+  background: #141b25;
+  border-bottom-color: #232d3b;
+}
+
+[data-theme="dark"] .topbar h2 {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .topbar p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .sidebar-toggle,
+[data-theme="dark"] .icon-button {
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .student-demo {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #d6e2f0;
+}
+
+/* Generic card / panel surfaces */
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .tickets-table,
+[data-theme="dark"] .tickets-table-box,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .knowledge-card,
+[data-theme="dark"] .no-guides,
+[data-theme="dark"] .service-list,
+[data-theme="dark"] .trending-list,
+[data-theme="dark"] .incident-card,
+[data-theme="dark"] .empty-card,
+[data-theme="dark"] .maintenance-row,
+[data-theme="dark"] .settings-card,
+[data-theme="dark"] .ticket-form-card,
+[data-theme="dark"] .success-card,
+[data-theme="dark"] .detail-card,
+[data-theme="dark"] .comment-thread {
+  background: #141b25;
+  border-color: #232d3b;
+  color: #dbe4f0;
+}
+
+/* Row separators inside tables/lists */
+[data-theme="dark"] .ticket-row,
+[data-theme="dark"] .ticket-header,
+[data-theme="dark"] .tickets-data-row,
+[data-theme="dark"] .tickets-header-row,
+[data-theme="dark"] .service-row,
+[data-theme="dark"] .trending-row,
+[data-theme="dark"] .toggle-row {
+  border-color: #232d3b;
+}
+
+/* Headings and body text on light surfaces */
+[data-theme="dark"] .stat-card h3,
+[data-theme="dark"] .section-heading h2,
+[data-theme="dark"] .settings-card-head h2,
+[data-theme="dark"] .form-head h1,
+[data-theme="dark"] .knowledge-card h3,
+[data-theme="dark"] .incident-card h3,
+[data-theme="dark"] .success-card h1,
+[data-theme="dark"] .detail-card h1,
+[data-theme="dark"] .detail-card h2,
+[data-theme="dark"] .tickets-data-row strong,
+[data-theme="dark"] .ticket-row strong,
+[data-theme="dark"] .toggle-info strong,
+[data-theme="dark"] .service-info strong,
+[data-theme="dark"] .trending-info strong,
+[data-theme="dark"] .maintenance-info strong,
+[data-theme="dark"] .profile-header strong,
+[data-theme="dark"] .comment-body strong {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .stat-card p,
+[data-theme="dark"] .stat-card small,
+[data-theme="dark"] .section-heading p,
+[data-theme="dark"] .settings-card-head p,
+[data-theme="dark"] .form-head p,
+[data-theme="dark"] .knowledge-card p,
+[data-theme="dark"] .incident-card p,
+[data-theme="dark"] .success-card p,
+[data-theme="dark"] .service-info small,
+[data-theme="dark"] .trending-info small,
+[data-theme="dark"] .maintenance-info small,
+[data-theme="dark"] .toggle-info small,
+[data-theme="dark"] .tickets-data-row small,
+[data-theme="dark"] .ticket-row small,
+[data-theme="dark"] .response-text,
+[data-theme="dark"] .expected-response,
+[data-theme="dark"] .profile-header small,
+[data-theme="dark"] .comment-body p,
+[data-theme="dark"] .comment-meta,
+[data-theme="dark"] .tickets-footer p {
+  color: #8ea1ba;
+}
+
+/* Form controls */
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field select,
+[data-theme="dark"] .field textarea,
+[data-theme="dark"] .form-field input,
+[data-theme="dark"] .search-wrapper,
+[data-theme="dark"] .knowledge-search,
+[data-theme="dark"] .toolbar-right select,
+[data-theme="dark"] .comment-input input {
+  background: #0f141c;
+  border-color: #2c384a;
+  color: #e4ecf5;
+}
+
+[data-theme="dark"] .field input::placeholder,
+[data-theme="dark"] .field textarea::placeholder,
+[data-theme="dark"] .comment-input input::placeholder,
+[data-theme="dark"] .search-wrapper input::placeholder {
+  color: #6c7d95;
+}
+
+[data-theme="dark"] .form-field input.readonly {
+  background: #1b2431;
+  color: #8ea1ba;
+}
+
+/* Footer bars / subtle fills */
+[data-theme="dark"] .form-actions {
+  background: #10161f;
+  border-top-color: #232d3b;
+}
+
+[data-theme="dark"] .settings-card-head,
+[data-theme="dark"] .form-head {
+  border-bottom-color: #232d3b;
+}
+
+/* Buttons that were white on light */
+[data-theme="dark"] .ghost-button,
+[data-theme="dark"] .info-card button,
+[data-theme="dark"] .help-banner button {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #dbe4f0;
+}
+
+/* Theme picker preview in Settings keeps intent, just border in dark */
+[data-theme="dark"] .theme-option {
+  background: #141b25;
+  border-color: #2c384a;
+}
+
+[data-theme="dark"] .theme-option.selected {
+  border-color: #4b8ff0;
+  background: #17273e;
+}
+
+[data-theme="dark"] .theme-option strong {
+  color: #dbe4f0;
+}
+
+/* Hero/support banners already use gradients; nudge the light one */
+[data-theme="dark"] .knowledge-hero {
+  background: linear-gradient(135deg, #17273e 0%, #141b25 100%);
+  border-color: #263349;
+}
+
+[data-theme="dark"] .knowledge-hero h1 {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .tickets-data-row:hover {
+  background: #1a2432;
+}
+
+/* ============================================================
+   DARK MODE — Admin area
+   The admin sidebar is already dark; these rules re-skin the
+   light admin surfaces (page bg, topbar, cards, tables, inputs).
+   ============================================================ */
+
+[data-theme="dark"] .admin-page,
+[data-theme="dark"] .admin-tickets-page,
+[data-theme="dark"] .admin-shell-page,
+[data-theme="dark"] .admin-main,
+[data-theme="dark"] .admin-tickets-main,
+[data-theme="dark"] .admin-shell-main {
+  background: #0f141c;
+  color: #dbe4f0;
+}
+
+/* Topbar */
+[data-theme="dark"] .admin-topbar {
+  background: #141b25;
+  border-bottom-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-topbar h2 {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .admin-topbar p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .admin-sidebar-toggle,
+[data-theme="dark"] .admin-icon-btn {
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .admin-icon-btn:hover {
+  background: #1b2431;
+}
+
+[data-theme="dark"] .admin-demo-btn {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #d6e2f0;
+}
+
+/* Cards / panels / tables */
+[data-theme="dark"] .admin-panel-card,
+[data-theme="dark"] .admin-panel,
+[data-theme="dark"] .admin-stat-card,
+[data-theme="dark"] .admin-ticket-table,
+[data-theme="dark"] .system-health,
+[data-theme="dark"] .users-table,
+[data-theme="dark"] .metric-card,
+[data-theme="dark"] .reports-panel,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .audit-row,
+[data-theme="dark"] .audit-empty {
+  background: #141b25;
+  border-color: #232d3b;
+  color: #dbe4f0;
+}
+
+/* Row separators */
+[data-theme="dark"] .admin-ticket-header,
+[data-theme="dark"] .admin-ticket-row,
+[data-theme="dark"] .users-header,
+[data-theme="dark"] .users-row,
+[data-theme="dark"] .service-row,
+[data-theme="dark"] .team-row,
+[data-theme="dark"] .sla-row,
+[data-theme="dark"] .rule-row,
+[data-theme="dark"] .problem-row {
+  border-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-ticket-row:hover {
+  background: #1a2432;
+}
+
+/* Headings + strong text on light surfaces */
+[data-theme="dark"] .admin-topbar h2,
+[data-theme="dark"] .admin-panel-header h3,
+[data-theme="dark"] .admin-stat-info h3,
+[data-theme="dark"] .service-card-head h2,
+[data-theme="dark"] .reports-panel-head h2,
+[data-theme="dark"] .metric-body h3,
+[data-theme="dark"] .users-identity strong,
+[data-theme="dark"] .admin-ticket-row strong,
+[data-theme="dark"] .service-row-info strong,
+[data-theme="dark"] .team-info strong,
+[data-theme="dark"] .rule-info strong,
+[data-theme="dark"] .workload-info strong,
+[data-theme="dark"] .problem-info strong,
+[data-theme="dark"] .audit-info strong,
+[data-theme="dark"] .sla-level,
+[data-theme="dark"] .health-label,
+[data-theme="dark"] .system-health h3,
+[data-theme="dark"] .admin-page-head h1 {
+  color: #eef3f9;
+}
+
+/* Muted / secondary text */
+[data-theme="dark"] .admin-stat-info p,
+[data-theme="dark"] .admin-stat-card small,
+[data-theme="dark"] .admin-panel-header p,
+[data-theme="dark"] .service-card-head p,
+[data-theme="dark"] .reports-panel-head p,
+[data-theme="dark"] .metric-body p,
+[data-theme="dark"] .metric-card small,
+[data-theme="dark"] .users-identity small,
+[data-theme="dark"] .users-dept,
+[data-theme="dark"] .admin-ticket-row small,
+[data-theme="dark"] .admin-response,
+[data-theme="dark"] .service-row-info small,
+[data-theme="dark"] .team-info small,
+[data-theme="dark"] .rule-info small,
+[data-theme="dark"] .workload-info small,
+[data-theme="dark"] .problem-info small,
+[data-theme="dark"] .audit-info small,
+[data-theme="dark"] .audit-time,
+[data-theme="dark"] .sla-metric small,
+[data-theme="dark"] .sla-metric strong,
+[data-theme="dark"] .problem-count,
+[data-theme="dark"] .admin-page-head p,
+[data-theme="dark"] .system-health span,
+[data-theme="dark"] .admin-ticket-footer p {
+  color: #8ea1ba;
+}
+
+/* Inputs / selects */
+[data-theme="dark"] .admin-ticket-search,
+[data-theme="dark"] .admin-status-filter,
+[data-theme="dark"] .users-search,
+[data-theme="dark"] .users-role-select,
+[data-theme="dark"] .audit-search,
+[data-theme="dark"] .audit-filter {
+  background: #0f141c;
+  border-color: #2c384a;
+  color: #e4ecf5;
+}
+
+[data-theme="dark"] .admin-ticket-search input::placeholder,
+[data-theme="dark"] .users-search input::placeholder,
+[data-theme="dark"] .audit-search input::placeholder {
+  color: #6c7d95;
+}
+
+/* Secondary buttons / small fills */
+[data-theme="dark"] .admin-secondary-btn,
+[data-theme="dark"] .team-config,
+[data-theme="dark"] .audit-log-btn {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #dbe4f0;
+}
+
+/* Icon tiles that used pale tints — darken slightly */
+[data-theme="dark"] .service-row-icon,
+[data-theme="dark"] .problem-rank,
+[data-theme="dark"] .audit-icon {
+  background: #1b2431;
+}
+
+/* Progress track fills */
+[data-theme="dark"] .team-load,
+[data-theme="dark"] .workload-bar {
+  background: #24303f;
+}
+
+/* Admin dark — extra polish for refactored tickets/dashboard */
+[data-theme="dark"] .admin-ticket-header {
+  background: #10161f;
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .admin-pagination button {
+  background: #1b2431;
+  border-color: #2c384a;
+  color: #dbe4f0;
+}
+
+[data-theme="dark"] .admin-ticket-empty,
+[data-theme="dark"] .admin-ticket-footer p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .category-bar,
+[data-theme="dark"] .category-bar-fill {
+  background: #24303f;
+}
+
+[data-theme="dark"] .category-bar-fill {
+  background: #2f6fd0;
+}
+
+[data-theme="dark"] .activity-icon {
+  background: #1b2431;
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .category-name,
+[data-theme="dark"] .activity-row p {
+  color: #dbe4f0;
+}
+
+[data-theme="dark"] .category-row strong,
+[data-theme="dark"] .activity-row span {
+  color: #8ea1ba;
+}
+
+/* Admin dark — ticket detail page */
+[data-theme="dark"] .admin-detail-card,
+[data-theme="dark"] .admin-detail-header,
+[data-theme="dark"] .admin-detail-notfound {
+  background: #141b25;
+  border-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-detail-title h1,
+[data-theme="dark"] .admin-detail-card h2,
+[data-theme="dark"] .meta-value,
+[data-theme="dark"] .admin-comment-meta strong,
+[data-theme="dark"] .admin-timeline li strong,
+[data-theme="dark"] .admin-detail-notfound h1 {
+  color: #eef3f9;
+}
+
+[data-theme="dark"] .admin-detail-id,
+[data-theme="dark"] .meta-label,
+[data-theme="dark"] .admin-detail-desc,
+[data-theme="dark"] .admin-detail-empty,
+[data-theme="dark"] .admin-comment-meta span,
+[data-theme="dark"] .admin-comment-body p,
+[data-theme="dark"] .admin-timeline li small,
+[data-theme="dark"] .admin-control > span,
+[data-theme="dark"] .admin-detail-notfound p {
+  color: #8ea1ba;
+}
+
+[data-theme="dark"] .admin-detail-meta {
+  border-top-color: #232d3b;
+}
+
+[data-theme="dark"] .admin-comment-body {
+  background: #1b2431;
+}
+
+[data-theme="dark"] .admin-comment.staff .admin-comment-body {
+  background: #14301f;
+}
+
+[data-theme="dark"] .admin-comment-input input,
+[data-theme="dark"] .admin-control select {
+  background: #0f141c;
+  border-color: #2c384a;
+  color: #e4ecf5;
+}
+
+[data-theme="dark"] .admin-timeline-icon {
+  background: #1b2431;
+  color: #9fb2c9;
+}
+
+[data-theme="dark"] .admin-timeline li:not(:last-child)::before {
+  background: #2c384a;
+}
+
+[data-theme="dark"] .admin-back-link {
+  color: #9fb2c9;
 }
