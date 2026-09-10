@@ -20,6 +20,7 @@ import {
 import "./StudentDashboard.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
+import { useAuth } from "../../src/context/useAuth";
 
 function statusClass(status) {
   switch (status) {
@@ -46,18 +47,22 @@ function priorityClass(priority) {
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { tickets } = useTickets();
+  const ownTickets = tickets.filter(
+    (ticket) => Number(ticket.reporterId) === Number(user?.id)
+  );
 
-  const openCount = tickets.filter(
+  const openCount = ownTickets.filter(
     (t) => t.status === "Open" || t.status === "In progress"
   ).length;
-  const awaitingCount = tickets.filter(
+  const awaitingCount = ownTickets.filter(
     (t) => t.status === "Waiting for user"
   ).length;
-  const resolvedCount = tickets.filter(
+  const resolvedCount = ownTickets.filter(
     (t) => t.status === "Resolved" || t.status === "Closed"
   ).length;
-  const recentTickets = tickets.slice(0, 4);
+  const recentTickets = ownTickets.slice(0, 4);
 
   const handleLogout = () => {
     navigate("/");

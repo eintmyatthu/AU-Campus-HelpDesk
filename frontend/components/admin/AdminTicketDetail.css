@@ -487,3 +487,15 @@
 
   font-size: 12px;
 }
+.admin-readonly-control {
+  width: 100%;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 11px;
+  border: 1px solid #dce4ee;
+  border-radius: 8px;
+  background: #f3f6fb;
+  color: #344259;
+  font-size: 12px;
+}

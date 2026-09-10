@@ -110,14 +110,13 @@ export function TicketsProvider({ children }) {
     [user, dbIdFor, refresh]
   );
 
-  // In the backend model, "assigning" a technician is claiming the ticket.
   const assignTicket = useCallback(
     async (id, technicianId) => {
+      if (user?.role !== "ADMIN") throw new Error("Only an admin can assign tickets.");
       const dbId = dbIdFor(id);
       if (!dbId) throw new Error("Ticket not found.");
-      const techId = technicianId ?? user?.id;
-      if (!techId) throw new Error("A technician is required to claim a ticket.");
-      await api.claimTicket(dbId, Number(techId));
+      const techId = technicianId === null ? null : Number(technicianId);
+      await api.assignTicket(dbId, techId, user.id);
       await refresh();
     },
     [dbIdFor, refresh, user]
@@ -128,11 +127,28 @@ export function TicketsProvider({ children }) {
       if (!user) throw new Error("You must be signed in.");
       const dbId = dbIdFor(id);
       if (!dbId) throw new Error("Ticket not found.");
+      const ticket = getTicket(id);
+      if (user.role === "TECHNICIAN" && Number(ticket?.technicianId) !== Number(user.id)) {
+        throw new Error("This ticket is not assigned to you.");
+      }
       const enumStatus = STATUS_ENUM[status] || status;
       await api.updateTicketStatus(dbId, enumStatus, user.id);
       await refresh();
     },
-    [user, dbIdFor, refresh]
+    [user, dbIdFor, getTicket, refresh]
+  );
+
+  const resolveTicket = useCallback(
+    async (id, resolutionNote) => {
+      if (user?.role !== "TECHNICIAN") throw new Error("Only a technician can resolve tickets.");
+      const ticket = getTicket(id);
+      if (!ticket || Number(ticket.technicianId) !== Number(user.id)) {
+        throw new Error("This ticket is not assigned to you.");
+      }
+      await api.resolveTicket(ticket.dbId, Number(user.id), resolutionNote);
+      await refresh();
+    },
+    [user, getTicket, refresh]
   );
 
   const setTicketPriority = useCallback(
@@ -165,9 +181,16 @@ export function TicketsProvider({ children }) {
     [user, dbIdFor, refresh]
   );
 
+  // UI statuses are normalized by toUiTicket; match the backend claim rule.
+  const queueTickets = useMemo(
+    () => tickets.filter((ticket) => ticket.status === "Open" && ticket.technicianId === null),
+    [tickets]
+  );
+
   const value = useMemo(
     () => ({
       tickets,
+      queueTickets,
       loading,
       error,
       refresh,
@@ -176,11 +199,13 @@ export function TicketsProvider({ children }) {
       addComment,
       assignTicket,
       setTicketStatus,
+      resolveTicket,
       setTicketPriority,
       setTicketCategory,
     }),
     [
       tickets,
+      queueTickets,
       loading,
       error,
       refresh,
@@ -189,6 +214,7 @@ export function TicketsProvider({ children }) {
       addComment,
       assignTicket,
       setTicketStatus,
+      resolveTicket,
       setTicketPriority,
       setTicketCategory,
     ]

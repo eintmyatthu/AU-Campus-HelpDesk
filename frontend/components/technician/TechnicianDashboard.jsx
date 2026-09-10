@@ -1,3 +1,5 @@
+import { useTickets } from "../../src/context/useTickets";
+import { useAuth } from "../../src/context/useAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,38 +12,26 @@ import {
   LogOut,
   Menu,
   Moon,
-  Bell,
   CheckCircle2,
   Clock,
   ChevronRight,
 } from "lucide-react";
 import "./TechnicianDashboard.css";
+import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 
 export default function TechnicianDashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { tickets, queueTickets } = useTickets();
   const [available, setAvailable] = useState(true);
   
-  const assignedTickets = [
-    {
-      id: "ICT-2481",
-      title: "Campus Wi-Fi disconnects in CL Building",
-      location: "CL Building · 403",
-      category: "Network",
-      priority: "High",
-      status: "In progress",
-      response: "Today, 15:00",
-    },
-    {
-      id: "ICT-2459",
-      title: "Projector shows no HDMI signal",
-      location: "VMS Building · 201",
-      category: "Classroom equipment",
-      priority: "Medium",
-      status: "Resolved",
-      response: "Resolved within SLA",
-    },
-  ];
+  const assignedTickets = tickets.filter(
+    (ticket) => Number(ticket.technicianId) === Number(user?.id)
+  );
+  const activeTickets = assignedTickets.filter((ticket) =>
+    ["Open", "Claimed", "In progress", "Reopened"].includes(ticket.status)
+  );
 
   return (
     <div className="tech-page">
@@ -71,7 +61,7 @@ export default function TechnicianDashboard() {
             <span><Ticket size={18} /></span>
             Open queue
 
-            <span className="queue-count">2</span>
+            <span className="queue-count">{queueTickets.length}</span>
           </button>
 
 <button
@@ -147,10 +137,7 @@ export default function TechnicianDashboard() {
 
             <button className="tech-icon-btn"><Moon size={18} /></button>
 
-            <button className="tech-icon-btn tech-notification">
-              <Bell size={18} />
-              <span className="tech-notification-dot"></span>
-            </button>
+            <TechnicianNotifications buttonClassName="tech-icon-btn tech-notification" dotClassName="tech-notification-dot" />
 
             <div className="tech-top-avatar">TE</div>
           </div>
@@ -204,10 +191,10 @@ export default function TechnicianDashboard() {
 
               <div className="tech-stat-info">
                 <p>Unassigned</p>
-                <h3>2</h3>
+                <h3>{queueTickets.length}</h3>
               </div>
 
-              <small>1 urgent</small>
+              <small>{queueTickets.filter((ticket) => ticket.priority === "Urgent").length} urgent</small>
             </div>
 
             <div className="tech-stat-card">
@@ -217,7 +204,7 @@ export default function TechnicianDashboard() {
 
               <div className="tech-stat-info">
                 <p>My active tickets</p>
-                <h3>2</h3>
+                <h3>{activeTickets.length}</h3>
               </div>
 
               <small>Within capacity</small>
@@ -260,7 +247,7 @@ export default function TechnicianDashboard() {
                   <p>Work that needs your attention</p>
                 </div>
 
-                <button className="tech-view-all">
+                <button className="tech-view-all" onClick={() => navigate("/technician/assignments")}>
                   View all
                   <span><ChevronRight size={18} /></span>
                 </button>

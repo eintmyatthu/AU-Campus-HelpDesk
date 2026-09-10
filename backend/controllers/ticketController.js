@@ -8,7 +8,7 @@ const CATEGORIES = [
 const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "URGENT"];
 const STATUSES = ["OPEN", "CLAIMED", "IN_PROGRESS", "RESOLVED", "CLOSED", "REOPENED"];
 const ALLOWED_TRANSITIONS = {
-  OPEN: ["CLAIMED"],
+  OPEN: ["CLAIMED", "IN_PROGRESS"],
   CLAIMED: ["IN_PROGRESS"],
   IN_PROGRESS: ["RESOLVED"],
   RESOLVED: ["CLOSED", "REOPENED"],
@@ -17,7 +17,9 @@ const ALLOWED_TRANSITIONS = {
 };
 const ticketInclude = {
   reporter: { select: { id: true, name: true, email: true, role: true } },
-  technician: { select: { id: true, name: true, email: true, role: true } }
+  technician: { select: { id: true, name: true, email: true, role: true } },
+  comments: { include: { user: { select: { id: true, name: true, role: true } } }, orderBy: { createdAt: "asc" } },
+  history: { orderBy: { createdAt: "asc" } }
 };
 
 function parseId(value) {
@@ -138,6 +140,9 @@ async function updateTicket(req, res) {
     ]);
     if (!ticket) return res.status(404).json({ error: "Ticket not found." });
     if (!user || !user.isActive) return res.status(404).json({ error: "Active user not found." });
+    if ((data.priority !== undefined || data.category !== undefined) && user.role !== "ADMIN") {
+      return res.status(403).json({ error: "Only an admin can change ticket priority or category." });
+    }
 
     const updated = await prisma.$transaction(async (tx) => {
       await tx.ticket.update({ where: { id }, data });
@@ -154,42 +159,39 @@ async function updateTicket(req, res) {
 
 async function claimTicket(req, res) {
   const id = parseId(req.params.id);
-  const technicianId = parseId(req.body.technicianId);
-  if (!id || !technicianId) return res.status(400).json({ error: "Valid ticket id and technicianId are required." });
+  const technicianId = req.body.technicianId === null ? null : parseId(req.body.technicianId);
+  const changedById = parseId(req.body.changedById);
+  if (!id || (!technicianId && technicianId !== null) || !changedById) {
+    return res.status(400).json({ error: "Valid ticket id, technicianId, and changedById are required." });
+  }
 
   try {
-    const [ticket, technician] = await Promise.all([
+    const [ticket, technician, changedBy] = await Promise.all([
       prisma.ticket.findUnique({ where: { id } }),
-      prisma.user.findUnique({ where: { id: technicianId } })
+      technicianId ? prisma.user.findUnique({ where: { id: technicianId } }) : null,
+      prisma.user.findUnique({ where: { id: changedById } })
     ]);
     if (!ticket) return res.status(404).json({ error: "Ticket not found." });
-    if (!technician || !technician.isActive) return res.status(404).json({ error: "Active technician not found." });
-    if (!["TECHNICIAN", "ADMIN"].includes(technician.role)) {
-      return res.status(403).json({ error: "Only a technician or admin can claim a ticket." });
+    if (!changedBy || !changedBy.isActive || changedBy.role !== "ADMIN") {
+      return res.status(403).json({ error: "Only an active admin can assign tickets." });
     }
-    if (ticket.technicianId !== null || ticket.status !== "OPEN") {
-      return res.status(409).json({ error: "Ticket is already assigned or is not open." });
+    if (technicianId && (!technician || !technician.isActive || technician.role !== "TECHNICIAN")) {
+      return res.status(400).json({ error: "Assignee must be an active technician." });
+    }
+    if (!["OPEN", "IN_PROGRESS"].includes(ticket.status)) {
+      return res.status(409).json({ error: "Resolved or closed tickets cannot be reassigned." });
     }
 
     const updated = await prisma.$transaction(async (tx) => {
-      const result = await tx.ticket.updateMany({
-        where: { id, technicianId: null, status: "OPEN" },
-        data: { technicianId, status: "CLAIMED" }
-      });
-      if (result.count !== 1) {
-        const conflict = new Error("CLAIM_CONFLICT");
-        conflict.code = "CLAIM_CONFLICT";
-        throw conflict;
-      }
+      await tx.ticket.update({ where: { id }, data: { technicianId } });
       await tx.ticketHistory.create({
-        data: { ticketId: id, changedById: technicianId, action: "TICKET_CLAIMED", previousStatus: "OPEN", newStatus: "CLAIMED" }
+        data: { ticketId: id, changedById, action: technicianId ? "TICKET_ASSIGNED" : "TICKET_UNASSIGNED", previousStatus: ticket.status, newStatus: ticket.status }
       });
       return tx.ticket.findUnique({ where: { id }, include: ticketInclude });
     });
     return res.json(updated);
   } catch (error) {
-    if (error.code === "CLAIM_CONFLICT") return res.status(409).json({ error: "Another technician already claimed this ticket." });
-    return sendServerError(res, error, "Unable to claim ticket.");
+    return sendServerError(res, error, "Unable to assign ticket.");
   }
 }
 
@@ -207,6 +209,15 @@ async function updateTicketStatus(req, res) {
     ]);
     if (!ticket) return res.status(404).json({ error: "Ticket not found." });
     if (!user || !user.isActive) return res.status(404).json({ error: "Active user not found." });
+    if (!["TECHNICIAN", "ADMIN"].includes(user.role)) {
+      return res.status(403).json({ error: "Only a technician or admin can change workflow status." });
+    }
+    if (user.role === "TECHNICIAN" && ticket.technicianId !== changedById) {
+      return res.status(403).json({ error: "Technicians can only update tickets assigned to them." });
+    }
+    if (user.role === "TECHNICIAN" && status !== "IN_PROGRESS") {
+      return res.status(403).json({ error: "Technicians must use the resolve action to resolve work." });
+    }
     if (!ALLOWED_TRANSITIONS[ticket.status].includes(status)) {
       return res.status(409).json({ error: `Cannot change status from ${ticket.status} to ${status}.` });
     }
@@ -242,10 +253,10 @@ async function resolveTicket(req, res) {
     if (!["TECHNICIAN", "ADMIN"].includes(technician.role)) {
       return res.status(403).json({ error: "Only a technician or admin can resolve a ticket." });
     }
-    if (ticket.technicianId && ticket.technicianId !== technicianId && technician.role !== "ADMIN") {
-      return res.status(403).json({ error: "Ticket is assigned to another technician." });
+    if (technician.role !== "TECHNICIAN" || ticket.technicianId !== technicianId) {
+      return res.status(403).json({ error: "Technicians can only resolve tickets assigned to them." });
     }
-    if (!["CLAIMED", "IN_PROGRESS", "REOPENED"].includes(ticket.status)) {
+    if (ticket.status !== "IN_PROGRESS") {
       return res.status(409).json({ error: `A ticket in ${ticket.status} status cannot be resolved.` });
     }
 

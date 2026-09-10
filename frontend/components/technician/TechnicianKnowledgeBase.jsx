@@ -1,3 +1,4 @@
+import { useTickets } from "../../src/context/useTickets";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,10 +18,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "./TechnicianKnowledgeBase.css";
+import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 
 export default function TechnicianKnowledgeBase() {
   const navigate = useNavigate();
+  const { queueTickets } = useTickets();
   const [searchTerm, setSearchTerm] = useState("");
 
   const guides = [
@@ -109,7 +112,7 @@ export default function TechnicianKnowledgeBase() {
             <span><Ticket size={18} /></span>
             Open queue
 
-            <span className="tech-kb-count">2</span>
+            <span className="tech-kb-count">{queueTickets.length}</span>
           </button>
 
           <button
@@ -180,10 +183,7 @@ export default function TechnicianKnowledgeBase() {
 
             <button className="tech-kb-icon"><Moon size={18} /></button>
 
-            <button className="tech-kb-icon tech-kb-notification">
-              <Bell size={18} />
-              <span className="tech-kb-dot"></span>
-            </button>
+            <TechnicianNotifications buttonClassName="tech-kb-icon tech-kb-notification" dotClassName="tech-kb-dot" />
 
             <div className="tech-kb-top-avatar">TE</div>
           </div>

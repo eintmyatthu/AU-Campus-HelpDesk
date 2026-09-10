@@ -12,24 +12,18 @@ import {
   LogOut,
   Menu,
   Moon,
-  Bell,
 } from "lucide-react";
 import "./TechnicianQueue.css";
+import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
 
 export default function TechnicianQueue() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [claimingId, setClaimingId] = useState(null);
-  const [claimError, setClaimError] = useState("");
-  const { tickets, loading, error, assignTicket } = useTickets();
+  const { queueTickets, loading, error } = useTickets();
 
-  const availableTickets = tickets.filter(
-    (ticket) => ticket.status === "Open" && !ticket.technicianId
-  );
-
-  const filteredTickets = availableTickets.filter((ticket) => {
+  const filteredTickets = queueTickets.filter((ticket) => {
     const query = searchTerm.toLowerCase();
 
     return (
@@ -38,18 +32,6 @@ export default function TechnicianQueue() {
       ticket.category.toLowerCase().includes(query)
     );
   });
-
-  const handleClaim = async (ticketId) => {
-    setClaimingId(ticketId);
-    setClaimError("");
-    try {
-      await assignTicket(ticketId);
-    } catch (claimRequestError) {
-      setClaimError(claimRequestError.message || "Unable to claim ticket.");
-    } finally {
-      setClaimingId(null);
-    }
-  };
 
   return (
     <div className="queue-page">
@@ -80,7 +62,7 @@ export default function TechnicianQueue() {
             Open queue
 
             <span className="queue-count">
-              {availableTickets.length}
+              {queueTickets.length}
             </span>
           </button>
 
@@ -160,10 +142,7 @@ export default function TechnicianQueue() {
               <Moon size={18} />
             </button>
 
-            <button className="queue-icon-btn queue-notification">
-              <Bell size={18} />
-              <span className="queue-notification-dot"></span>
-            </button>
+            <TechnicianNotifications buttonClassName="queue-icon-btn queue-notification" dotClassName="queue-notification-dot" />
 
             <div className="queue-top-avatar">
               TE
@@ -208,9 +187,9 @@ export default function TechnicianQueue() {
               <div className="queue-empty">Loading tickets…</div>
             )}
 
-            {!loading && (error || claimError) && (
+            {!loading && error && (
               <div className="queue-empty" role="alert">
-                {claimError || error}
+                {error}
               </div>
             )}
 
@@ -260,13 +239,7 @@ export default function TechnicianQueue() {
                   {ticket.response}
                 </span>
 
-                <button
-                  className="claim-button"
-                  onClick={() => handleClaim(ticket.id)}
-                  disabled={claimingId === ticket.id}
-                >
-                  {claimingId === ticket.id ? "Claiming…" : "Claim"}
-                </button>
+                <span className="queue-response">Awaiting assignment</span>
               </div>
             ))}
 

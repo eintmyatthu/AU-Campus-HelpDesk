@@ -1,3 +1,5 @@
+import { useTickets } from "../../src/context/useTickets";
+import { useAuth } from "../../src/context/useAuth";
 // TechnicianAssignments.jsx
 
 import { useState } from "react";
@@ -12,62 +14,26 @@ import {
   LogOut,
   Menu,
   Moon,
-  Bell,
-  ChevronRight,
 } from "lucide-react";
 import "./TechnicianAssignments.css";
+import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 
 export default function TechnicianAssignments() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { tickets, queueTickets, loading, error, setTicketStatus, resolveTicket } = useTickets();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All statuses");
+  const [workingId, setWorkingId] = useState(null);
+  const [actionError, setActionError] = useState("");
 
-  const tickets = [
-    {
-      id: "ICT-2481",
-      title: "Campus Wi-Fi disconnects in CL Building",
-      location: "CL Building · 403",
-      category: "Network",
-      priority: "High",
-      status: "In progress",
-      response: "Today, 15:00",
-      escalated: false,
-    },
-    {
-      id: "ICT-2459",
-      title: "Projector shows no HDMI signal",
-      location: "VMS Building · 201",
-      category: "Classroom equipment",
-      priority: "Medium",
-      status: "Resolved",
-      response: "Resolved within SLA",
-      escalated: false,
-    },
-    {
-      id: "ICT-2489",
-      title: "Printer is producing blank pages",
-      location: "Central Library · Floor 3",
-      category: "Printer",
-      priority: "Medium",
-      status: "Unassigned",
-      response: "Within 2 hours",
-      escalated: false,
-    },
-    {
-      id: "ICT-2488",
-      title: "Cannot connect to AU-Secure network",
-      location: "SG Building · 106",
-      category: "Network",
-      priority: "Urgent",
-      status: "Unassigned",
-      response: "Within 30 minutes",
-      escalated: true,
-    },
-  ];
+  const assignedTickets = tickets.filter(
+    (ticket) => Number(ticket.technicianId) === Number(user?.id)
+  );
 
-  const filteredTickets = tickets.filter((ticket) => {
+  const filteredTickets = assignedTickets.filter((ticket) => {
     const query = searchTerm.toLowerCase();
 
     const matchesSearch =
@@ -81,6 +47,24 @@ export default function TechnicianAssignments() {
 
     return matchesSearch && matchesStatus;
   });
+
+  const runAction = async (ticket, action) => {
+    setWorkingId(ticket.id);
+    setActionError("");
+    try {
+      if (action === "start") {
+        await setTicketStatus(ticket.id, "In progress");
+      } else {
+        const note = window.prompt("Resolution note:");
+        if (!note?.trim()) return;
+        await resolveTicket(ticket.id, note.trim());
+      }
+    } catch (actionRequestError) {
+      setActionError(actionRequestError.message || "Unable to update ticket.");
+    } finally {
+      setWorkingId(null);
+    }
+  };
 
   return (
     <div className="assignments-page">
@@ -113,7 +97,7 @@ export default function TechnicianAssignments() {
             <span><Ticket size={18} /></span>
             Open queue
 
-            <span className="assignments-count">2</span>
+            <span className="assignments-count">{queueTickets.length}</span>
           </button>
 
           <button className="assignments-nav-item active">
@@ -189,10 +173,7 @@ export default function TechnicianAssignments() {
               <Moon size={18} />
             </button>
 
-            <button className="assignments-icon assignments-notification">
-              <Bell size={18} />
-              <span className="assignments-dot"></span>
-            </button>
+            <TechnicianNotifications buttonClassName="assignments-icon assignments-notification" dotClassName="assignments-dot" />
 
             <div className="assignments-top-avatar">
               TE
@@ -223,9 +204,11 @@ export default function TechnicianAssignments() {
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option>All statuses</option>
+              <option>Open</option>
+              <option>Claimed</option>
               <option>In progress</option>
               <option>Resolved</option>
-              <option>Unassigned</option>
+              <option>Reopened</option>
             </select>
           </div>
 
@@ -240,7 +223,9 @@ export default function TechnicianAssignments() {
               <span></span>
             </div>
 
-            {filteredTickets.map((ticket) => (
+            {loading && <div className="assignments-empty">Loading tickets…</div>}
+            {!loading && (error || actionError) && <div className="assignments-empty" role="alert">{actionError || error}</div>}
+            {!loading && !error && filteredTickets.map((ticket) => (
               <div
                 className="assignments-table-row"
                 key={ticket.id}
@@ -251,7 +236,7 @@ export default function TechnicianAssignments() {
                       {ticket.id}
                     </span>
 
-                    {ticket.escalated && (
+                    {ticket.priority === "Urgent" && (
                       <span className="assignments-escalated">
                         Escalated
                       </span>
@@ -296,11 +281,16 @@ export default function TechnicianAssignments() {
                   {ticket.response}
                 </span>
 
-                <button className="assignments-arrow">
-                  <ChevronRight size={18} />
-                </button>
+                {["Open", "Claimed", "Reopened"].includes(ticket.status) ? (
+                  <button className="assignments-action" disabled={workingId === ticket.id} onClick={() => runAction(ticket, "start")}>Start Work</button>
+                ) : ticket.status === "In progress" ? (
+                  <button className="assignments-action" disabled={workingId === ticket.id} onClick={() => runAction(ticket, "resolve")}>Resolve</button>
+                ) : (
+                  <span className="assignments-complete">{ticket.status}</span>
+                )}
               </div>
             ))}
+            {!loading && !error && filteredTickets.length === 0 && <div className="assignments-empty">No assigned tickets found.</div>}
           </div>
 
           {/* FOOTER */}

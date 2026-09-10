@@ -80,8 +80,8 @@ export function updateTicket(id, changes) {
   return request(`/tickets/${id}`, { method: "PATCH", body: changes });
 }
 
-export function claimTicket(id, technicianId) {
-  return request(`/tickets/${id}/claim`, { method: "POST", body: { technicianId } });
+export function assignTicket(id, technicianId, changedById) {
+  return request(`/tickets/${id}/claim`, { method: "POST", body: { technicianId, changedById } });
 }
 
 export function updateTicketStatus(id, status, changedById) {
