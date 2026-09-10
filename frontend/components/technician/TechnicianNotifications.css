@@ -1,0 +1,38 @@
+.technician-notifications {
+  position: relative;
+  display: flex;
+}
+
+.technician-notifications-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 100;
+  width: min(340px, calc(100vw - 32px));
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 18px;
+  background: var(--surface, #fff);
+  color: var(--text, #222);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px #0000001a;
+}
+
+.technician-notifications-panel h3 { margin: 0 0 8px; font-size: 16px; }
+.technician-notifications-panel p { margin: 8px 0; font-size: 13px; }
+.technician-notifications-panel ul { list-style: none; padding: 0; margin: 12px 0 0; }
+.technician-notifications-panel li + li { border-top: 1px solid var(--border, #e5e7eb); }
+.technician-notifications-panel li button {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+}

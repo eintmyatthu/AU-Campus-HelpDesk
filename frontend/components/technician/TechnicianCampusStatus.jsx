@@ -1,3 +1,4 @@
+import { useTickets } from "../../src/context/useTickets";
 import { useNavigate } from "react-router-dom";
 import {
   LayoutGrid,
@@ -11,15 +12,16 @@ import {
   LogOut,
   Menu,
   Moon,
-  Bell,
   CheckCircle2,
   Clock,
 } from "lucide-react";
 import "./TechnicianCampusStatus.css";
+import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 
 export default function TechnicianCampusStatus() {
   const navigate = useNavigate();
+  const { queueTickets } = useTickets();
 
   const services = [
     {
@@ -95,7 +97,7 @@ export default function TechnicianCampusStatus() {
           >
             <span><Ticket size={18} /></span>
             Open queue
-            <span className="status-count">2</span>
+            <span className="status-count">{queueTickets.length}</span>
           </button>
 
           <button
@@ -166,10 +168,7 @@ export default function TechnicianCampusStatus() {
 
             <button className="status-icon"><Moon size={18} /></button>
 
-            <button className="status-icon status-notification">
-              <Bell size={18} />
-              <span className="status-dot-alert"></span>
-            </button>
+            <TechnicianNotifications buttonClassName="status-icon status-notification" dotClassName="status-dot-alert" />
 
             <div className="status-top-avatar">TE</div>
           </div>

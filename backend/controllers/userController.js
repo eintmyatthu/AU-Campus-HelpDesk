@@ -1,8 +1,4 @@
-// User controller — DEVELOPMENT MODE (no database).
-// Uses an in-memory user list so sign-in works without a DATABASE_URL.
-// When you connect PostgreSQL, swap `devUsers` lookups back to Prisma.
-
-const { devUsers } = require("../data/devUsers");
+const prisma = require("../config/prisma");
 
 const ROLES = ["STUDENT", "FACULTY", "TECHNICIAN", "ADMIN"];
 
@@ -24,7 +20,7 @@ function toPublic(user) {
  * Resolves an active in-memory user either by explicit email or by role
  * (matching the "Login as Student / Admin / Technician" buttons).
  */
-function devLogin(req, res) {
+async function devLogin(req, res) {
   const { email, role } = req.body || {};
 
   if (!email && !role) {
@@ -34,13 +30,9 @@ function devLogin(req, res) {
     return res.status(400).json({ error: "Invalid role." });
   }
 
-  let user = null;
-  if (email) {
-    const target = String(email).trim().toLowerCase();
-    user = devUsers.find((u) => u.email.toLowerCase() === target);
-  } else {
-    user = devUsers.find((u) => u.role === role && u.isActive);
-  }
+  const user = email
+    ? await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } })
+    : await prisma.user.findFirst({ where: { role, isActive: true }, orderBy: { id: "asc" } });
 
   if (!user) return res.status(404).json({ error: "No matching active account was found." });
   if (!user.isActive) return res.status(403).json({ error: "This account is inactive." });
@@ -48,25 +40,25 @@ function devLogin(req, res) {
   return res.json({ user: toPublic(user) });
 }
 
-function getUserById(req, res) {
+async function getUserById(req, res) {
   const id = parseId(req.params.id);
   if (!id) return res.status(400).json({ error: "Invalid user id." });
 
-  const user = devUsers.find((u) => u.id === id);
+  const user = await prisma.user.findUnique({ where: { id } });
   if (!user) return res.status(404).json({ error: "User not found." });
   return res.json(toPublic(user));
 }
 
-function getUsers(req, res) {
+async function getUsers(req, res) {
   const { role } = req.query;
   if (role && !ROLES.includes(role)) {
     return res.status(400).json({ error: "Invalid role filter." });
   }
 
-  const users = devUsers
-    .filter((u) => (role ? u.role === role : true))
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map(toPublic);
+  const users = (await prisma.user.findMany({
+    where: role ? { role } : undefined,
+    orderBy: { name: "asc" }
+  })).map(toPublic);
 
   return res.json(users);
 }

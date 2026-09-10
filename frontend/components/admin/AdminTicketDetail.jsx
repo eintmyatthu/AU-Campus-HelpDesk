@@ -12,7 +12,6 @@ import "./AdminTicketDetail.css";
 import { useTickets } from "../../src/context/useTickets";
 import { listUsers } from "../../src/api/client";
 import {
-  TICKET_STATUSES,
   TICKET_PRIORITIES,
 } from "../../src/context/ticketsMeta";
 
@@ -39,7 +38,6 @@ export default function AdminTicketDetail() {
     getTicket,
     addComment,
     assignTicket,
-    setTicketStatus,
     setTicketPriority,
   } = useTickets();
 
@@ -234,18 +232,7 @@ export default function AdminTicketDetail() {
 
             <label className="admin-control">
               <span>Status</span>
-              <select
-                value={ticket.status}
-                onChange={(e) =>
-                  runAction(() => setTicketStatus(id, e.target.value))
-                }
-              >
-                {TICKET_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+              <div className="admin-readonly-control">{ticket.status}</div>
             </label>
 
             <label className="admin-control">

@@ -32,6 +32,7 @@ import "./StudentTickets.css";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
+import { useAuth } from "../../src/context/useAuth";
 
 function statusClass(status) {
   switch (status) {
@@ -59,13 +60,17 @@ function priorityClass(priority) {
 export default function StudentTickets() {
 
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { tickets } = useTickets();
+  const ownTickets = tickets.filter(
+    (ticket) => Number(ticket.reporterId) === Number(user?.id)
+  );
  
   const [searchTerm, setSearchTerm] = useState("");
 
   const [statusFilter, setStatusFilter] = useState("All statuses");
  
-  const filteredTickets = tickets.filter((ticket) => {
+  const filteredTickets = ownTickets.filter((ticket) => {
 
     const matchesSearch =
 

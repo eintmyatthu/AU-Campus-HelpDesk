@@ -19,6 +19,7 @@ import {
 import "./TicketDetail.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
+import { useAuth } from "../../src/context/useAuth";
 
 // Derives a simple status timeline from the ticket's current status.
 function buildTimeline(ticket) {
@@ -61,9 +62,11 @@ function buildTimeline(ticket) {
 export default function TicketDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useAuth();
   const { getTicket, addComment } = useTickets();
 
-  const ticket = getTicket(id);
+  const foundTicket = getTicket(id);
+  const ticket = Number(foundTicket?.reporterId) === Number(user?.id) ? foundTicket : null;
   const [draft, setDraft] = useState("");
 
   const handleSend = (e) => {
