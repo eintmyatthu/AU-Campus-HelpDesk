@@ -685,6 +685,11 @@ input {
   background: #f2f6fb;
 }
 
+.claim-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
 /* EMPTY */
 
 .queue-empty {

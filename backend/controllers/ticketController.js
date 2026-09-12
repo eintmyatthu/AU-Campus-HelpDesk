@@ -33,11 +33,24 @@ function sendServerError(res, error, message) {
 }
 
 async function createTicket(req, res) {
-  const { title, description, roomNumber, reporterId } = req.body;
+  const {
+    title,
+    description,
+    roomNumber,
+    reporterId,
+    category = "OTHER",
+    priority = "MEDIUM"
+  } = req.body;
   const parsedReporterId = parseId(reporterId);
 
   if (!title?.trim() || !description?.trim() || !parsedReporterId) {
     return res.status(400).json({ error: "title, description, and a valid reporterId are required." });
+  }
+  if (!CATEGORIES.includes(category)) {
+    return res.status(400).json({ error: "Invalid category." });
+  }
+  if (!PRIORITIES.includes(priority)) {
+    return res.status(400).json({ error: "Invalid priority." });
   }
 
   try {
@@ -55,8 +68,8 @@ async function createTicket(req, res) {
           description: description.trim(),
           roomNumber: roomNumber?.trim() || null,
           reporterId: parsedReporterId,
-          category: "OTHER",
-          priority: "MEDIUM",
+          category,
+          priority,
           status: "OPEN"
         }
       });
@@ -172,25 +185,67 @@ async function claimTicket(req, res) {
       prisma.user.findUnique({ where: { id: changedById } })
     ]);
     if (!ticket) return res.status(404).json({ error: "Ticket not found." });
-    if (!changedBy || !changedBy.isActive || changedBy.role !== "ADMIN") {
-      return res.status(403).json({ error: "Only an active admin can assign tickets." });
+    if (!changedBy || !changedBy.isActive || !["ADMIN", "TECHNICIAN"].includes(changedBy.role)) {
+      return res.status(403).json({ error: "Only an active technician or admin can claim or assign tickets." });
     }
     if (technicianId && (!technician || !technician.isActive || technician.role !== "TECHNICIAN")) {
       return res.status(400).json({ error: "Assignee must be an active technician." });
     }
-    if (!["OPEN", "IN_PROGRESS"].includes(ticket.status)) {
+    if (!["OPEN", "CLAIMED", "IN_PROGRESS", "REOPENED"].includes(ticket.status)) {
       return res.status(409).json({ error: "Resolved or closed tickets cannot be reassigned." });
     }
 
+    const isSelfClaim = changedBy.role === "TECHNICIAN";
+    if (isSelfClaim && technicianId !== changedById) {
+      return res.status(403).json({ error: "Technicians can only claim tickets for themselves." });
+    }
+    if (isSelfClaim && (ticket.technicianId !== null || !["OPEN", "REOPENED"].includes(ticket.status))) {
+      return res.status(409).json({ error: "This ticket is no longer available to claim." });
+    }
+
     const updated = await prisma.$transaction(async (tx) => {
-      await tx.ticket.update({ where: { id }, data: { technicianId } });
+      const nextStatus = technicianId
+        ? (["OPEN", "REOPENED"].includes(ticket.status) ? "CLAIMED" : ticket.status)
+        : (ticket.status === "CLAIMED" ? "OPEN" : ticket.status);
+
+      if (isSelfClaim) {
+        const claimed = await tx.ticket.updateMany({
+          where: {
+            id,
+            technicianId: null,
+            status: { in: ["OPEN", "REOPENED"] }
+          },
+          data: { technicianId, status: nextStatus }
+        });
+        if (claimed.count !== 1) {
+          const conflict = new Error("This ticket was already claimed.");
+          conflict.code = "TICKET_ALREADY_CLAIMED";
+          throw conflict;
+        }
+      } else {
+        await tx.ticket.update({
+          where: { id },
+          data: { technicianId, status: nextStatus }
+        });
+      }
       await tx.ticketHistory.create({
-        data: { ticketId: id, changedById, action: technicianId ? "TICKET_ASSIGNED" : "TICKET_UNASSIGNED", previousStatus: ticket.status, newStatus: ticket.status }
+        data: {
+          ticketId: id,
+          changedById,
+          action: isSelfClaim
+            ? "TICKET_CLAIMED"
+            : (technicianId ? "TICKET_ASSIGNED" : "TICKET_UNASSIGNED"),
+          previousStatus: ticket.status,
+          newStatus: nextStatus
+        }
       });
       return tx.ticket.findUnique({ where: { id }, include: ticketInclude });
     });
     return res.json(updated);
   } catch (error) {
+    if (error.code === "TICKET_ALREADY_CLAIMED") {
+      return res.status(409).json({ error: error.message });
+    }
     return sendServerError(res, error, "Unable to assign ticket.");
   }
 }

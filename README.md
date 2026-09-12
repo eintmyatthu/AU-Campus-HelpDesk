@@ -54,8 +54,11 @@ Route guards enforce role access: students cannot open `/admin` or
 ## Microsoft Entra ID authentication
 
 1. In Microsoft Entra admin center, create a **single-tenant** app registration.
-2. Under **Authentication**, add a Single-page application redirect URI:
-   `http://localhost:5173` (and the deployed frontend origin in production).
+2. Under **Authentication**, add these Single-page application redirect URIs:
+   `http://localhost:5173` and `http://localhost:5173/redirect.html`.
+   The `/redirect.html` page is the dedicated MSAL v5 redirect bridge used by
+   popup sign-in. For production, add the HTTPS equivalent on the deployed
+   frontend origin, such as `https://helpdesk.example.edu/redirect.html`.
 3. Copy the app's **Application (client) ID** and **Directory (tenant) ID**.
 4. Add them to `backend/.env`:
 
@@ -80,6 +83,16 @@ tenant before accepting it. It also requires the account name to end in
 `@au.edu`. A first-time AU user is created as a `STUDENT`; existing users keep
 their assigned database role. Use the admin/database workflow to promote a
 user to `FACULTY`, `TECHNICIAN`, or `ADMIN`.
+
+To allow every AU tenant user to sign in without manual assignment, open the
+matching **Enterprise application** in the AU tenant and ensure **Assignment
+required?** is set to **No**. This is an Entra access-policy change and should
+be performed by an authorized AU application administrator.
+
+This implementation reads the signed ID-token claims (`name`, username/email,
+tenant ID, and Microsoft object ID), so it does not require Microsoft Graph
+`User.Read` or `@azure/msal-react`. Add Graph permissions only if the product
+later needs additional Microsoft 365 profile data.
 
 ### Development preview
 

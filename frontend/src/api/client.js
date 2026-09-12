@@ -75,10 +75,17 @@ export function getTicket(id) {
   return request(`/tickets/${id}`);
 }
 
-export function createTicket({ title, description, roomNumber, reporterId }) {
+export function createTicket({
+  title,
+  description,
+  roomNumber,
+  category,
+  priority,
+  reporterId,
+}) {
   return request("/tickets", {
     method: "POST",
-    body: { title, description, roomNumber, reporterId },
+    body: { title, description, roomNumber, category, priority, reporterId },
   });
 }
 
