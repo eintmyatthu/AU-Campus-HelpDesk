@@ -259,6 +259,16 @@ button {
   border-color: #a9b9cf;
 }
 
+.microsoft-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.microsoft-btn:disabled:hover {
+  background: white;
+  border-color: #cbd6e5;
+}
+
 .microsoft-logo {
   display: grid;
 

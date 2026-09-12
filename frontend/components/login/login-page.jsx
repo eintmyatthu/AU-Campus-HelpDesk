@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useAuth } from "../../src/context/useAuth";
+import { isMicrosoftConfigured } from "../../src/auth/microsoft";
 
 const HOME_BY_ROLE = {
   STUDENT: "/student",
@@ -12,11 +13,15 @@ const HOME_BY_ROLE = {
 
 export default function Login() {
   const navigate = useNavigate();
-  const { loginAs, loading, error } = useAuth();
+  const { loginAs, microsoftLogin, loading, error } = useAuth();
 
-  const handleMicrosoftLogin = () => {
-    // Placeholder until Microsoft Entra ID is connected.
-    console.log("Microsoft login");
+  const handleMicrosoftLogin = async () => {
+    try {
+      const user = await microsoftLogin();
+      navigate(HOME_BY_ROLE[user.role] || "/student");
+    } catch {
+      // Error is surfaced via the auth context `error` state below.
+    }
   };
 
   const signIn = async (role) => {
@@ -82,6 +87,7 @@ export default function Login() {
           <button
             className="microsoft-btn"
             onClick={handleMicrosoftLogin}
+            disabled={loading || !isMicrosoftConfigured()}
           >
             <span className="microsoft-logo">
               <span className="ms-red"></span>
@@ -92,6 +98,14 @@ export default function Login() {
 
             Continue with Microsoft
           </button>
+
+          {!isMicrosoftConfigured() && (
+            <p className="login-error">
+              Microsoft sign-in needs the Entra tenant and client IDs.
+            </p>
+          )}
+
+          {error && <p className="login-error">{error}</p>}
 
           <p className="access-note">
             Access is limited to active university accounts.
@@ -131,7 +145,6 @@ export default function Login() {
               Login as Technician
             </button>
 
-            {error && <p className="login-error">{error}</p>}
           </div>
         </div>
       </section>

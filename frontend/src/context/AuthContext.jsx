@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./authContextObject";
-import { login as apiLogin } from "../api/client";
+import {
+  login as apiLogin,
+  loginWithMicrosoft as apiMicrosoftLogin,
+} from "../api/client";
+import { signInWithMicrosoft } from "../auth/microsoft";
 
 const STORAGE_KEY = "au-helpdesk-user";
 
@@ -42,14 +46,34 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  const microsoftLogin = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const idToken = await signInWithMicrosoft();
+      const { user: signedIn } = await apiMicrosoftLogin(idToken);
+      setUser(signedIn);
+      return signedIn;
+    } catch (err) {
+      const message =
+        err?.errorCode === "user_cancelled"
+          ? "Microsoft sign-in was cancelled."
+          : err.message || "Microsoft sign-in failed.";
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     setUser(null);
     setError("");
   }, []);
 
   const value = useMemo(
-    () => ({ user, loading, error, loginAs, logout }),
-    [user, loading, error, loginAs, logout]
+    () => ({ user, loading, error, loginAs, microsoftLogin, logout }),
+    [user, loading, error, loginAs, microsoftLogin, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -49,6 +49,13 @@ export function login({ email, role }) {
   return request("/users/login", { method: "POST", body: { email, role } });
 }
 
+export function loginWithMicrosoft(idToken) {
+  return request("/users/login/microsoft", {
+    method: "POST",
+    body: { idToken },
+  });
+}
+
 export function getUser(id) {
   return request(`/users/${id}`);
 }

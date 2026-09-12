@@ -1,4 +1,5 @@
 const prisma = require("../config/prisma");
+const { verifyMicrosoftIdToken } = require("../services/microsoftAuthService");
 
 const ROLES = ["STUDENT", "FACULTY", "TECHNICIAN", "ADMIN"];
 
@@ -40,6 +41,63 @@ async function devLogin(req, res) {
   return res.json({ user: toPublic(user) });
 }
 
+async function microsoftLogin(req, res) {
+  try {
+    const identity = await verifyMicrosoftIdToken(req.body?.idToken);
+    const [userByMicrosoftId, userByEmail] = await Promise.all([
+      prisma.user.findUnique({ where: { microsoftId: identity.microsoftId } }),
+      prisma.user.findUnique({ where: { email: identity.email } }),
+    ]);
+
+    if (userByMicrosoftId && userByEmail && userByMicrosoftId.id !== userByEmail.id) {
+      return res.status(409).json({
+        error: "This Microsoft account conflicts with an existing AU account. Contact the HelpDesk.",
+      });
+    }
+
+    const existingUser = userByMicrosoftId || userByEmail;
+    if (existingUser && !existingUser.isActive) {
+      return res.status(403).json({ error: "This account is inactive." });
+    }
+
+    const user = existingUser
+      ? await prisma.user.update({
+          where: { id: existingUser.id },
+          data: {
+            microsoftId: identity.microsoftId,
+            email: identity.email,
+            name: identity.name,
+          },
+        })
+      : await prisma.user.create({
+          data: {
+            microsoftId: identity.microsoftId,
+            email: identity.email,
+            name: identity.name,
+            role: "STUDENT",
+          },
+        });
+
+    return res.json({ user: toPublic(user) });
+  } catch (error) {
+    if (error.code === "MICROSOFT_AUTH_NOT_CONFIGURED") {
+      return res.status(503).json({ error: error.message });
+    }
+    if (
+      error.code === "MICROSOFT_TENANT_NOT_ALLOWED" ||
+      error.code === "MICROSOFT_DOMAIN_NOT_ALLOWED"
+    ) {
+      return res.status(403).json({ error: error.message });
+    }
+    if (error.code === "INVALID_MICROSOFT_TOKEN" || error.code === "ERR_JWT_EXPIRED") {
+      return res.status(401).json({ error: error.message });
+    }
+
+    console.error("Microsoft sign-in failed:", error.message);
+    return res.status(401).json({ error: "Microsoft sign-in could not be verified." });
+  }
+}
+
 async function getUserById(req, res) {
   const id = parseId(req.params.id);
   if (!id) return res.status(400).json({ error: "Invalid user id." });
@@ -63,4 +121,4 @@ async function getUsers(req, res) {
   return res.json(users);
 }
 
-module.exports = { devLogin, getUserById, getUsers };
+module.exports = { devLogin, microsoftLogin, getUserById, getUsers };
