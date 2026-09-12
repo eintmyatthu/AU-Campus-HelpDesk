@@ -2,6 +2,7 @@ import { PublicClientApplication } from "@azure/msal-browser";
 
 const tenantId = String(import.meta.env.VITE_MICROSOFT_TENANT_ID || "").trim();
 const clientId = String(import.meta.env.VITE_MICROSOFT_CLIENT_ID || "").trim();
+const redirectUri = `${window.location.origin}/redirect.html`;
 
 let clientPromise = null;
 
@@ -21,8 +22,8 @@ async function getMicrosoftClient() {
       auth: {
         clientId,
         authority: `https://login.microsoftonline.com/${tenantId}`,
-        redirectUri: window.location.origin,
-        postLogoutRedirectUri: window.location.origin,
+        redirectUri,
+        postLogoutRedirectUri: redirectUri,
       },
       cache: {
         cacheLocation: "sessionStorage",
