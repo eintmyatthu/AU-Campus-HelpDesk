@@ -33,6 +33,7 @@ import "./StudentTickets.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
 import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 function statusClass(status) {
   switch (status) {
@@ -61,6 +62,7 @@ export default function StudentTickets() {
 
   const navigate = useNavigate();
   const { user } = useAuth();
+  const initials = getUserInitials(user);
   const { tickets } = useTickets();
   const ownTickets = tickets.filter(
     (ticket) => Number(ticket.reporterId) === Number(user?.id)
@@ -173,11 +175,11 @@ export default function StudentTickets() {
 </div>
  
           <div className="student-profile">
-<div className="avatar">ST</div>
+<div className="avatar">{initials}</div>
  
             <div className="student-profile-info">
-<strong>Student</strong>
-<span>student@test.local</span>
+<strong>{user.name}</strong>
+<span>{user.email}</span>
 </div>
  
             <button
@@ -211,7 +213,7 @@ export default function StudentTickets() {
 </div>
  
           <div className="topbar-right">
-<div className="top-avatar">ST</div>
+<div className="top-avatar">{initials}</div>
 </div>
 </header>
  

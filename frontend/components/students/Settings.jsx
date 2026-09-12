@@ -32,22 +32,26 @@ import {
 
 import "./Settings.css";
 import { useTheme } from "../../src/context/useTheme";
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials, getUserRoleLabel } from "../../src/utils/userDisplay";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
- 
+
 export default function Settings() {
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const initials = getUserInitials(user);
  
   // Profile state (mock — in production loaded from /api/users/me).
 
-  const [name, setName] = useState("Student");
+  const [name, setName] = useState(user.name);
 
   const [department, setDepartment] = useState("Computer Science");
 
-  const email = "student@test.local";
+  const email = user.email;
 
-  const role = "Student";
+  const role = getUserRoleLabel(user);
  
   // Notification preferences (mock).
 
@@ -214,11 +218,11 @@ export default function Settings() {
 </div>
  
           <div className="student-profile">
-<div className="avatar">ST</div>
+<div className="avatar">{initials}</div>
  
             <div className="student-profile-info">
-<strong>Student</strong>
-<span>student@test.local</span>
+<strong>{user.name}</strong>
+<span>{user.email}</span>
 </div>
  
             <button
@@ -252,7 +256,7 @@ export default function Settings() {
 </div>
  
           <div className="topbar-right">
-<div className="top-avatar">ST</div>
+<div className="top-avatar">{initials}</div>
 </div>
 </header>
  
@@ -268,7 +272,7 @@ export default function Settings() {
  
             <div className="settings-card-body">
 <div className="profile-header">
-<div className="profile-avatar">ST</div>
+<div className="profile-avatar">{initials}</div>
  
                 <div>
 <strong>{name}</strong>
@@ -455,5 +459,3 @@ export default function Settings() {
   );
 
 }
-
- 

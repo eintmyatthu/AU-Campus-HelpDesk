@@ -20,6 +20,8 @@ import "./NewTicket.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
 import { useTheme } from "../../src/context/useTheme";
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials, getUserRoleLabel } from "../../src/utils/userDisplay";
 
 // Matches the backend Category and Priority enums.
 const CATEGORIES = [
@@ -43,6 +45,9 @@ export default function NewTicket() {
   const navigate = useNavigate();
   const { addTicket } = useTickets();
   const { toggleTheme } = useTheme();
+  const { user } = useAuth();
+  const initials = getUserInitials(user);
+  const roleLabel = getUserRoleLabel(user);
 
   const [form, setForm] = useState({
     title: "",
@@ -160,11 +165,11 @@ export default function NewTicket() {
             </div>
 
             <div className="student-profile">
-              <div className="avatar">ST</div>
+              <div className="avatar">{initials}</div>
 
               <div className="student-profile-info">
-                <strong>Student</strong>
-                <span>student@test.local</span>
+                <strong>{user.name}</strong>
+                <span>{user.email}</span>
               </div>
 
               <button
@@ -283,11 +288,11 @@ export default function NewTicket() {
           </div>
 
           <div className="student-profile">
-            <div className="avatar">ST</div>
+            <div className="avatar">{initials}</div>
 
             <div className="student-profile-info">
-              <strong>Student</strong>
-              <span>student@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
@@ -318,8 +323,8 @@ export default function NewTicket() {
 
           <div className="topbar-right">
             <button className="student-demo">
-              <span className="demo-avatar">ST</span>
-              <span>Student demo</span>
+              <span className="demo-avatar">{initials}</span>
+              <span>{roleLabel}</span>
               <ChevronDown size={15} />
             </button>
 
@@ -336,7 +341,7 @@ export default function NewTicket() {
               <span className="notification-dot"></span>
             </button>
 
-            <div className="top-avatar">ST</div>
+            <div className="top-avatar">{initials}</div>
           </div>
         </header>
 

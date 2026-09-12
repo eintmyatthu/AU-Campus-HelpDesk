@@ -35,10 +35,14 @@ import {
 import "./CampusStatus.css";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
- 
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
+
 export default function CampusStatus() {
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const initials = getUserInitials(user);
  
   // Mock service health. In production this comes from /api/status.
 
@@ -295,11 +299,11 @@ export default function CampusStatus() {
 </div>
  
           <div className="student-profile">
-<div className="avatar">ST</div>
+<div className="avatar">{initials}</div>
  
             <div className="student-profile-info">
-<strong>Student</strong>
-<span>student@test.local</span>
+<strong>{user.name}</strong>
+<span>{user.email}</span>
 </div>
  
             <button
@@ -334,7 +338,7 @@ export default function CampusStatus() {
  
           <div className="topbar-right">
  
-            <div className="top-avatar">ST</div>
+            <div className="top-avatar">{initials}</div>
 </div>
 </header>
  
@@ -566,5 +570,3 @@ export default function CampusStatus() {
   );
 
 }
-
- 

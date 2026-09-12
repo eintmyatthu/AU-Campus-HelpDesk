@@ -20,6 +20,7 @@ import "./TicketDetail.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
 import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 // Derives a simple status timeline from the ticket's current status.
 function buildTimeline(ticket) {
@@ -63,6 +64,7 @@ export default function TicketDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
+  const initials = getUserInitials(user);
   const { getTicket, addComment } = useTickets();
 
   const foundTicket = getTicket(id);
@@ -143,11 +145,11 @@ export default function TicketDetail() {
         </div>
 
         <div className="student-profile">
-          <div className="avatar">ST</div>
+          <div className="avatar">{initials}</div>
 
           <div className="student-profile-info">
-            <strong>Student</strong>
-            <span>student@test.local</span>
+            <strong>{user.name}</strong>
+            <span>{user.email}</span>
           </div>
 
           <button
@@ -179,7 +181,7 @@ export default function TicketDetail() {
               </div>
             </div>
             <div className="topbar-right">
-              <div className="top-avatar">ST</div>
+              <div className="top-avatar">{initials}</div>
             </div>
           </header>
 
@@ -229,7 +231,7 @@ export default function TicketDetail() {
             </div>
           </div>
           <div className="topbar-right">
-            <div className="top-avatar">ST</div>
+            <div className="top-avatar">{initials}</div>
           </div>
         </header>
 

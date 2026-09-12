@@ -21,6 +21,11 @@ import "./StudentDashboard.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
 import { useAuth } from "../../src/context/useAuth";
+import {
+  getUserFirstName,
+  getUserInitials,
+  getUserRoleLabel,
+} from "../../src/utils/userDisplay";
 
 function statusClass(status) {
   switch (status) {
@@ -47,7 +52,9 @@ function priorityClass(priority) {
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
+  const roleLabel = getUserRoleLabel(user);
   const { tickets } = useTickets();
   const ownTickets = tickets.filter(
     (ticket) => Number(ticket.reporterId) === Number(user?.id)
@@ -65,6 +72,7 @@ export default function StudentDashboard() {
   const recentTickets = ownTickets.slice(0, 4);
 
   const handleLogout = () => {
+    logout();
     navigate("/");
   };
 
@@ -138,11 +146,11 @@ export default function StudentDashboard() {
           </div>
 
           <div className="student-profile">
-            <div className="avatar">ST</div>
+            <div className="avatar">{initials}</div>
 
             <div className="student-profile-info">
-              <strong>Student</strong>
-              <span>student@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
@@ -166,13 +174,13 @@ export default function StudentDashboard() {
             </button>
 
             <div>
-              <h2>Good afternoon, Student</h2>
+              <h2>Good afternoon, {getUserFirstName(user)}</h2>
               <p>Campus IT service workspace</p>
             </div>
           </div>
 
           <div className="topbar-right">
-            <div className="top-avatar">ST</div>
+            <div className="top-avatar" title={roleLabel}>{initials}</div>
           </div>
         </header>
 

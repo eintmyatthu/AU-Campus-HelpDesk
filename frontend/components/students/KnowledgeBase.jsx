@@ -42,10 +42,14 @@ import {
 import "./KnowledgeBase.css";
 
 import auLogo from "../../src/assets/AU_logo.jpeg";
- 
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
+
 export default function KnowledgeBase() {
 
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const initials = getUserInitials(user);
 
   const [searchTerm, setSearchTerm] = useState("");
  
@@ -234,11 +238,11 @@ export default function KnowledgeBase() {
 </div>
  
           <div className="student-profile">
-<div className="avatar">ST</div>
+<div className="avatar">{initials}</div>
  
             <div className="student-profile-info">
-<strong>Student</strong>
-<span>student@test.local</span>
+<strong>{user.name}</strong>
+<span>{user.email}</span>
 </div>
  
             <button
@@ -269,7 +273,7 @@ export default function KnowledgeBase() {
 </div>
  
           <div className="topbar-right">
-            <div className="top-avatar">ST</div>
+            <div className="top-avatar">{initials}</div>
           </div>
         </header>
 
@@ -381,4 +385,3 @@ export default function KnowledgeBase() {
   );
 
 }
- 
