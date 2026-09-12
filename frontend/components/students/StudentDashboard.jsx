@@ -61,7 +61,7 @@ export default function StudentDashboard() {
   );
 
   const openCount = ownTickets.filter(
-    (t) => t.status === "Open" || t.status === "In progress"
+    (t) => ["Open", "Claimed", "In progress", "Reopened"].includes(t.status)
   ).length;
   const awaitingCount = ownTickets.filter(
     (t) => t.status === "Waiting for user"

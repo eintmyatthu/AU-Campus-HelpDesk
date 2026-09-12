@@ -250,8 +250,11 @@ export default function StudentTickets() {
 >
 <option>All statuses</option>
 <option>Open</option>
+<option>Claimed</option>
 <option>In progress</option>
-<option>Waiting for user</option>
+<option>Resolved</option>
+<option>Closed</option>
+<option>Reopened</option>
 </select>
  
               <button

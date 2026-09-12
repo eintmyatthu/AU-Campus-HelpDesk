@@ -17,11 +17,35 @@ import "./TechnicianQueue.css";
 import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 import { useTickets } from "../../src/context/useTickets";
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 export default function TechnicianQueue() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
   const [searchTerm, setSearchTerm] = useState("");
-  const { queueTickets, loading, error } = useTickets();
+  const [claimingId, setClaimingId] = useState(null);
+  const [claimError, setClaimError] = useState("");
+  const { queueTickets, loading, error, claimTicket } = useTickets();
+
+  const handleClaim = async (ticket) => {
+    setClaimingId(ticket.id);
+    setClaimError("");
+    try {
+      await claimTicket(ticket.id);
+      navigate("/technician/assignments");
+    } catch (claimRequestError) {
+      setClaimError(claimRequestError.message || "Unable to claim ticket.");
+    } finally {
+      setClaimingId(null);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const filteredTickets = queueTickets.filter((ticket) => {
     const query = searchTerm.toLowerCase();
@@ -103,16 +127,16 @@ export default function TechnicianQueue() {
           </div>
 
           <div className="queue-profile">
-            <div className="queue-avatar">TE</div>
+            <div className="queue-avatar">{initials}</div>
 
             <div className="queue-profile-info">
-              <strong>Technician</strong>
-              <span>technician@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
               className="queue-profile-btn"
-              onClick={() => navigate("/")}
+              onClick={handleLogout}
               title="Logout"
             >
               <LogOut size={18} />
@@ -144,9 +168,7 @@ export default function TechnicianQueue() {
 
             <TechnicianNotifications buttonClassName="queue-icon-btn queue-notification" dotClassName="queue-notification-dot" />
 
-            <div className="queue-top-avatar">
-              TE
-            </div>
+            <div className="queue-top-avatar">{initials}</div>
           </div>
         </header>
 
@@ -187,9 +209,9 @@ export default function TechnicianQueue() {
               <div className="queue-empty">Loading tickets…</div>
             )}
 
-            {!loading && error && (
+            {!loading && (error || claimError) && (
               <div className="queue-empty" role="alert">
-                {error}
+                {claimError || error}
               </div>
             )}
 
@@ -239,7 +261,14 @@ export default function TechnicianQueue() {
                   {ticket.response}
                 </span>
 
-                <span className="queue-response">Awaiting assignment</span>
+                <button
+                  type="button"
+                  className="claim-button"
+                  disabled={claimingId === ticket.id}
+                  onClick={() => handleClaim(ticket)}
+                >
+                  {claimingId === ticket.id ? "Claiming…" : "Claim"}
+                </button>
               </div>
             ))}
 

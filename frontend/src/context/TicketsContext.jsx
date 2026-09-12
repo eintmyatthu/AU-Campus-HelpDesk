@@ -69,6 +69,19 @@ export function TicketsProvider({ children }) {
     };
   }, [user]);
 
+  // Pick up tickets created or updated in another signed-in browser session
+  // when this window becomes active again.
+  useEffect(() => {
+    if (!user) return undefined;
+
+    const refreshOnFocus = () => {
+      refresh();
+    };
+
+    window.addEventListener("focus", refreshOnFocus);
+    return () => window.removeEventListener("focus", refreshOnFocus);
+  }, [refresh, user]);
+
   const getTicket = useCallback(
     (id) => tickets.find((t) => t.id === id || String(t.dbId) === String(id)),
     [tickets]
@@ -90,6 +103,8 @@ export function TicketsProvider({ children }) {
         title: form.title,
         description: form.description,
         roomNumber: form.roomNumber,
+        category: form.category,
+        priority: form.priority,
         reporterId: user.id,
       });
       const uiTicket = toUiTicket(created);
@@ -117,6 +132,19 @@ export function TicketsProvider({ children }) {
       if (!dbId) throw new Error("Ticket not found.");
       const techId = technicianId === null ? null : Number(technicianId);
       await api.assignTicket(dbId, techId, user.id);
+      await refresh();
+    },
+    [dbIdFor, refresh, user]
+  );
+
+  const claimTicket = useCallback(
+    async (id) => {
+      if (user?.role !== "TECHNICIAN") {
+        throw new Error("Only a technician can claim tickets.");
+      }
+      const dbId = dbIdFor(id);
+      if (!dbId) throw new Error("Ticket not found.");
+      await api.assignTicket(dbId, Number(user.id), Number(user.id));
       await refresh();
     },
     [dbIdFor, refresh, user]
@@ -183,7 +211,9 @@ export function TicketsProvider({ children }) {
 
   // UI statuses are normalized by toUiTicket; match the backend claim rule.
   const queueTickets = useMemo(
-    () => tickets.filter((ticket) => ticket.status === "Open" && ticket.technicianId === null),
+    () => tickets.filter(
+      (ticket) => ["Open", "Reopened"].includes(ticket.status) && ticket.technicianId === null
+    ),
     [tickets]
   );
 
@@ -198,6 +228,7 @@ export function TicketsProvider({ children }) {
       addTicket,
       addComment,
       assignTicket,
+      claimTicket,
       setTicketStatus,
       resolveTicket,
       setTicketPriority,
@@ -213,6 +244,7 @@ export function TicketsProvider({ children }) {
       addTicket,
       addComment,
       assignTicket,
+      claimTicket,
       setTicketStatus,
       resolveTicket,
       setTicketPriority,
