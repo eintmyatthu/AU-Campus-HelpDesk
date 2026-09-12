@@ -23,24 +23,6 @@ import { useTheme } from "../../src/context/useTheme";
 import { useAuth } from "../../src/context/useAuth";
 import { getUserInitials, getUserRoleLabel } from "../../src/utils/userDisplay";
 
-// Matches the backend Category and Priority enums.
-const CATEGORIES = [
-  { value: "NETWORK", label: "Network" },
-  { value: "SOFTWARE", label: "Software" },
-  { value: "HARDWARE", label: "Hardware" },
-  { value: "ACCOUNT_ACCESS", label: "Account access" },
-  { value: "CLASSROOM_EQUIPMENT", label: "Classroom equipment" },
-  { value: "PRINTER", label: "Printer" },
-  { value: "OTHER", label: "Other" },
-];
-
-const PRIORITIES = [
-  { value: "LOW", label: "Low" },
-  { value: "MEDIUM", label: "Medium" },
-  { value: "HIGH", label: "High" },
-  { value: "URGENT", label: "Urgent" },
-];
-
 export default function NewTicket() {
   const navigate = useNavigate();
   const { addTicket } = useTickets();
@@ -52,8 +34,6 @@ export default function NewTicket() {
   const [form, setForm] = useState({
     title: "",
     description: "",
-    category: "NETWORK",
-    priority: "MEDIUM",
     roomNumber: "",
   });
   const [errors, setErrors] = useState({});
@@ -398,35 +378,10 @@ export default function NewTicket() {
                 )}
               </label>
 
-              <div className="field-grid">
-                <label className="field">
-                  <span>Category</span>
-                  <select
-                    value={form.category}
-                    onChange={(e) => update("category", e.target.value)}
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c.value} value={c.value}>
-                        {c.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="field">
-                  <span>Priority</span>
-                  <select
-                    value={form.priority}
-                    onChange={(e) => update("priority", e.target.value)}
-                  >
-                    {PRIORITIES.map((p) => (
-                      <option key={p.value} value={p.value}>
-                        {p.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
+              <p>
+                Category and priority are assigned automatically from your title
+                and description. The support team can review them after submission.
+              </p>
 
               <label className="field">
                 <span>Location / room number</span>

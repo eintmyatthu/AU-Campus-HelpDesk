@@ -1,11 +1,10 @@
 const prisma = require("../config/prisma");
 const { generateTicketNumber } = require("../services/ticketNumberService");
+const { categorizeTicket } = require("../services/aiCategorizationService");
+const { Category, Priority } = require("@prisma/client");
 
-const CATEGORIES = [
-  "HARDWARE", "SOFTWARE", "NETWORK", "ACCOUNT_ACCESS",
-  "CLASSROOM_EQUIPMENT", "PRINTER", "OTHER"
-];
-const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "URGENT"];
+const CATEGORIES = Object.values(Category);
+const PRIORITIES = Object.values(Priority);
 const STATUSES = ["OPEN", "CLAIMED", "IN_PROGRESS", "RESOLVED", "CLOSED", "REOPENED"];
 const ALLOWED_TRANSITIONS = {
   OPEN: ["CLAIMED", "IN_PROGRESS"],
@@ -36,8 +35,12 @@ async function createTicket(req, res) {
   const { title, description, roomNumber, reporterId } = req.body;
   const parsedReporterId = parseId(reporterId);
 
-  if (!title?.trim() || !description?.trim() || !parsedReporterId) {
+  if (typeof title !== "string" || !title.trim() ||
+      typeof description !== "string" || !description.trim() || !parsedReporterId) {
     return res.status(400).json({ error: "title, description, and a valid reporterId are required." });
+  }
+  if (roomNumber != null && typeof roomNumber !== "string") {
+    return res.status(400).json({ error: "roomNumber must be a string." });
   }
 
   try {
@@ -46,6 +49,8 @@ async function createTicket(req, res) {
       return res.status(404).json({ error: "Active reporter not found." });
     }
 
+    // Complete the bounded AI request before opening a database transaction.
+    const { category, priority } = await categorizeTicket(title.trim(), description.trim());
     const ticket = await prisma.$transaction(async (tx) => {
       const ticketNumber = await generateTicketNumber(tx);
       const created = await tx.ticket.create({
@@ -55,8 +60,8 @@ async function createTicket(req, res) {
           description: description.trim(),
           roomNumber: roomNumber?.trim() || null,
           reporterId: parsedReporterId,
-          category: "OTHER",
-          priority: "MEDIUM",
+          category,
+          priority,
           status: "OPEN"
         }
       });
