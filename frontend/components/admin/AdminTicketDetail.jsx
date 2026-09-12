@@ -11,6 +11,7 @@ import AdminShell from "./AdminShell";
 import "./AdminTicketDetail.css";
 import { useTickets } from "../../src/context/useTickets";
 import { listUsers } from "../../src/api/client";
+import NetworkDiagnostic from "../../src/components/NetworkDiagnostic";
 import {
   TICKET_PRIORITIES,
 } from "../../src/context/ticketsMeta";
@@ -153,6 +154,12 @@ export default function AdminTicketDetail() {
             <h2>Description</h2>
             <p className="admin-detail-desc">{ticket.description}</p>
           </div>
+
+          {ticket.category === "Network" && (
+            <div className="admin-panel-card admin-detail-card">
+              <NetworkDiagnostic ticket={ticket} />
+            </div>
+          )}
 
           <div className="admin-panel-card admin-detail-card">
             <h2>Conversation</h2>

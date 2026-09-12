@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import "./TechnicianAssignments.css";
 import TechnicianNotifications from "./TechnicianNotifications";
+import NetworkDiagnostic from "../../src/components/NetworkDiagnostic";
 import auLogo from "../../src/assets/AU_logo.jpeg";
 
 export default function TechnicianAssignments() {
@@ -279,6 +280,7 @@ export default function TechnicianAssignments() {
 
                 <span className="assignments-response">
                   {ticket.response}
+                  <NetworkDiagnostic ticket={ticket} compact />
                 </span>
 
                 {["Open", "Claimed", "Reopened"].includes(ticket.status) ? (

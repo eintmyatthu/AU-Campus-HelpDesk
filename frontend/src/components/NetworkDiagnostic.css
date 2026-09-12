@@ -1,0 +1,28 @@
+.dns-diagnostic dl {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.dns-diagnostic dl div {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 0.75rem;
+}
+
+.dns-diagnostic dt {
+  color: var(--text-muted, #64748b);
+  font-weight: 600;
+}
+
+.dns-diagnostic dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.dns-diagnostic-note {
+  color: var(--text-muted, #64748b);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin: 0.5rem 0 0;
+}

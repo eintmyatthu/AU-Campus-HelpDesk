@@ -75,6 +75,10 @@ export function getTicket(id) {
   return request(`/tickets/${id}`);
 }
 
+export function getDnsDiagnostic(id, signal) {
+  return request(`/tickets/${id}/dns-diagnostic`, { signal });
+}
+
 export function createTicket({
   title,
   description,

@@ -1,6 +1,7 @@
 const prisma = require("../config/prisma");
 const { generateTicketNumber } = require("../services/ticketNumberService");
 const { categorizeTicket } = require("../services/aiCategorizationService");
+const { diagnoseNetworkTicket } = require("../services/dnsDiagnosticService");
 const { Category, Priority } = require("@prisma/client");
 
 const CATEGORIES = Object.values(Category);
@@ -49,14 +50,21 @@ async function createTicket(req, res) {
       return res.status(404).json({ error: "Active reporter not found." });
     }
 
-    const { category, priority } = await categorizeTicket(title.trim(), description.trim());
+    const trimmedTitle = title.trim();
+    const trimmedDescription = description.trim();
+    const { category, priority } = await categorizeTicket(trimmedTitle, trimmedDescription);
+    const dnsDiagnostic = await diagnoseNetworkTicket({
+      category,
+      title: trimmedTitle,
+      description: trimmedDescription
+    });
     const ticket = await prisma.$transaction(async (tx) => {
       const ticketNumber = await generateTicketNumber(tx);
       const created = await tx.ticket.create({
         data: {
           ticketNumber,
-          title: title.trim(),
-          description: description.trim(),
+          title: trimmedTitle,
+          description: trimmedDescription,
           roomNumber: roomNumber?.trim() || null,
           reporterId: parsedReporterId,
           category,
@@ -75,9 +83,25 @@ async function createTicket(req, res) {
       return tx.ticket.findUnique({ where: { id: created.id }, include: ticketInclude });
     });
 
-    return res.status(201).json(ticket);
+    return res.status(201).json({ ...ticket, dnsDiagnostic });
   } catch (error) {
     return sendServerError(res, error, "Unable to create ticket.");
+  }
+}
+
+async function getTicketDnsDiagnostic(req, res) {
+  const id = parseId(req.params.id);
+  if (!id) return res.status(400).json({ error: "Invalid ticket id." });
+
+  try {
+    const ticket = await prisma.ticket.findUnique({
+      where: { id },
+      select: { category: true, title: true, description: true }
+    });
+    if (!ticket) return res.status(404).json({ error: "Ticket not found." });
+    return res.json(await diagnoseNetworkTicket(ticket));
+  } catch (error) {
+    return sendServerError(res, error, "Unable to retrieve DNS diagnostic.");
   }
 }
 
@@ -326,6 +350,7 @@ module.exports = {
   createTicket,
   getAllTickets,
   getTicketById,
+  getTicketDnsDiagnostic,
   updateTicket,
   claimTicket,
   updateTicketStatus,

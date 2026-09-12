@@ -3,6 +3,7 @@ const {
   createTicket,
   getAllTickets,
   getTicketById,
+  getTicketDnsDiagnostic,
   updateTicket,
   claimTicket,
   updateTicketStatus,
@@ -15,6 +16,7 @@ const router = express.Router();
 
 router.post("/", createTicket);
 router.get("/", getAllTickets);
+router.get("/:id/dns-diagnostic", getTicketDnsDiagnostic);
 router.get("/:id", getTicketById);
 router.patch("/:id", updateTicket);
 router.post("/:id/comments", addComment);
