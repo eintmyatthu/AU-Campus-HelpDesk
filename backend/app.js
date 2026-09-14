@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
+
 const ticketRoutes = require("./routes/ticketRoutes");
 const userRoutes = require("./routes/userRoutes");
+const dnsRoutes = require("./routes/dnsRoutes");
 
 const app = express();
 
@@ -16,5 +18,6 @@ app.get("/helpdesk/api/health", (req, res) => {
 
 app.use("/helpdesk/api/tickets", ticketRoutes);
 app.use("/helpdesk/api/users", userRoutes);
+app.use("/helpdesk/api/tools/dns", dnsRoutes);
 
 module.exports = app;

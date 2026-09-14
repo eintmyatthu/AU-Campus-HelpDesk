@@ -18,9 +18,13 @@ import {
 import "./TechnicianCampusStatus.css";
 import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 export default function TechnicianCampusStatus() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
   const { queueTickets } = useTickets();
 
   const services = [
@@ -66,6 +70,11 @@ export default function TechnicianCampusStatus() {
         "Sunday, 6 Sep · 01:00–02:00 · No expected user impact",
     },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="status-page">
@@ -133,16 +142,16 @@ export default function TechnicianCampusStatus() {
           </div>
 
           <div className="status-profile">
-            <div className="status-avatar">TE</div>
+            <div className="status-avatar">{initials}</div>
 
             <div className="status-profile-info">
-              <strong>Technician</strong>
-              <span>technician@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
               className="status-profile-btn"
-              onClick={() => navigate("/")}
+              onClick={handleLogout}
               title="Logout"
             >
               <LogOut size={18} />
@@ -170,7 +179,7 @@ export default function TechnicianCampusStatus() {
 
             <TechnicianNotifications buttonClassName="status-icon status-notification" dotClassName="status-dot-alert" />
 
-            <div className="status-top-avatar">TE</div>
+            <div className="status-top-avatar">{initials}</div>
           </div>
         </header>
 

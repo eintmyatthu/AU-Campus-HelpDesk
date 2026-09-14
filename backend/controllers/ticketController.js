@@ -1,6 +1,6 @@
 const prisma = require("../config/prisma");
 const { generateTicketNumber } = require("../services/ticketNumberService");
-const { categorizeTicket } = require("../services/aiCategorizationService");
+const { categorizeTicket } = require("../services/ruleCategorizationService");
 const { diagnoseNetworkTicket } = require("../services/dnsDiagnosticService");
 const { Category, Priority } = require("@prisma/client");
 

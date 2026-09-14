@@ -3,6 +3,8 @@ import { AuthContext } from "./authContextObject";
 import {
   login as apiLogin,
   loginWithMicrosoft as apiMicrosoftLogin,
+  getUser,
+  updateUserProfile as apiUpdateUserProfile,
 } from "../api/client";
 import { signInWithMicrosoft } from "../auth/microsoft";
 
@@ -30,6 +32,24 @@ export function AuthProvider({ children }) {
       localStorage.removeItem(STORAGE_KEY);
     }
   }, [user]);
+
+  // Refresh persisted login data so the UI always reflects the database profile.
+  useEffect(() => {
+    if (!user?.id) return;
+
+    let cancelled = false;
+    getUser(user.id)
+      .then((freshUser) => {
+        if (!cancelled) setUser(freshUser);
+      })
+      .catch(() => {
+        // Keep the cached user when the backend is temporarily unavailable.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   const loginAs = useCallback(async ({ role, email }) => {
     setLoading(true);
@@ -71,9 +91,35 @@ export function AuthProvider({ children }) {
     setError("");
   }, []);
 
+  const updateProfile = useCallback(async ({ name, department }) => {
+    setLoading(true);
+    setError("");
+    try {
+      const { user: updatedUser } = await apiUpdateUserProfile(user.id, {
+        name,
+        department,
+      });
+      setUser(updatedUser);
+      return updatedUser;
+    } catch (err) {
+      setError(err.message || "Profile update failed.");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
   const value = useMemo(
-    () => ({ user, loading, error, loginAs, microsoftLogin, logout }),
-    [user, loading, error, loginAs, microsoftLogin, logout]
+    () => ({
+      user,
+      loading,
+      error,
+      loginAs,
+      microsoftLogin,
+      logout,
+      updateProfile,
+    }),
+    [user, loading, error, loginAs, microsoftLogin, logout, updateProfile]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

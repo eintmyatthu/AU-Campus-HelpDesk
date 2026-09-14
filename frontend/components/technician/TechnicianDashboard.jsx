@@ -19,10 +19,12 @@ import {
 import "./TechnicianDashboard.css";
 import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 export default function TechnicianDashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
   const { tickets, queueTickets } = useTickets();
   const [available, setAvailable] = useState(true);
   
@@ -32,6 +34,11 @@ export default function TechnicianDashboard() {
   const activeTickets = assignedTickets.filter((ticket) =>
     ["Open", "Claimed", "In progress", "Reopened"].includes(ticket.status)
   );
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="tech-page">
@@ -102,16 +109,16 @@ export default function TechnicianDashboard() {
           </div>
 
           <div className="tech-profile">
-            <div className="tech-avatar">TE</div>
+            <div className="tech-avatar">{initials}</div>
 
             <div className="tech-profile-info">
-              <strong>Technician</strong>
-              <span>technician@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
               className="tech-profile-btn"
-              onClick={() => navigate("/")}
+              onClick={handleLogout}
               title="Logout"
             >
               <LogOut size={18} />
@@ -139,7 +146,7 @@ export default function TechnicianDashboard() {
 
             <TechnicianNotifications buttonClassName="tech-icon-btn tech-notification" dotClassName="tech-notification-dot" />
 
-            <div className="tech-top-avatar">TE</div>
+            <div className="tech-top-avatar">{initials}</div>
           </div>
         </header>
 

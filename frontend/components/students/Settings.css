@@ -260,6 +260,16 @@ input {
   cursor: pointer;
 }
 
+.save-error {
+  color: #b42318;
+  font-size: 12px;
+}
+
+.save-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 /* MAIN */
 
 .settings-main {

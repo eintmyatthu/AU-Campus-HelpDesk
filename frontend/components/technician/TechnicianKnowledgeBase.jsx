@@ -20,9 +20,13 @@ import {
 import "./TechnicianKnowledgeBase.css";
 import TechnicianNotifications from "./TechnicianNotifications";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 export default function TechnicianKnowledgeBase() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
   const { queueTickets } = useTickets();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -80,6 +84,11 @@ export default function TechnicianKnowledgeBase() {
       guide.description.toLowerCase().includes(query)
     );
   });
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="tech-kb-page">
@@ -150,16 +159,16 @@ export default function TechnicianKnowledgeBase() {
           </div>
 
           <div className="tech-kb-profile">
-            <div className="tech-kb-avatar">TE</div>
+            <div className="tech-kb-avatar">{initials}</div>
 
             <div className="tech-kb-profile-info">
-              <strong>Technician</strong>
-              <span>technician@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
               className="tech-kb-profile-btn"
-              onClick={() => navigate("/")}
+              onClick={handleLogout}
             >
               <LogOut size={18} />
             </button>
@@ -185,7 +194,7 @@ export default function TechnicianKnowledgeBase() {
 
             <TechnicianNotifications buttonClassName="tech-kb-icon tech-kb-notification" dotClassName="tech-kb-dot" />
 
-            <div className="tech-kb-top-avatar">TE</div>
+            <div className="tech-kb-top-avatar">{initials}</div>
           </div>
         </header>
 

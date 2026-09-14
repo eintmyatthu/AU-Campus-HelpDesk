@@ -66,7 +66,6 @@ async function microsoftLogin(req, res) {
           data: {
             microsoftId: identity.microsoftId,
             email: identity.email,
-            name: identity.name,
           },
         })
       : await prisma.user.create({
@@ -107,6 +106,38 @@ async function getUserById(req, res) {
   return res.json(toPublic(user));
 }
 
+async function updateUserProfile(req, res) {
+  const id = parseId(req.params.id);
+  if (!id) return res.status(400).json({ error: "Invalid user id." });
+
+  const name = typeof req.body?.name === "string" ? req.body.name.trim() : "";
+  const department =
+    typeof req.body?.department === "string" ? req.body.department.trim() : null;
+
+  if (!name) {
+    return res.status(400).json({ error: "Full name is required." });
+  }
+  if (name.length > 120) {
+    return res.status(400).json({ error: "Full name must be 120 characters or fewer." });
+  }
+  if (department && department.length > 120) {
+    return res.status(400).json({ error: "Department must be 120 characters or fewer." });
+  }
+
+  const existingUser = await prisma.user.findUnique({ where: { id } });
+  if (!existingUser) return res.status(404).json({ error: "User not found." });
+  if (!existingUser.isActive) {
+    return res.status(403).json({ error: "This account is inactive." });
+  }
+
+  const user = await prisma.user.update({
+    where: { id },
+    data: { name, department: department || null },
+  });
+
+  return res.json({ user: toPublic(user) });
+}
+
 async function getUsers(req, res) {
   const { role } = req.query;
   if (role && !ROLES.includes(role)) {
@@ -121,4 +152,10 @@ async function getUsers(req, res) {
   return res.json(users);
 }
 
-module.exports = { devLogin, microsoftLogin, getUserById, getUsers };
+module.exports = {
+  devLogin,
+  microsoftLogin,
+  getUserById,
+  getUsers,
+  updateUserProfile,
+};

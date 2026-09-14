@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import "./AdminShell.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { useAuth } from "../../src/context/useAuth";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 export default function AdminShell({
   title,
@@ -24,6 +26,13 @@ export default function AdminShell({
   children,
 }) {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="admin-shell">
@@ -115,16 +124,16 @@ export default function AdminShell({
           </div>
 
           <div className="admin-shell-profile">
-            <div className="admin-shell-avatar">AD</div>
+            <div className="admin-shell-avatar">{initials}</div>
 
             <div className="admin-shell-profile-info">
-              <strong>Admin</strong>
-              <span>admin@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
               className="admin-shell-logout"
-              onClick={() => navigate("/")}
+              onClick={handleLogout}
               title="Logout"
             >
               <LogOut size={18} />
@@ -159,7 +168,7 @@ export default function AdminShell({
             </button>
 
             <div className="admin-shell-top-avatar">
-              AD
+              {initials}
             </div>
           </div>
         </header>

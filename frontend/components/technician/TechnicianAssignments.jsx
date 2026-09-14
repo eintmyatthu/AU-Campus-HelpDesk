@@ -19,10 +19,12 @@ import "./TechnicianAssignments.css";
 import TechnicianNotifications from "./TechnicianNotifications";
 import NetworkDiagnostic from "../../src/components/NetworkDiagnostic";
 import auLogo from "../../src/assets/AU_logo.jpeg";
+import { getUserInitials } from "../../src/utils/userDisplay";
 
 export default function TechnicianAssignments() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const initials = getUserInitials(user);
   const { tickets, queueTickets, loading, error, setTicketStatus, resolveTicket } = useTickets();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,6 +67,11 @@ export default function TechnicianAssignments() {
     } finally {
       setWorkingId(null);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -136,16 +143,16 @@ export default function TechnicianAssignments() {
           </div>
 
           <div className="assignments-profile">
-            <div className="assignments-avatar">TE</div>
+            <div className="assignments-avatar">{initials}</div>
 
             <div className="assignments-profile-info">
-              <strong>Technician</strong>
-              <span>technician@test.local</span>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
             </div>
 
             <button
               className="assignments-profile-btn"
-              onClick={() => navigate("/")}
+              onClick={handleLogout}
             >
               <LogOut size={18} />
             </button>
@@ -177,7 +184,7 @@ export default function TechnicianAssignments() {
             <TechnicianNotifications buttonClassName="assignments-icon assignments-notification" dotClassName="assignments-dot" />
 
             <div className="assignments-top-avatar">
-              TE
+              {initials}
             </div>
           </div>
         </header>

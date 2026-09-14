@@ -60,6 +60,13 @@ export function getUser(id) {
   return request(`/users/${id}`);
 }
 
+export function updateUserProfile(id, { name, department }) {
+  return request(`/users/${id}`, {
+    method: "PATCH",
+    body: { name, department },
+  });
+}
+
 export function listUsers(role) {
   const query = role ? `?role=${encodeURIComponent(role)}` : "";
   return request(`/users${query}`);
