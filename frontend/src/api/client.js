@@ -45,8 +45,8 @@ export function getHealth(signal) {
 
 /* ---------------- Auth / users ---------------- */
 
-export function login({ email, role }) {
-  return request("/users/login", { method: "POST", body: { email, role } });
+export function login({ email, password }) {
+  return request("/users/login", { method: "POST", body: { email, password } });
 }
 
 export function loginWithMicrosoft(idToken) {

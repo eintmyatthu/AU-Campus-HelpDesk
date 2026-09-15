@@ -51,11 +51,11 @@ export function AuthProvider({ children }) {
     };
   }, [user?.id]);
 
-  const loginAs = useCallback(async ({ role, email }) => {
+  const passwordLogin = useCallback(async ({ email, password }) => {
     setLoading(true);
     setError("");
     try {
-      const { user: signedIn } = await apiLogin({ role, email });
+      const { user: signedIn } = await apiLogin({ email, password });
       setUser(signedIn);
       return signedIn;
     } catch (err) {
@@ -114,12 +114,12 @@ export function AuthProvider({ children }) {
       user,
       loading,
       error,
-      loginAs,
+      passwordLogin,
       microsoftLogin,
       logout,
       updateProfile,
     }),
-    [user, loading, error, loginAs, microsoftLogin, logout, updateProfile]
+    [user, loading, error, passwordLogin, microsoftLogin, logout, updateProfile]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

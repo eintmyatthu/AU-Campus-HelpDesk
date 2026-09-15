@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  devLogin,
+  passwordLogin,
   microsoftLogin,
   getUserById,
   getUsers,
@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.post("/login", devLogin);
+router.post("/login", passwordLogin);
 router.post("/login/microsoft", microsoftLogin);
 router.get("/", getUsers);
 router.get("/:id", getUserById);

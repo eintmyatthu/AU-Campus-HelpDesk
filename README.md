@@ -59,7 +59,7 @@ The project is a React single-page application backed by an Express API, Prisma 
 ### Platform capabilities
 
 - Microsoft Entra ID single-tenant sign-in with tenant and email-domain validation
-- Development preview login for seeded Student, Technician, and Admin accounts
+- Database-backed email/password login for a seeded student account
 - Role-based frontend routing for `STUDENT`, `FACULTY`, `TECHNICIAN`, and `ADMIN`
 - PostgreSQL persistence through Prisma
 - Annual human-readable ticket numbers such as `IT-2026-000001`
@@ -163,7 +163,7 @@ Frontend state is organized into three providers:
 | Frontend | React 19, React Router 7, Vite 8, Lucide React, CSS |
 | Backend | Node.js, Express 5, CommonJS |
 | Database | PostgreSQL, Prisma ORM 6 |
-| Authentication | Microsoft Entra ID, MSAL Browser, `jose` token verification |
+| Authentication | Database email/password with scrypt hashing; Microsoft Entra ID, MSAL Browser, and `jose` token verification |
 | Diagnostics | Google Public DNS JSON-over-HTTPS endpoint |
 | Testing | Node.js built-in test runner, ESLint, Vite production build |
 | Deployment | Nginx, PM2, Linux VM |
@@ -280,15 +280,19 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173). The API health endpoint is [http://localhost:3000/helpdesk/api/health](http://localhost:3000/helpdesk/api/health).
 
-### Development preview accounts
+### Development email/password accounts
 
-| Role | Email |
-| --- | --- |
-| Student | `student@test.local` |
-| Technician | `technician@test.local` |
-| Admin | `admin@test.local` |
+| Role | Email | Password |
+| --- | --- | --- |
+| Student | `student@test.local` | `AUStudent!2026` |
+| Technician | `technician1@test.local` | `AUTech01!N7qP2026` |
+| Technician | `technician2@test.local` | `AUTech02!V9kR2026` |
+| Technician | `technician3@test.local` | `AUTech03!M4xT2026` |
+| Technician | `technician4@test.local` | `AUTech04!B8wL2026` |
+| Admin | `admin1@test.local` | `AUAdmin01!X4mR2026` |
+| Admin | `admin2@test.local` | `AUAdmin02!K9vD2026` |
 
-Use the role buttons on the login page. The corresponding database users must exist, so run the seed step first.
+The database users and their salted password hashes are created by the seed step. These credentials are for development only; change or remove them before deployment.
 
 ## Microsoft Entra ID setup
 
@@ -393,7 +397,7 @@ Base URL: `/helpdesk/api`
 
 | Method | Endpoint | Description |
 | --- | --- | --- |
-| `POST` | `/users/login` | Development login using `{ role }` or `{ email }` |
+| `POST` | `/users/login` | Database login using `{ email, password }` |
 | `POST` | `/users/login/microsoft` | Verify a Microsoft ID token and sign in |
 | `GET` | `/users` | List users; optional `?role=TECHNICIAN` filter |
 | `GET` | `/users/:id` | Get a public user profile |

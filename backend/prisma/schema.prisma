@@ -43,6 +43,7 @@ enum Category {
 model User {
   id                 Int             @id @default(autoincrement())
   microsoftId        String?         @unique
+  passwordHash       String?
   name               String
   email              String          @unique
   department         String?

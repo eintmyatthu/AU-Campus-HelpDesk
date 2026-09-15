@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import auLogo from "../../src/assets/AU_logo.jpeg";
@@ -13,7 +14,9 @@ const HOME_BY_ROLE = {
 
 export default function Login() {
   const navigate = useNavigate();
-  const { loginAs, microsoftLogin, loading, error } = useAuth();
+  const { passwordLogin, microsoftLogin, loading, error } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleMicrosoftLogin = async () => {
     try {
@@ -24,18 +27,15 @@ export default function Login() {
     }
   };
 
-  const signIn = async (role) => {
+  const handlePasswordLogin = async (event) => {
+    event.preventDefault();
     try {
-      const user = await loginAs({ role });
+      const user = await passwordLogin({ email, password });
       navigate(HOME_BY_ROLE[user.role] || "/student");
     } catch {
       // Error is surfaced via the auth context `error` state below.
     }
   };
-
-  const handleStudentLogin = () => signIn("STUDENT");
-  const handleAdminLogin = () => signIn("ADMIN");
-  const handleTechnicianLogin = () => signIn("TECHNICIAN");
 
   return (
     <div className="login-page">
@@ -81,8 +81,44 @@ export default function Login() {
           <h2>Sign in to AU HelpDesk</h2>
 
           <p className="login-subtitle">
-            Continue with your university Microsoft account.
+            Sign in with your HelpDesk account or university Microsoft account.
           </p>
+
+          <form className="credential-form" onSubmit={handlePasswordLogin}>
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="name@au.edu"
+              required
+              disabled={loading}
+            />
+
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter your password"
+              required
+              disabled={loading}
+            />
+
+            <button className="credential-login-btn" type="submit" disabled={loading}>
+              {loading ? "Signing in…" : "Sign in"}
+            </button>
+          </form>
+
+          {error && <p className="login-error" role="alert">{error}</p>}
+
+          <div className="login-divider"><span>or</span></div>
 
           <button
             className="microsoft-btn"
@@ -105,47 +141,11 @@ export default function Login() {
             </p>
           )}
 
-          {error && <p className="login-error">{error}</p>}
-
           <p className="access-note">
             Access is limited to active university accounts.
             Sessions expire after inactivity.
           </p>
 
-          <div className="divider"></div>
-
-          <div className="dev-section">
-            <p className="dev-title">
-              DEVELOPMENT PREVIEW
-            </p>
-
-            <p className="dev-description">
-              Use a test account until Microsoft Entra ID is connected.
-            </p>
-
-            <button
-              className="student-login-btn"
-              onClick={handleStudentLogin}
-              disabled={loading}
-            >
-              Login as Student
-            </button>
-            <button
-              className="student-login-btn"
-              onClick={handleAdminLogin}
-              disabled={loading}
-            >
-              Login as Admin
-            </button>
-            <button
-              className="student-login-btn"
-              onClick={handleTechnicianLogin}
-              disabled={loading}
-            >
-              Login as Technician
-            </button>
-
-          </div>
         </div>
       </section>
     </div>

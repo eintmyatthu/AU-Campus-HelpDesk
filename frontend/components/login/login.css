@@ -842,3 +842,77 @@ button {
   opacity: 0.6;
   cursor: default;
 }
+
+.credential-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.credential-form label {
+  color: #34435a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.credential-form input {
+  width: 100%;
+  height: 46px;
+  margin-bottom: 8px;
+  padding: 0 13px;
+  border: 1px solid #cbd6e5;
+  border-radius: 8px;
+  color: #162037;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.credential-form input:focus {
+  border-color: #1763c7;
+  box-shadow: 0 0 0 3px rgba(23, 99, 199, 0.12);
+}
+
+.credential-form input:disabled {
+  background: #f4f6f9;
+}
+
+.credential-login-btn {
+  width: 100%;
+  height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: #1763c7;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.credential-login-btn:hover {
+  background: #124f9f;
+}
+
+.credential-login-btn:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+  color: #93a0b5;
+  font-size: 12px;
+}
+
+.login-divider::before,
+.login-divider::after {
+  height: 1px;
+  flex: 1;
+  background: #dce4ee;
+  content: "";
+}

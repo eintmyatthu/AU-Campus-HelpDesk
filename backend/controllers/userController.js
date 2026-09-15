@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 const { verifyMicrosoftIdToken } = require("../services/microsoftAuthService");
+const { verifyPassword } = require("../services/passwordService");
 
 const ROLES = ["STUDENT", "FACULTY", "TECHNICIAN", "ADMIN"];
 
@@ -16,26 +17,23 @@ function toPublic(user) {
   return { id, name, email, role, department, isActive };
 }
 
-/**
- * Development login.
- * Resolves an active in-memory user either by explicit email or by role
- * (matching the "Login as Student / Admin / Technician" buttons).
- */
-async function devLogin(req, res) {
-  const { email, role } = req.body || {};
+async function passwordLogin(req, res) {
+  const email = typeof req.body?.email === "string"
+    ? req.body.email.trim().toLowerCase()
+    : "";
+  const password = typeof req.body?.password === "string" ? req.body.password : "";
 
-  if (!email && !role) {
-    return res.status(400).json({ error: "An email or role is required to sign in." });
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required." });
   }
-  if (role && !ROLES.includes(role)) {
-    return res.status(400).json({ error: "Invalid role." });
+  if (email.length > 254 || password.length > 256) {
+    return res.status(401).json({ error: "Invalid email or password." });
   }
 
-  const user = email
-    ? await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } })
-    : await prisma.user.findFirst({ where: { role, isActive: true }, orderBy: { id: "asc" } });
-
-  if (!user) return res.status(404).json({ error: "No matching active account was found." });
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user || !(await verifyPassword(password, user.passwordHash))) {
+    return res.status(401).json({ error: "Invalid email or password." });
+  }
   if (!user.isActive) return res.status(403).json({ error: "This account is inactive." });
 
   return res.json({ user: toPublic(user) });
@@ -153,7 +151,7 @@ async function getUsers(req, res) {
 }
 
 module.exports = {
-  devLogin,
+  passwordLogin,
   microsoftLogin,
   getUserById,
   getUsers,

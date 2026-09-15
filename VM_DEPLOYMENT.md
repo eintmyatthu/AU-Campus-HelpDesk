@@ -2,6 +2,26 @@
 
 VM host: `badproject1.centralindia.cloudapp.azure.com`
 
+## Automated update script
+
+To deploy the email/password login update, apply its Prisma migration, install
+the requested test accounts, rebuild the frontend, and restart the VM services,
+run this from the repository root on the Mac:
+
+```bash
+chmod +x scripts/deploy-vm-login-update.sh
+./scripts/deploy-vm-login-update.sh \
+  ~/Downloads/BADProject1_key.pem \
+  --seed-test-accounts
+```
+
+The `--seed-test-accounts` flag is intentionally explicit because it creates
+technician and administrator accounts with the credentials documented in the
+README. Omit the flag to deploy the code and migration without creating or
+resetting those test accounts. The script preserves `backend/.env` on the VM.
+
+The manual deployment steps remain below for troubleshooting or partial deploys.
+
 ## 1. Build and upload from the Mac
 
 Run from the repository root:

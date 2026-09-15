@@ -6,10 +6,9 @@ const prisma = require("./config/prisma");
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
-  // Try to connect to PostgreSQL, but do NOT block startup if it fails.
-  // Development sign-in uses an in-memory user store, so the app is usable
-  // without a database. Ticket persistence still requires a valid
-  // DATABASE_URL — those write endpoints will error until one is configured.
+  // Try to connect to PostgreSQL, but keep the process available so its health
+  // endpoint can still explain that the API is running. Authentication and all
+  // persisted HelpDesk features require a valid DATABASE_URL.
   try {
     await prisma.$connect();
     console.log("Connected to PostgreSQL");
@@ -18,9 +17,7 @@ async function startServer() {
       "Starting WITHOUT a database connection:",
       error.message
     );
-    console.warn(
-      "Sign-in works via the in-memory dev users. Set DATABASE_URL to enable ticket persistence."
-    );
+    console.warn("Set DATABASE_URL to enable authentication and persistence.");
   }
 
   app.listen(PORT, () => {
