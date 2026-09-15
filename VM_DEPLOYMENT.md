@@ -1,26 +1,6 @@
 # VM Deployment Guide
 
-VM host: `badproject1.centralindia.cloudapp.azure.com`
-
-## Automated update script
-
-To deploy the email/password login update, apply its Prisma migration, install
-the requested test accounts, rebuild the frontend, and restart the VM services,
-run this from the repository root on the Mac:
-
-```bash
-chmod +x scripts/deploy-vm-login-update.sh
-./scripts/deploy-vm-login-update.sh \
-  ~/Downloads/BADProject1_key.pem \
-  --seed-test-accounts
-```
-
-The `--seed-test-accounts` flag is intentionally explicit because it creates
-technician and administrator accounts with the credentials documented in the
-README. Omit the flag to deploy the code and migration without creating or
-resetting those test accounts. The script preserves `backend/.env` on the VM.
-
-The manual deployment steps remain below for troubleshooting or partial deploys.
+VM shown by the current deployment: `badp1.koreacentral.cloudapp.azure.com`
 
 ## 1. Build and upload from the Mac
 
@@ -39,7 +19,7 @@ tar --exclude='backend/node_modules' \
 
 scp -i ~/Downloads/BADProject1_key.pem \
   ~/AU-Campus-HelpDesk-upload.tar.gz \
-  azureuser@badproject1.centralindia.cloudapp.azure.com:~/
+  azureuser@badp1.koreacentral.cloudapp.azure.com:~/
 ```
 
 `backend/.env` is excluded so the VM production settings are preserved.
@@ -48,7 +28,7 @@ scp -i ~/Downloads/BADProject1_key.pem \
 
 ```bash
 ssh -i ~/Downloads/BADProject1_key.pem \
-  azureuser@badproject1.centralindia.cloudapp.azure.com
+  azureuser@badp1.koreacentral.cloudapp.azure.com
 
 cd ~/AU-Campus-HelpDesk
 tar -xzf ~/AU-Campus-HelpDesk-upload.tar.gz --overwrite
@@ -153,7 +133,7 @@ location /helpdesk/api/ {
 ## 7. Verify the deployment
 
 ```bash
-curl https://badproject1.centralindia.cloudapp.azure.com/helpdesk/api/health
+curl https://badp1.koreacentral.cloudapp.azure.com/helpdesk/api/health
 npx pm2 status
 ```
 
@@ -167,7 +147,7 @@ Test the Microsoft route with a deliberately invalid token:
 
 ```bash
 curl -i -X POST \
-  https://badproject1.centralindia.cloudapp.azure.com/helpdesk/api/users/login/microsoft \
+  https://badp1.koreacentral.cloudapp.azure.com/helpdesk/api/users/login/microsoft \
   -H 'Content-Type: application/json' \
   -d '{"idToken":"test"}'
 ```
@@ -179,7 +159,7 @@ A `401` response is expected. `404` means the wrong backend process or old code 
 Register this URI under the app registration's **Single-page application** platform:
 
 ```text
-https://badproject1.centralindia.cloudapp.azure.com/redirect.html
+https://badp1.koreacentral.cloudapp.azure.com/redirect.html
 ```
 
 Keep the local URI registered too:
