@@ -41,19 +41,22 @@ enum Category {
 }
 
 model User {
-  id              Int             @id @default(autoincrement())
-  microsoftId     String?         @unique
-  name            String
-  email           String          @unique
-  department      String?
-  role            Role            @default(STUDENT)
-  isActive        Boolean         @default(true)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  reportedTickets Ticket[]        @relation("ReportedTickets")
-  assignedTickets Ticket[]        @relation("AssignedTickets")
-  comments        TicketComment[]
-  history         TicketHistory[]
+  id                 Int             @id @default(autoincrement())
+  microsoftId        String?         @unique
+  name               String
+  email              String          @unique
+  department         String?
+  role               Role            @default(STUDENT)
+  technicianCategory Category?
+  isActive           Boolean         @default(true)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  reportedTickets    Ticket[]        @relation("ReportedTickets")
+  assignedTickets    Ticket[]        @relation("AssignedTickets")
+  comments           TicketComment[]
+  history            TicketHistory[]
+
+  @@index([role, technicianCategory])
 }
 
 model Ticket {
